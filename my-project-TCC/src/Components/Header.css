@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+header{
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #F05221;
+    width: 1450px;
+    height: 183px;  
+}
+
+
+
+
+/*INICIO DE CUSTOMIZAÇÃO DA NAVBAR -->DENTRO<-- DO HEADER*/
+.nav{
+    width: 580px; 
+    height: 51px; 
+    margin-top: 24px;
+    left: 132px;
+    flex-shrink: 0;
+}
+/*CUSTOMIZAÇÃO DOS LINKS*/
+.nav a{
+    display: inline-block;
+    margin-left: 20px;
+    color: #FFF;
+
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 160% */
+    letter-spacing: 0.5px;
+}
+/*CUSTOMIZAÇÃO DO HOVER DOS LINKS*/
+.nav a:hover{
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    font-family: "Poppins", sans-serif;
+    transition: 2ms;
+}
+
+.nav2{
+    display: inline-block;
+    position: absolute;
+    width: 300px;
+    flex-shrink: 0;
+    height: 39px; 
+    top: 20px; 
+    left: 971px;
+}
+
+.button{
+    color: #BEBEBE;
+    border: 1px solid #BEBEBE;
+    border-radius: 30%;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(134, 134, 134, 0.25);
+}
+.button:hover{
+    font-weight: bold;
+    color: #F05221;
+    border: 2px solid #F05221;
+    border-radius: 30%;
+    box-shadow: 0px 4px 4px 0px rgba(134, 134, 134, 0.25);
+}
