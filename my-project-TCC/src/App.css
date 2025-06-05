@@ -1,15 +1,1 @@
-#root {
- margin: 0;
- padding: 0;
-}
-.categorias{
 
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    position: absolute;
-
-    gap: 20px;
-    top: 200px; 
-    left: 25%;
-}
