@@ -12,7 +12,7 @@ function App() {
   return (
     <>
        <Header />
-       <div className='Categorias'>
+       <div className='categorias'>
        <Category texto="Modelo de trabalho"/>
        <Category texto="Publicado em"/>
        <Category texto="Distância"/>
