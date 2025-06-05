@@ -7,6 +7,7 @@
 
 header{
     display: flex;
+    justify-content: center;
     position: fixed;
     top: 0;
     left: 0;
@@ -23,8 +24,8 @@ header{
     width: 100%; 
     height: 51px; 
     margin-top: 24px;
-    left: 132px;
     flex-shrink: 0;
+    margin-left: 50%;
 }
 /*CUSTOMIZAÇÃO DOS LINKS*/
 .nav a{
@@ -48,4 +49,12 @@ header{
     text-decoration: underline;
     transition: 2s;
 }
+/*Separar os dois textos*/
+.frame-2{
+    margin-left: 200px;
+}
 
+/*Editar login*/
+.container-login{
+    text-decoration: underline;
+}

@@ -15,8 +15,12 @@ export default function Header() {
         <a href="#">Encontrar serviços</a>
         <a href="#">Mais procurados</a>
         <a href="#">Categorias</a>
+        <span className='frame-2'>
         <a href="#">Empresas perto de mim</a>
+        <span className='container-login'>
         <a href="#">Login</a>
+        </span>
+        </span>
     </nav>
    </header>
     </div>
