@@ -12,6 +12,7 @@ import SearchBar from './Components/SearchBar';
 function App() {
   return (
     <>
+    <SearchBar />
        <Header />
        <div className='categorias'>
        <Category texto="Modelo de trabalho"/>
@@ -21,7 +22,7 @@ function App() {
        <Category texto="Categorias"/>
        <Category texto="Disponibilidade"/>
        </div>
-       <SearchBar />
+       
     </>
   );
 }
