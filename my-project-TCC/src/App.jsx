@@ -2,11 +2,12 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 
-import Header from './Components/Header';
 import './App.css'
 import './pages/Logo/logo'
 import './Components/Category'
+import Header from './Components/Header';
 import Category from './Components/Category';
+import SearchBar from './Components/SearchBar';
 
 function App() {
   return (
@@ -20,11 +21,7 @@ function App() {
        <Category texto="Categorias"/>
        <Category texto="Disponibilidade"/>
        </div>
-       
-
-
-
-
+       <SearchBar />
     </>
   );
 }
