@@ -11,7 +11,7 @@ header{
     top: 0;
     left: 0;
     background-color: #F05221;
-    width: 1450px;
+    width: 100%;
     height: 183px;  
 }
 
@@ -20,7 +20,7 @@ header{
 
 /*INICIO DE CUSTOMIZAÇÃO DA NAVBAR -->DENTRO<-- DO HEADER*/
 .nav{
-    width: 580px; 
+    width: 100%; 
     height: 51px; 
     margin-top: 24px;
     left: 132px;
@@ -43,33 +43,9 @@ header{
 /*CUSTOMIZAÇÃO DO HOVER DOS LINKS*/
 .nav a:hover{
     color: white;
-    font-size: 14px;
     font-weight: 800;
     font-family: "Poppins", sans-serif;
-    transition: 2ms;
+    text-decoration: underline;
+    transition: 2s;
 }
 
-.nav2{
-    display: inline-block;
-    position: absolute;
-    width: 300px;
-    flex-shrink: 0;
-    height: 39px; 
-    top: 20px; 
-    left: 971px;
-}
-
-.button{
-    color: #BEBEBE;
-    border: 1px solid #BEBEBE;
-    border-radius: 30%;
-    background: #FFF;
-    box-shadow: 0px 4px 4px 0px rgba(134, 134, 134, 0.25);
-}
-.button:hover{
-    font-weight: bold;
-    color: #F05221;
-    border: 2px solid #F05221;
-    border-radius: 30%;
-    box-shadow: 0px 4px 4px 0px rgba(134, 134, 134, 0.25);
-}

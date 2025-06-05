@@ -1,0 +1,15 @@
+
+
+.button{
+    color: #BEBEBE;
+    border: 2px solid #BEBEBE;
+    border-radius: 30px;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(134, 134, 134, 0.25);
+}
+.button:hover{
+    font-weight: bold;
+    color: #F05221;
+    border: 2px solid #F05221;
+    box-shadow: 0px 4px 4px 0px rgba(134, 134, 134, 0.25);
+}
