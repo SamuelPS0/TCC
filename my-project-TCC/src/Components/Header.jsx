@@ -1,6 +1,7 @@
 // Header.jsx
 import React from 'react';
 import './Header.css';
+import SearchBar from '../Components/SearchBar';
 
 export default function Header() {
   return (
@@ -18,6 +19,7 @@ export default function Header() {
           </span>
         </div>
       </nav>
+      <SearchBar />
     </header>
   );
 }
