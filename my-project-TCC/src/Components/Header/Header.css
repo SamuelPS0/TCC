@@ -60,3 +60,17 @@ body {
   transition: 0.2s;
   text-decoration: underline;
 }
+.logo{
+  position: absolute;
+  left: 3.1rem;
+  top: -1rem;
+  padding: 0;
+  width: 15rem;
+  height: auto;
+}
+.container-logo{
+  width: 100%;
+  background-color: blue;
+    display: flex;
+  justify-content: center;
+}

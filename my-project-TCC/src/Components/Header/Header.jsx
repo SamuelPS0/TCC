@@ -2,11 +2,11 @@
 import React from 'react';
 import './Header.css';
 import SearchBar from '../SearchBar/SearchBar';
+import Logo from "/workspaces/TCC/my-project-TCC/src/img/divulgai-semfundo.png";
 
 export default function Header() {
   return (
     <header className="header">
-      <a href="/" className="logo" aria-label="Página inicial" />
       <nav className="nav">
         <a href="#">Sobre nós</a>
         <a href="#">Encontrar serviços</a>
@@ -19,6 +19,9 @@ export default function Header() {
           </span>
         </div>
       </nav>
+      <div className='container-logo'>
+    <img className='logo' src={Logo} alt="Logo DivulgAí" title="LogoDivulgAí"></img>
+    </div>
       <SearchBar />
     </header>
   );
