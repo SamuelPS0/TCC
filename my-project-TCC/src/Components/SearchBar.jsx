@@ -15,7 +15,7 @@ export default function SearchBar(){
           <div className="input-wrapper">
             <div className="input-wrapper-right">
 
-            <label className="input-label">Onde?</label>
+            <label className="input-label">Onde?</label><br></br>
             
             <input type="text" value="São Paulo - SP" className="input-field" readOnly />
           </div>

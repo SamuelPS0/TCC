@@ -4,23 +4,18 @@ import viteLogo from '/vite.svg'
 
 import './App.css'
 import './pages/Logo/logo'
-import './Components/Category'
+import Dropdown from './Components/container-dropdown/Dropdown/Dropdown';
 import Header from './Components/Header';
-import Category from './Components/Category';
-import SearchBar from './Components/SearchBar';
 
 export default function App() {
   return (
     <>
       <Header />
-      <div className="categorias">
-        <Category texto="Modelo de trabalho" />
-        <Category texto="Publicado em" />
-        <Category texto="Distância" />
-        <Category texto="Preço" />
-        <Category texto="Categorias" />
-        <Category texto="Disponibilidade" />
-      </div>
+      <div className="content">
+        <Dropdown ButtonText="Dropdown" 
+        content ={<p>Hello World!</p>}/>
+        </div>
+
     </>
   );
 }

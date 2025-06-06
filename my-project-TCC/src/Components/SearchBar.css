@@ -2,8 +2,8 @@
 
 .container-searchbar {
   display: flex;
-  flex-direction: column;
   flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   position: fixed;
@@ -23,9 +23,9 @@
 
 .input-group.horizontal {
   display: flex;
-  background: white;
+  background: rgb(255, 255, 255);
   border-radius: 40px;
-  width: 720px;
+  width: 750px;
   height: 56px;
   overflow: hidden;
   align-items: center;
@@ -36,6 +36,7 @@
 .input-wrapper {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   padding: 5px 10px;
 }
 
@@ -70,7 +71,8 @@
   background-color: #F05221;
   color: white;
   
-  margin-left: 60px;
+  flex-wrap: wrap;
+  margin-left: 120px;
   font-weight: bold;
   border: none;
   border-radius: 30px;
