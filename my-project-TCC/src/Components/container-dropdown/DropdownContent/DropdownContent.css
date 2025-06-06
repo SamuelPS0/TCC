@@ -1,4 +1,7 @@
 .dropdown-content{
+    opacity: 0;
+    pointer-events: none;  /* impede clique quando fechado */
+    transition: opacity 0.3s ease;
     position: absolute;
     min-width: 100%;
     display: flex;
@@ -7,15 +10,20 @@
     padding: 1rem;
     margin-top: 0.5rem;
     background-color: white;
-    border-radius: 0.5rem;
+    border-radius: 1.8rem;
     box-shadow: rgba(149,157,165,0.2)
     0px 8px 24px;
     max-height: 40vh;
     overflow: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    opacity: 0;
 }
 .dropdown-content::webkit-scrollbar{
     width: 0;
     height: 0;
+}
+.content-open{
+    opacity: 1;
+    pointer-events: auto;
 }

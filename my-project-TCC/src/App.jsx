@@ -1,21 +1,48 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-
+import CustomDropdown from './Components/container-dropdown/Dropdown-final/CustomDropdown';
+import Header from './Components/Header/Header';
 import './App.css'
-import './pages/Logo/logo'
-import Dropdown from './Components/container-dropdown/Dropdown/Dropdown';
-import Header from './Components/Header';
 
-export default function App() {
+const dropdownConfigs = [
+  {
+    label: 'Modelo de trabalho',
+    options: ['Presencial', 'Remoto', 'Híbrido'],
+  },
+  {
+    label: 'Publicado em',
+    options: ['Hoje', 'Última semana', 'Último mês'],
+  },
+  {
+    label: 'Distância',
+    options: ['100m', '500m', '2km', '10km'],
+  },
+  {
+    label: 'Preço',
+    options: ['R$50 - R$100', 'R$100 - R$200', 'R$200+'],
+  },
+  {
+    label: 'Categorias',
+    options: ['Confeiteiro', 'Boleiro', 'Cozinheiro'],
+  },
+  {
+    label: 'Disponibilidade',
+    options: ['Disponível', 'Indisponível'],
+  },
+];
+
+const App = () => {
   return (
     <>
       <Header />
-      <div className="content">
-        <Dropdown ButtonText="Dropdown" 
-        content ={<p>Hello World!</p>}/>
-        </div>
-
+      <div className='dropdown-nav'>
+    <div className="content">
+      {dropdownConfigs.map(({ label, options }) => (
+        <CustomDropdown key={label} label={label} options={options} />
+      ))}
+      </div>
+    </div>
     </>
   );
-}
+};
+
+export default App;

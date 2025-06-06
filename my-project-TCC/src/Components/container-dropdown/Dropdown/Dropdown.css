@@ -1,3 +1,6 @@
-.dropdown{
-    position: relative;
+.dropdown {
+  position: relative;
+  display: inline-block;  /* adicionar para alinhar lado a lado */
+  min-width: 150px;       /* definir largura mínima para evitar quebrar layout */
+  margin-bottom: 10px;    /* espaço inferior caso quebre linha */
 }
