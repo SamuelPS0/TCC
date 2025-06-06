@@ -75,3 +75,18 @@
   font-size: 1rem;
   margin-left: auto; /* empurra o botão para a direita */
 }
+
+@media (min-width: 1000px) and (max-width: 1180px){
+  .input-group.horizontal {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        border-radius: 40px;
+        width: 600px;
+        height: 56px;
+        padding: 5px 15px;
+        gap: 20px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+}
+}

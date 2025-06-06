@@ -74,3 +74,21 @@ body {
     display: flex;
   justify-content: center;
 }
+
+/*1024 x 768*/
+@media (min-width: 1000px) and (max-width: 1324px){
+  .logo{
+        position: absolute;
+        left: 1rem;
+        top: 1.2rem;
+        padding: 0;
+        width: 11rem;
+        height: auto;
+  }
+  .frame-2 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 6rem;
+  }
+}

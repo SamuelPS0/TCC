@@ -2,6 +2,7 @@
     padding: 0.5rem;
     margin: 0.1rem;
     width: 100%;
+    color: #BEBEBE;
     border-radius: 0.5rem;
     cursor: pointer;
 }
@@ -9,4 +10,28 @@
     background-color:#F05221;
     color: white;
     transition: 0.2s ease-in;
+}
+@media (min-width: 1000px) and (max-width: 1324px){
+.dropdown-item:hover{
+    background-color:#F05221;
+    color: white;
+    transition: 0.2s ease-in;
+}
+.dropdown-btn {
+    display: flex
+;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: auto;
+    min-width: auto;
+    max-width: 100%;
+    font-size: 1rem;
+    padding: 0.2rem 1rem;
+    background-color: white;
+    border-radius: 1.8rem;
+    color: #BEBEBE;
+    border: 2px solid #BEBEBE;
+    cursor: pointer;
+}
 }
