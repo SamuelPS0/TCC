@@ -1,11 +1,11 @@
 import React from 'react';
-import './SobreNos.css';
 import { Link } from 'react-router-dom';
+import './Perfil.css';
 
-export default function SobreNos(){
+export default function Perfil(){
     return(
         <div>
-            <h1>SobreNos</h1>
+            <h1>Perfil</h1>
             <Link to={"/home"}>Home</Link>
         </div>
     )

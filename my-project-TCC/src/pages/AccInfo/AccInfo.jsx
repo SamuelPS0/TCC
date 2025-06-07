@@ -1,11 +1,11 @@
 import React from 'react';
-import './SobreNos.css';
+import './AccInfo.css';
 import { Link } from 'react-router-dom';
 
-export default function SobreNos(){
+export default function AccInfo(){
     return(
         <div>
-            <h1>SobreNos</h1>
+            <h1>AccInfo</h1>
             <Link to={"/home"}>Home</Link>
         </div>
     )

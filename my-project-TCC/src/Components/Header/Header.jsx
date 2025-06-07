@@ -1,6 +1,7 @@
 // Header.jsx
 import React from 'react';
 import './Header.css';
+import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 import Logo from "/workspaces/TCC/my-project-TCC/src/img/divulgai-semfundo.png";
 
@@ -8,14 +9,15 @@ export default function Header() {
   return (
     <header className="header">
       <nav className="nav">
-        <a href="#">Sobre nós</a>
-        <a href="#">Encontrar serviços</a>
-        <a href="#">Mais procurados</a>
-        <a href="#">Categorias</a>
+        <Link to={"/sobre-nos"}>Sobre Nós</Link>
+        <Link to={"/encontrar-servicos"}>Encontrar serviços</Link>
+        <Link to={"/mais-procurados"}>Mais procurados</Link>
+        <Link to={"/categorias"}>Categorias</Link>
         <div className="frame-2">
-          <a href="#">Empresas perto de mim</a>
+          
+        <Link to={"/empresas"}>Empresas perto de mim</Link>          
           <span className="container-login">
-            <a href="#">Login</a>
+            <Link to={"/Login"}>Login</Link>
           </span>
         </div>
       </nav>

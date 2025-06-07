@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
@@ -10,12 +11,11 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Header fixo */
 .header {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   position: fixed;
   top: 0;
   left: 0;
@@ -26,8 +26,7 @@ body {
   padding-top: 25px;
 }
 
-
-
+/* Navegação */
 .nav {
   display: flex;
   flex-wrap: wrap;
@@ -35,7 +34,9 @@ body {
   gap: 20px;
 }
 
-.nav a {
+/* Estilo dos links */
+.nav a,
+.nav-link {
   color: #fff;
   font-size: 1rem;
   font-weight: 700;
@@ -44,11 +45,13 @@ body {
   transition: all 0.3s ease;
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav-link:hover {
   text-decoration: underline;
   font-weight: 800;
 }
 
+/* Login + empresas */
 .frame-2 {
   display: flex;
   align-items: center;
@@ -56,38 +59,42 @@ body {
   margin-left: 15rem;
 }
 
-.container-login a {
-  transition: 0.2s;
+.container-login .login-link {
+  color: #fff;
   text-decoration: underline;
+  transition: 0.2s;
 }
-.logo{
+
+.container-login .login-link:hover {
+  color: #ffddcc;
+}
+
+/* Logo */
+.logo {
   position: absolute;
   left: 3.1rem;
   top: -1rem;
-  padding: 0;
   width: 15rem;
   height: auto;
+  pointer-events: none;
 }
-.container-logo{
+
+.container-logo {
   width: 100%;
   background-color: blue;
-    display: flex;
+  display: flex;
   justify-content: center;
 }
 
-/*1024 x 768*/
-@media (min-width: 1000px) and (max-width: 1324px){
-  .logo{
-        position: absolute;
-        left: 1rem;
-        top: 1.2rem;
-        padding: 0;
-        width: 11rem;
-        height: auto;
+/* Responsividade */
+@media (min-width: 1000px) and (max-width: 1324px) {
+  .logo {
+    left: 1rem;
+    top: 1.2rem;
+    width: 11rem;
   }
+
   .frame-2 {
-    display: flex;
-    align-items: center;
     gap: 1rem;
     margin-left: 6rem;
   }
