@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Dropdown from '../Dropdown/Dropdown'; // seu dropdown container
-import DropdownItem from '../DropdownItem/DropdownItem'; // seu DropdownItem
+import Dropdown from '../Dropdown/Dropdown';
+import DropdownItem from '../DropdownItem/DropdownItem';
 
 const CustomDropdown = ({ label, options }) => {
   const [selected, setSelected] = useState(label);

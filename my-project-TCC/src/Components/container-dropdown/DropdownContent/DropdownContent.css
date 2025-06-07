@@ -1,6 +1,6 @@
 .dropdown-content{
     opacity: 0;
-    pointer-events: none;  /* impede clique quando fechado */
+    pointer-events: none; 
     transition: opacity 0.3s ease;
     position: absolute;
     min-width: 100%;

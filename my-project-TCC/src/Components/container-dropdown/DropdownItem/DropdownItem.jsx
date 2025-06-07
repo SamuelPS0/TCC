@@ -9,4 +9,4 @@ const DropdownItem = ({children, onClick}) => {
   )
 }
 
-export default DropdownItem
+export default DropdownItem;
