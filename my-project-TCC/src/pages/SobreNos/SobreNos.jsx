@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function SobreNos(){
     return(
-        <div>
+        <div className='center'>
             <h1>SobreNos</h1>
             <Link to={"/"}>Home</Link>
         </div>

@@ -17,7 +17,6 @@ export default function PerfilList() {
   }
 
   return (
-    <div className="card-wrapper">
     <div className="cards-container">
       {perfis.map(perfil => (
         <Card
@@ -31,7 +30,6 @@ export default function PerfilList() {
           }}
         />
       ))}
-    </div>
     </div>
   );
 }
