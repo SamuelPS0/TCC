@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Perfil.css';
+import './Profile.css';
 
 export default function Perfil(){
     return(
-        <div>
+        <div className='container-profile'>
             <h1>Perfil</h1>
-            <Link to={"/home"}>Home</Link>
+            <Link to={"/"}>Home</Link>
         </div>
     )
 }

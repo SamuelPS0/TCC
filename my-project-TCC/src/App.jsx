@@ -4,7 +4,7 @@ import CreatePerfil from './pages/CreatePerfil/CreatePerfil';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
-import Perfil from './pages/Perfil/Perfil';
+import Perfil from './pages/Profile/Profile';
 import Register from './pages/Register/Register';
 import SobreNos from './pages/SobreNos/SobreNos';
 
@@ -21,7 +21,7 @@ const App = () => {
         <Route path="/acc-info" element={<AccInfo />} />
         <Route path="/create-perfil" element={<CreatePerfil />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/profile" element={<Perfil />} />
         <Route path="/register" element={<Register />} />
         
         {/* Rota 404 */}

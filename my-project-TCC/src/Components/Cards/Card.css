@@ -22,6 +22,7 @@
 
 .card p {
   margin: 0.5rem 0;
+  color: #939393;
 }
 #icon{
   display: flex;
