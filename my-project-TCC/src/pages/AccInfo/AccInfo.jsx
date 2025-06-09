@@ -6,7 +6,7 @@ export default function AccInfo(){
     return(
         <div>
             <h1>AccInfo</h1>
-            <Link to={"/home"}>Home</Link>
+            <Link to={"/"}>Home</Link>
         </div>
     )
 }

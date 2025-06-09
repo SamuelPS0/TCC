@@ -1,0 +1,20 @@
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: flex-start;
+}
+
+
+.cards-wrapper {
+  position: fixed;       /* fixa a posição na tela */
+  top: 120px;            /* deixa um espaço abaixo do header e searchbar */
+  left: 50%;             /* centraliza horizontalmente */
+  transform: translateX(-50%); /* corrige o centro exato */
+  width: 80vw;           /* ocupa 80% da largura da viewport */
+  max-width: 1200px;     /* limite máximo para não ficar muito largo */
+  overflow-x: auto;      /* adiciona scroll horizontal se precisar */
+  padding-bottom: 1rem;  /* um pouco de espaçamento abaixo */
+  z-index: 999;          /* acima do conteúdo normal, mas abaixo do header se precisar */
+  background-color: transparent; /* ou pode colocar uma cor clara, se quiser */
+}

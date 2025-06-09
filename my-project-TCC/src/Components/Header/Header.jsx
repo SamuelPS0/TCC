@@ -10,8 +10,8 @@ export default function Header() {
     <header className="header">
       <nav className="nav">
         <Link to={"/sobre-nos"}>Sobre Nós</Link>
-        <Link to={"/encontrar-servicos"}>Encontrar serviços</Link>
-        <Link to={"/mais-procurados"}>Mais procurados</Link>
+        <Link to={"/acc-info"}>Info-conta</Link>
+        <Link to={"/create-perfil"}>Perfil(provisorio)</Link>
         <Link to={"/categorias"}>Categorias</Link>
         <div className="frame-2">
           

@@ -6,7 +6,7 @@ export default function SobreNos(){
     return(
         <div>
             <h1>SobreNos</h1>
-            <Link to={"/home"}>Home</Link>
+            <Link to={"/"}>Home</Link>
         </div>
     )
 }

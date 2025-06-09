@@ -1,0 +1,56 @@
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+
+  position: fixed;
+  top: 190px; /* fixa logo abaixo do header */
+  left: 50%;  /* posiciona horizontalmente no meio */
+  transform: translateX(-50%); /* centraliza o container */
+  
+  width: 90vw; /* ocupa 90% da largura da viewport, para não grudar nas bordas */
+  max-width: 1200px; /* limitar largura máxima */
+}
+
+.card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  width: 550px; /* pode ajustar */
+  height: 175px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  transition: border 0.050s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 3px solid #F05221;
+}
+
+.card h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.card p {
+  margin: 0.5rem 0;
+}
+#icon{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+.edit-icon {
+  color: #338787;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.card-p {
+  display: flex;
+  flex-direction: column;
+}
