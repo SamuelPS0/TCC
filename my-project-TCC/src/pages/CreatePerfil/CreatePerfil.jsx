@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import './CreatePerfil.css';
 import { Link, useNavigate } from 'react-router-dom';
+import SideMenu from '../../Components/SideMenu/SideMenu';
 
 export default function CreatePerfil() {
   const navigate = useNavigate();  
@@ -26,9 +27,13 @@ export default function CreatePerfil() {
   }
 
   return (
-    <div className='container-forms'>
+    <div className='container-create-perfil'>
       <h1>CreatePerfil</h1>
       <Link to={"/"}>Home</Link>
+
+      <SideMenu />
+
+    <div className='container-forms'>  
       <div className="forms">
         <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -66,5 +71,6 @@ export default function CreatePerfil() {
         </form>
       </div>
     </div>
+  </div>  
   );
 }

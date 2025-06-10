@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Hand+Pre:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+}
+.container-sidemenu{
+    background: blue;
+    width: 313px;
+    height: auto;
+}
+.menu-li{
+    font-family: "Montserrat";
+    display: flex;
+    align-items: center;
+    color: #FFF;
+    font-size: 20px;
+}

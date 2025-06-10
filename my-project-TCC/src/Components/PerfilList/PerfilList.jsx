@@ -13,7 +13,7 @@ export default function PerfilList() {
   }, []);
 
   if (perfis.length === 0) {
-    return <p>Nenhum perfil cadastrado.</p>;
+    return <p className='no-profile'>Nenhum perfil cadastrado.</p>;
   }
 
   return (
