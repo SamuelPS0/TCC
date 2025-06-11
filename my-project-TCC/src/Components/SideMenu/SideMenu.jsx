@@ -1,21 +1,43 @@
-import React from 'react';
-import { IoPersonCircle } from "react-icons/io5";
-import { IoShieldOutline } from "react-icons/io5";
+import React, { useState } from 'react';
+import { IoPersonCircle, IoShieldOutline } from "react-icons/io5";
 import { IoMdArrowBack } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
-import { Link } from 'react-router-dom';
-import './SideMenu.css'
+import { Link, useLocation } from 'react-router-dom';
+import './SideMenu.css';
 
-export default function SideMenu(){
-    return(
-        <div className='container-sidemenu'>
-            <ul>
-                
-                <li><Link to="/create-perfil" className='menu-li'><IoPersonCircle />Perfil</Link></li>
-                <li><Link to='/acc-info' className='menu-li'><IoShieldOutline />Informações da conta</Link></li>
-                <li><Link to='/' className='menu-li'><IoMdArrowBack />Voltar a tela inicial</Link></li>
-                <li className='menu-li'><CiLogout />Sair</li>
-            </ul>
-        </div>
-    );
-};
+export default function SideMenu() {
+  const location = useLocation();
+  const [hovered, setHovered] = useState(null);
+
+  const menuItems = [
+    { path: '/create-perfil', label: 'Perfil', icon: <IoPersonCircle className='icon' /> },
+    { path: '/acc-info', label: 'Informações da conta', icon: <IoShieldOutline className='icon' /> },
+    { path: '/', label: 'Voltar à tela inicial', icon: <IoMdArrowBack className='icon' /> },
+    { path: '/register', label: 'Sair', icon: <CiLogout className='icon' /> }, // Agora redireciona
+  ];
+
+  return (
+    <div className='container-sidemenu'>
+      <ul>
+        {menuItems.map((item) => {
+          const isActive = location.pathname === item.path && hovered === null;
+          const isHovering = hovered === item.path;
+
+          return (
+            <li key={item.path}>
+              <Link
+                to={item.path}
+                className={`menu-li ${isActive || isHovering ? 'selected' : ''}`}
+                onMouseEnter={() => setHovered(item.path)}
+                onMouseLeave={() => setHovered(null)}
+              >
+                {item.icon}
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}

@@ -1,18 +1,94 @@
-@import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Hand+Pre:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-*{
-    padding: 0;
-    margin: 0;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.container-sidemenu{
-    background: blue;
-    width: 313px;
-    height: auto;
+
+ul {
+  list-style: none;
 }
-.menu-li{
-    font-family: "Montserrat";
-    display: flex;
-    align-items: center;
-    color: #FFF;
-    font-size: 20px;
+
+.container-sidemenu {
+  width: 313px;
+  border: 1px solid #ADADAD;
+  border-radius: 10px;
+  margin-right: 20px;
+  background-color: #fff;
+}
+
+.menu-li {
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 20px;
+  color: black;
+  width: 313px;
+  height: 79px;
+  border: 1px solid #ADADAD;
+  border-radius: 5px;
+  text-decoration: none;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition:
+    background-color 0.4s ease-in-out,
+    color 0.4s ease-in-out,
+    font-weight 0.2s ease-in-out,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.menu-li:hover,
+.selected {
+  background-color: #FF432A;
+  color: white;
+  font-weight: 700;
+  border-color: #FF432A;
+  box-shadow: 0 0 10px rgba(255, 67, 42, 0.5);
+}
+
+.menu-li:hover .icon,
+.selected .icon {
+  color: white;
+}
+
+.icon {
+  color: black;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  margin: 0 13px 0 15px;
+  transition: color 0.3s ease-in-out;
+}
+
+.logout-button {
+  cursor: pointer;
+  width: 100%;
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
+  height: 79px;
+  border: 1px solid #ADADAD;
+  border-radius: 5px;
+  color: black;
+  text-decoration: none;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #FF432A;
+  color: white;
+  border-color: #FF432A;
+  box-shadow: 0 0 10px rgba(255, 67, 42, 0.5);
+}
+
+.logout-button:hover .icon {
+  color: white;
 }
