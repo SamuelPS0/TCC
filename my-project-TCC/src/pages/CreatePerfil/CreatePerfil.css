@@ -9,22 +9,11 @@
 .all-page {
   width: 100vw;
   min-height: 100vh;
-  background-color: #f9f9f9; /* fundo claro, você pode mudar */
+  background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-bottom: 3rem;
-}
-
-.create-perfil-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 6rem;
-  padding: 0 1rem;
-  box-sizing: border-box;
 }
 
 .create-perfil-header {
@@ -40,15 +29,64 @@
   color: #000;
   font-family: Montserrat;
   font-size: 50px;
+  font-style: normal;
   font-weight: 600;
+  line-height: normal;
+}
+
+.header-layout {
+  display: flex;
+  justify-content: center; 
+  align-items: center;   
+  margin-top: 6rem;
+  padding: 0 1rem;
+  gap: 9rem;
+}
+
+.header-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px; 
+  height: 200px;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-text h1 {
+  font-family: Montserrat, sans-serif;
+  font-weight: 600;
+  font-size: 50px;
+  color: #000;
+  margin: 0;
+}
+
+.header-text h2 {
+  font-family: Montserrat, sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+  color: #AFAFAF;
+  margin-top: 1rem;
+  margin-bottom: 0;
 }
 
 .create-perfil-header h2 {
   color: #AFAFAF;
   font-family: Montserrat;
-  font-size: 28px;
+  font-size: 50px;
+  font-style: normal;
   font-weight: 300;
-  text-align: center;
+  line-height: normal;
+  margin-bottom: 2rem;
+}
+
+.header-wrapper {
+  display: flex;
+  flex-direction: row;
 }
 
 .container-forms {
@@ -57,8 +95,8 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 2rem;
-  margin-top: 4rem;
+  gap: rem;
+  margin-top: 9rem;
 }
 
 .container-sidemenu {
@@ -97,6 +135,7 @@
   border-radius: 5px;
   border: 1px solid #B2ADAD;
   background: #FFF;
+  color: #7C7C7C;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   padding: 0 1rem;
   font-size: 18px;
@@ -113,8 +152,9 @@
   font-style: italic;
 }
 
-.custom-upload-button {
-  width: 820px;
+/* Upload grande (retangular) */
+.custom-upload-button-banner {
+  width: 824px;
   height: 262px;
   border-radius: 5px;
   border: 1px solid #B2ADAD;
@@ -125,16 +165,45 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  overflow: hidden;
   padding: 0;
+  user-select: none;
+}
+
+.custom-upload-button-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  display: block;
+}
+
+/* Upload de perfil (circular) */
+.custom-upload-button-profile {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background-color: #D9D9D9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
 }
 
 .image-preview-inside-button {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%; 
   display: block;
-  pointer-events: none;
+}
+
+.upload-icon-edit {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
 }
 
 .forms-button {
