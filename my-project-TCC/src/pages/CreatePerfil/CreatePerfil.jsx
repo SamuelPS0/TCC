@@ -91,7 +91,15 @@ export default function CreatePerfil() {
             </label>
             
 
-          
+              <label className="forms-label">
+              <div className='create-profile-icon'>
+                <FaRegEnvelope className='icon-profile' />
+                <span>Arquivo</span>
+              </div>
+              <input  id='forms-archive' className="forms-input" {...register("description", { required: true })} />
+              
+              {errors.description && <span className='forms-span' ></span>}
+            </label>
 
 
             <button type="submit" className="forms-button">Enviar</button>
