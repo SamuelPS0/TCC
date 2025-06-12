@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import './CreatePerfil.css';
 import { useNavigate } from 'react-router-dom';
@@ -6,21 +6,30 @@ import SideMenu from '../../Components/SideMenu/SideMenu';
 import { FiUpload } from "react-icons/fi";
 import { FaRegImage } from "react-icons/fa6";
 import { FaRegEnvelope, FaCoffee } from "react-icons/fa";
-import { IoPersonCircleOutline, IoCallOutline, IoLocationOutline} from "react-icons/io5";
+import { IoPersonCircleOutline, IoCallOutline, IoLocationOutline } from "react-icons/io5";
+import { MdAddLocationAlt } from "react-icons/md";
 
 export default function CreatePerfil() {
   const navigate = useNavigate();
 
-  // Estados para os dois arquivos
   const [selectedFileName1, setSelectedFileName1] = useState("");
   const [imagePreview1, setImagePreview1] = useState(null);
 
   const [selectedFileName2, setSelectedFileName2] = useState("");
   const [imagePreview2, setImagePreview2] = useState(null);
 
+  const [localInput, setLocalInput] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  const [showRegionInput, setShowRegionInput] = useState(false);
+
+  const [contacts, setContacts] = useState([""]);
+
   const {
     register,
     handleSubmit,
+    setValue,
+    unregister,
     formState: { errors },
   } = useForm();
 
@@ -55,11 +64,80 @@ export default function CreatePerfil() {
     }
   };
 
+  useEffect(() => {
+    const fetchCities = async () => {
+      if (localInput.length < 3) {
+        setSuggestions([]);
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios`);
+        const data = await res.json();
+        const filtered = data
+          .filter(city => city.nome.toLowerCase().includes(localInput.toLowerCase()))
+          .slice(0, 5)
+          .map(city => ({
+            display: `${city.nome} - ${city.microrregiao.mesorregiao.UF.sigla}`,
+            nome: city.nome,
+            uf: city.microrregiao.mesorregiao.UF.sigla
+          }));
+
+        setSuggestions(filtered);
+      } catch (err) {
+        console.error("Erro ao buscar cidades:", err);
+        setSuggestions([]);
+      }
+    };
+
+    const delayDebounce = setTimeout(() => {
+      fetchCities();
+    }, 300);
+
+    return () => clearTimeout(delayDebounce);
+  }, [localInput]);
+
+  const handleSelectSuggestion = (cidadeObj) => {
+    const fullString = `${cidadeObj.nome} - ${cidadeObj.uf}`;
+    setValue("local", fullString);
+    setLocalInput(fullString);
+    setSuggestions([]);
+  };
+
+  const handleAddRegion = () => {
+    setShowRegionInput(true);
+  };
+
+  const handleRemoveRegion = () => {
+    setShowRegionInput(false);
+    unregister("region");
+  };
+
+  const handleContactChange = (index, value) => {
+    const newContacts = [...contacts];
+    newContacts[index] = value;
+    setContacts(newContacts);
+    setValue(`contact[${index}]`, value);
+  };
+
+  const handleAddContact = () => {
+    setContacts([...contacts, ""]);
+  };
+
+  const handleRemoveContact = (index) => {
+    const newContacts = contacts.filter((_, i) => i !== index);
+    setContacts(newContacts);
+    unregister(`contact[${index}]`);
+
+    newContacts.forEach((c, i) => {
+      setValue(`contact[${i}]`, c);
+    });
+  };
+
   return (
-    <div className='all-page'>
-      <div className='create-perfil-header'>
+    <div className="all-page">
+      <div className="create-perfil-header">
         <div className="header-layout">
-          {/* Lado esquerdo: Upload circular */}
           <div className="header-upload">
             <label className="forms-label">
               <input
@@ -78,76 +156,184 @@ export default function CreatePerfil() {
                 {imagePreview2 ? (
                   <img src={imagePreview2} alt="Preview 2" className="image-preview-inside-button" />
                 ) : (
-                  <FiUpload className='upload-icon-edit'/>
+                  <FiUpload className="upload-icon-edit" />
                 )}
               </button>
               {errors.arquivo2 && <span className="forms-span">Campo obrigatório</span>}
             </label>
           </div>
 
-          {/* Lado direito: Textos */}
           <div className="header-text">
             <h1>CRIAÇÃO DE PERFIL</h1>
             <h2>Essas informações ficarão visíveis <br />para todos os usuários</h2>
           </div>
         </div>
 
-        <div className='container-create-perfil'>
-          <div className='container-forms'>
-            <div className='container-sidemenu'>
+        <div className="container-create-perfil">
+          <div className="container-forms">
+            <div className="container-sidemenu">
               <SideMenu />
             </div>
 
             <div className="forms">
               <form onSubmit={handleSubmit(onSubmit)}>
 
-                {/* Nome */}
                 <label className="forms-label">
-                  <div className='create-profile-icon'>
-                    <IoPersonCircleOutline className='icon-profile' />
+                  <div className="create-profile-icon">
+                    <IoPersonCircleOutline className="icon-profile" />
                     <span>Nome</span>
                   </div>
-                  <input className="forms-input" placeholder="Digite o nome do seu serviço" {...register("name", { required: true })} />
-                  {errors.name && <span className='forms-span'>Campo obrigatório</span>}
+                  <input
+                    className="forms-input"
+                    placeholder="Digite o nome do seu serviço"
+                    {...register("name", { required: true })}
+                  />
+                  {errors.name && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
-                {/* Descrição */}
                 <label className="forms-label">
-                  <div className='create-profile-icon'>
-                    <FaRegEnvelope className='icon-profile' />
+                  <div className="create-profile-icon">
+                    <FaRegEnvelope className="icon-profile" />
                     <span>Descrição</span>
                   </div>
-                  <input className="forms-input" placeholder="Digite aqui a descrição" {...register("description", { required: true })} maxLength={50} />
-                  {errors.description && <span className='forms-span'>Campo obrigatório</span>}
+                  <input
+                    className="forms-input"
+                    placeholder="Digite aqui a descrição"
+                    {...register("description", { required: true })}
+                    maxLength={50}
+                  />
+                  {errors.description && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
-                {/* Contato */}
-                <label className="forms-label">
-                  <div className='create-profile-icon'>
-                    <IoCallOutline className='icon-profile' />
+                <label className="forms-label" style={{ position: 'relative' }}>
+                  <div className="create-profile-icon">
+                    <IoCallOutline className="icon-profile" />
                     <span>Contato</span>
                   </div>
-                  <input className="forms-input" placeholder="Coloque aqui os contatos" {...register("contact", { required: true })} />
-                  {errors.contact && <span className='forms-span'>Campo obrigatório</span>}
+
+                  {contacts.map((contact, index) => (
+                    <div key={index} className="input-with-button" style={{ position: 'relative', marginBottom: '8px' }}>
+                      <input
+                        className="forms-input"
+                        placeholder="Coloque aqui os contatos"
+                        value={contact}
+                        {...register(`contact[${index}]`, { required: true })}
+                        onChange={(e) => handleContactChange(index, e.target.value)}
+                        autoComplete="off"
+                      />
+
+                      {index === contacts.length - 1 && (
+                        <button
+                          type="button"
+                          className="button-add-region"
+                          onClick={handleAddContact}
+                          aria-label="Adicionar contato"
+                          style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)' }}
+                        >
+                          +
+                        </button>
+                      )}
+
+                      {contacts.length > 1 && (
+                        <button
+                          type="button"
+                          className="button-remove-region"
+                          onClick={() => handleRemoveContact(index)}
+                          aria-label="Remover contato"
+                          style={{
+                            position: 'absolute',
+                            right: '40px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            fontSize: '20px',
+                            cursor: 'pointer',
+                            color: '#888',
+                          }}
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                  ))}
+
+                  {errors.contact && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
-                {/* Local */}
-                <label className="forms-label">
-                  <div className='create-profile-icon'>
-                    <IoLocationOutline className='icon-profile' />
+                <label className="forms-label" style={{ position: 'relative' }}>
+                  <div className="create-profile-icon">
+                    <IoLocationOutline className="icon-profile" />
                     <span>Local</span>
                   </div>
-                  <input className="forms-input" placeholder="Selecione o local" {...register("local", { required: true })} />
-                  {errors.local && <span className='forms-span'>Campo obrigatório</span>}
+                  <div className="input-with-button">
+                    <input
+                      className="forms-input"
+                      placeholder="Digite a cidade"
+                      {...register("local", { required: true })}
+                      value={localInput}
+                      onChange={(e) => setLocalInput(e.target.value)}
+                      autoComplete="off"
+                    />
+                    {!showRegionInput && (
+                      <button
+                        type="button"
+                        className="button-add-region"
+                        onClick={handleAddRegion}
+                        aria-label="Adicionar região"
+                      >
+                        +
+                      </button>
+                    )}
+                  </div>
+                  {errors.local && <span className="forms-span">Campo obrigatório</span>}
+
+                  {suggestions.length > 0 && (
+                    <ul className="autocomplete-suggestions">
+                      {suggestions.map((cidadeObj, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleSelectSuggestion(cidadeObj)}
+                          className="autocomplete-item"
+                        >
+                          {cidadeObj.display}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </label>
 
-                {/* Categoria */}
+                {showRegionInput && (
+                  <label className="forms-label" style={{ position: 'relative' }}>
+                    <div className="create-profile-icon">
+                      <MdAddLocationAlt className="icon-profile" />
+                      <span>Região</span>
+                    </div>
+                    <div className="input-with-button">
+                      <input
+                        className="forms-input"
+                        placeholder="Digite a região"
+                        {...register("region", { required: true })}
+                      />
+                      <button
+                        type="button"
+                        className="button-remove-region"
+                        onClick={handleRemoveRegion}
+                        aria-label="Remover região"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    {errors.region && <span className="forms-span">Campo obrigatório</span>}
+                  </label>
+                )}
+
                 <label className="forms-label">
-                  <div className='create-profile-icon'>
-                    <FaCoffee className='icon-profile' />
+                  <div className="create-profile-icon">
+                    <FaCoffee className="icon-profile" />
                     <span>Categoria</span>
                   </div>
-                  <select className="forms-input"  defaultValue="" {...register("categoria", { required: true })}>
+                  <select className="forms-input" defaultValue="" {...register("categoria", { required: true })}>
                     <option value="" disabled>Selecione a categoria</option>
                     <option value="Comidas Prontas">Comidas Prontas</option>
                     <option value="Lanches e Fast Food">Lanches e Fast Food</option>
@@ -164,44 +350,35 @@ export default function CreatePerfil() {
                     <option value="Comida mexicana">Comida mexicana</option>
                     <option value="Buffet para festas">Buffet para festas</option>                                                                                 
                   </select>
-                   
-                  {errors.categoria && <span className='forms-span'>Campo obrigatório</span>}
+                  {errors.categoria && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
-                {/* Upload retangular */}
-<label className="forms-label">
-  {/* 1. Container do ícone e texto */}
-  <div className='create-profile-icon'>
-    <FaRegImage className='icon-profile' />  {/* Ícone do upload */}
-    <span>Arquivo</span>                   {/* Texto do label */}
-  </div>
-
-  {/* 2. Input file invisível */}
-  <input
-    id="forms-archive-1"
-    type="file"
-    accept="image/*"
-    {...register("arquivo1", { required: true })}
-    onChange={handleFileChange1}
-    style={{ display: 'none' }}
-  />
-
-  {/* 3. Botão personalizado que dispara o input file */}
-  <button
-    type="button"
-    className="custom-upload-button-banner"
-    onClick={() => document.getElementById('forms-archive-1').click()}
-  >
-    {imagePreview1 ? (
-      <img src={imagePreview1} alt="Preview 1" className="image-preview-inside-button" />
-    ) : (
-      "Escolher arquivo"
-    )}
-  </button>
-
-  {/* 5. Mensagem de erro caso não tenha arquivo */}
-  {errors.arquivo1 && <span className="forms-span">Campo obrigatório</span>}
-</label>
+                <label className="forms-label">
+                  <div className="create-profile-icon">
+                    <FaRegImage className="icon-profile" />
+                    <span>Arquivo</span>
+                  </div>
+                  <input
+                    id="forms-archive-1"
+                    type="file"
+                    accept="image/*"
+                    {...register("arquivo1", { required: true })}
+                    onChange={handleFileChange1}
+                    style={{ display: 'none' }}
+                  />
+                  <button
+                    type="button"
+                    className="custom-upload-button-banner"
+                    onClick={() => document.getElementById('forms-archive-1').click()}
+                  >
+                    {imagePreview1 ? (
+                      <img src={imagePreview1} alt="Preview 1" className="image-preview-inside-button" />
+                    ) : (
+                      "Escolher arquivo"
+                    )}
+                  </button>
+                  {errors.arquivo1 && <span className="forms-span">Campo obrigatório</span>}
+                </label>
 
                 <button type="submit" className="forms-button">Enviar</button>
               </form>

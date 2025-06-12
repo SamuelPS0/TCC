@@ -27,20 +27,28 @@
 
 .create-perfil-header h1 {
   color: #000;
-  font-family: Montserrat;
+  font-family: 'Montserrat', sans-serif;
   font-size: 50px;
-  font-style: normal;
   font-weight: 600;
   line-height: normal;
 }
 
+.create-perfil-header h2 {
+  color: #AFAFAF;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 50px;
+  font-weight: 300;
+  line-height: normal;
+  margin-bottom: 2rem;
+}
+
 .header-layout {
-  display: flex;
-  justify-content: center; 
-  align-items: center;   
-  margin-top: 6rem;
-  padding: 0 1rem;
-  gap: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6rem;
+    padding: 0 1rem;
+    gap: 8.3rem;
 }
 
 .header-upload {
@@ -58,7 +66,7 @@
 }
 
 .header-text h1 {
-  font-family: Montserrat, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 50px;
   color: #000;
@@ -66,27 +74,12 @@
 }
 
 .header-text h2 {
-  font-family: Montserrat, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 300;
-  font-size: 24px;
+  font-size: 50px;
   color: #AFAFAF;
   margin-top: 1rem;
   margin-bottom: 0;
-}
-
-.create-perfil-header h2 {
-  color: #AFAFAF;
-  font-family: Montserrat;
-  font-size: 50px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-  margin-bottom: 2rem;
-}
-
-.header-wrapper {
-  display: flex;
-  flex-direction: row;
 }
 
 .container-forms {
@@ -112,9 +105,10 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 2rem;
-  font-family: Montserrat, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 20px;
   font-weight: 400;
+  position: relative;
 }
 
 .create-profile-icon {
@@ -127,6 +121,7 @@
   width: 24px;
   height: 24px;
   margin-right: 1rem;
+  color: #000;
 }
 
 .forms-input {
@@ -139,6 +134,7 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   padding: 0 1rem;
   font-size: 18px;
+  padding-right: 50px; /* espaço para botões dentro do input */
 }
 
 .forms-input:focus {
@@ -182,13 +178,20 @@
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  background-color: #D9D9D9;
+  background-color: #eee;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   cursor: pointer;
   position: relative;
+  padding: 0;
+  border: 2px dashed #999;
+  transition: border-color 0.3s ease;
+}
+
+.custom-upload-button-profile:hover {
+  border-color: #FF432A;
 }
 
 .image-preview-inside-button {
@@ -217,10 +220,11 @@
   font-weight: 600;
   cursor: pointer;
   margin-top: 2rem;
+  transition: background-color 0.3s ease;
 }
 
 .forms-button:hover {
-  background-color: #388E3C;
+  background-color: #FF432A;
 }
 
 .forms-span {
@@ -233,3 +237,100 @@
   font-size: 14px;
   color: #333;
 }
+
+/* Estilos para o autocomplete (lista de sugestões) */
+.autocomplete-suggestions {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 820px;
+  background: white;
+  border: 1px solid #B2ADAD;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  max-height: 160px;
+  overflow-y: auto;
+  z-index: 10;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+}
+
+.autocomplete-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Container para input com botão dentro */
+.input-with-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Botão Adicionar Região (dentro do input) */
+.button-add-region {
+  position: absolute;
+  right: 4px;
+  top: 49%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 75px;
+  background-color: #d3d3d3; /* cinza claro */
+  border: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  color: #ffffff;
+    box-shadow: 0 4px 4px rgba(100, 100, 100, 0.25);
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 20px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+
+.button-add-region:hover {
+  background-color: #b0b0b0;
+}
+
+/* Botão Remover Região (dentro do input) */
+.button-remove-region {
+  position: absolute;
+  right: 4px;
+  top: 49%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 75px;
+  background-color: #d3d3d3;
+  border: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  color: #ffffff; /* vermelho */
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 20px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.button-remove-region:hover {
+  background-color: #b94a48;
+}
+
