@@ -1,7 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+.create-perfil-header{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  margin-top: 6rem;
+}
+.create-perfil-header h1{
+  color: #000;
+  font-family: Montserrat;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;  
+  margin-right: 50px;
+}
+.create-perfil-header h2{
+  color: #AFAFAF;
+  font-family: Montserrat;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-left: 21rem;
 }
 
 .container-forms {
@@ -10,8 +38,9 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-start; /* alinha os itens no topo */
-  gap: 1rem; /* um espacinho entre sidebar e form */
+  align-items: flex-start; 
+  gap: 1rem; 
+  margin-top: 141px;
 }
 
 .container-sidemenu {
@@ -85,6 +114,11 @@
   outline: none;
   border-color: #4CAF50;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+#forms-archive{
+  width: 824px;
+height: 262px;
+flex-shrink: 0;
 }
 
 .forms-button {

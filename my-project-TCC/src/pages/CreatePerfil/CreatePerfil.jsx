@@ -33,10 +33,11 @@ export default function CreatePerfil() {
 
   
   return (
+    <div className='all-page'>
+    <div className='create-perfil-header'>
+      <h1>Criação de perfil</h1>
+      <h2>Essas informações ficarão visíveis<br></br> para todos os úsuarios</h2>
     <div className='container-create-perfil'>
-      <h1>CreatePerfil</h1>
-      <Link to={"/"}>Home</Link>
-
       <div className='container-forms'>  
         <div className='container-sidemenu'>
         <SideMenu />
@@ -59,7 +60,7 @@ export default function CreatePerfil() {
                 <span>Descrição</span>
               </div>
               <input className="forms-input" placeholder="Digite aqui a descrição" {...register("description", { required: true })} />
-              {errors.description && <span className='forms-span'>Campo obrigatório</span>}
+              {errors.description && <span className='forms-span' maxLength={50}>Campo obrigatório</span>}
             </label>
 
             <label className="forms-label">
@@ -88,11 +89,17 @@ export default function CreatePerfil() {
               <input className="forms-input" placeholder="Selecione a categoria" {...register("categoria", { required: true })} />
               {errors.categoria && <span className='forms-span'>Campo obrigatório</span>}
             </label>
+            
+
+          
+
 
             <button type="submit" className="forms-button">Enviar</button>
           </form>
         </div>
       </div>
-    </div>  
+    </div> 
+  </div>
+</div>
   );
 }

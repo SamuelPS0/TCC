@@ -6,7 +6,7 @@ export default function Register(){
     return(
         <div>
             <h1>Register</h1>
-            <Link to={"/home"}>Register</Link>
+            <Link to={"/"}>Register</Link>
         </div>
     )
 }
