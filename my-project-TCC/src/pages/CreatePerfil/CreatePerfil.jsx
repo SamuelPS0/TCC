@@ -6,6 +6,7 @@ import SideMenu from '../../Components/SideMenu/SideMenu';
 import { FiUpload } from "react-icons/fi";
 import { FaRegImage } from "react-icons/fa6";
 import { FaRegEnvelope, FaCoffee } from "react-icons/fa";
+import { FaLink } from "react-icons/fa6";
 import { IoPersonCircleOutline, IoCallOutline, IoLocationOutline } from "react-icons/io5";
 import { MdAddLocationAlt } from "react-icons/md";
 
@@ -146,7 +147,6 @@ export default function CreatePerfil() {
                 accept="image/*"
                 {...register("arquivo2", { required: true })}
                 onChange={handleFileChange2}
-                style={{ display: 'none' }}
               />
               <button
                 type="button"
@@ -205,17 +205,18 @@ export default function CreatePerfil() {
                   {errors.description && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
-                <label className="forms-label" style={{ position: 'relative' }}>
+                <label className="forms-label">
                   <div className="create-profile-icon">
-                    <IoCallOutline className="icon-profile" />
+                    <FaLink  className="icon-profile" />
                     <span>Contato</span>
+                    <span className='reminder-text'>Certifique-se de que seu link está correto!</span>
                   </div>
 
                   {contacts.map((contact, index) => (
-                    <div key={index} className="input-with-button" style={{ position: 'relative', marginBottom: '8px' }}>
+                    <div key={index} className="input-with-button">
                       <input
                         className="forms-input"
-                        placeholder="Coloque aqui os contatos"
+                        placeholder="Ex: https://www.seuperfil.com"
                         value={contact}
                         {...register(`contact[${index}]`, { required: true })}
                         onChange={(e) => handleContactChange(index, e.target.value)}
@@ -228,7 +229,7 @@ export default function CreatePerfil() {
                           className="button-add-region"
                           onClick={handleAddContact}
                           aria-label="Adicionar contato"
-                          style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)' }}
+
                         >
                           +
                         </button>
@@ -239,19 +240,7 @@ export default function CreatePerfil() {
                           type="button"
                           className="button-remove-region"
                           onClick={() => handleRemoveContact(index)}
-                          aria-label="Remover contato"
-                          style={{
-                            position: 'absolute',
-                            right: '40px',
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            backgroundColor: 'transparent',
-                            border: 'none',
-                            fontSize: '20px',
-                            cursor: 'pointer',
-                            color: '#888',
-                          }}
-                        >
+                          aria-label="Remover contato">
                           ×
                         </button>
                       )}
@@ -261,7 +250,7 @@ export default function CreatePerfil() {
                   {errors.contact && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
-                <label className="forms-label" style={{ position: 'relative' }}>
+                <label className="forms-label">
                   <div className="create-profile-icon">
                     <IoLocationOutline className="icon-profile" />
                     <span>Local</span>
@@ -304,7 +293,7 @@ export default function CreatePerfil() {
                 </label>
 
                 {showRegionInput && (
-                  <label className="forms-label" style={{ position: 'relative' }}>
+                  <label className="forms-label">
                     <div className="create-profile-icon">
                       <MdAddLocationAlt className="icon-profile" />
                       <span>Região</span>
@@ -364,7 +353,6 @@ export default function CreatePerfil() {
                     accept="image/*"
                     {...register("arquivo1", { required: true })}
                     onChange={handleFileChange1}
-                    style={{ display: 'none' }}
                   />
                   <button
                     type="button"
