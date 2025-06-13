@@ -3,7 +3,7 @@ import React from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
-import Logo from "/workspaces/TCC/my-project-TCC/src/img/divulgai-semfundo.png";
+/*import Logo from "/workspaces/TCC/my-project-TCC/src/img/divulgai-semfundo.png";*/
 
 export default function Header() {
   return (
@@ -22,7 +22,7 @@ export default function Header() {
         </div>
       </nav>
       <div className='container-logo'>
-    <img className='logo' src={Logo} alt="Logo DivulgAí" title="LogoDivulgAí"></img>
+    {/*<img className='logo' src={Logo} alt="Logo DivulgAí" title="LogoDivulgAí"></img> */}
     </div>
       <SearchBar />
     </header>

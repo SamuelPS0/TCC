@@ -1,12 +1,16 @@
 import React from 'react';
 import './ForgotPassword.css';
+import Login from '../../Components/Login/Login'
 import { Link } from 'react-router-dom';
 
 export default function ForgotPassword(){
     return(
-        <div>
-            <h1>ForgotPassword</h1>
-            <Link to={"/home"}>Home</Link>
+        <div className="background-forgotpassword">
+        <div className='container-forgotpassword'>
+            <div className='login-wrapper-forgotpassword'>
+            <Login />
+            </div>
         </div>
+    </div>    
     )
 }

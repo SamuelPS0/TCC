@@ -83,8 +83,8 @@
 }
 
 .container-forms {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -101,7 +101,8 @@
   flex-direction: column;
 }
 .reminder-text{
-  color: rgb(110, 110, 110);
+  font-size: 1rem;
+  color: rgb(187, 187, 187);
 }
 .forms-label {
   
@@ -150,6 +151,49 @@
   color: #999;
   font-style: italic;
 }
+/* Aplica o mesmo estilo do input */
+.forms-select {
+  width: 820px;
+  height: 75px;
+  border-radius: 5px;
+  border: 1px solid #B2ADAD;
+  background: #FFF;
+  color: #7C7C7C;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 0 1rem;
+  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
+  appearance: none; /* remove o estilo padrão do select */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 24px;
+  cursor: pointer;
+}
+
+.forms-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.forms-select option {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  color: #333;
+}
+.upload-icon-edit-2{
+  width: 5rem;
+  height: auto;
+}
+
+
+.forms-select option:disabled {
+  color: #AFAFAF;
+}
+
 
 /* Upload grande (retangular) */
 .custom-upload-button-banner {
@@ -211,11 +255,14 @@
   flex-shrink: 0;
   aspect-ratio: 1 / 1;
 }
+.dropdown-edit{
+  color: red;
+}
 
 .forms-button {
-  width: 200px;
+  width: 100%;
   height: 60px;
-  background-color: green;
+  background-color: #FF432A;
   color: white;
   border: none;
   border-radius: 5px;
@@ -223,11 +270,13 @@
   font-weight: 600;
   cursor: pointer;
   margin-top: 2rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .forms-button:hover {
-  background-color: #FF432A;
+  background-color: #ffffff;
+  color: #FF432A;
+  border: 1px solid #FF432A;
 }
 
 .forms-span {
@@ -279,7 +328,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 /* Botão Adicionar Região (dentro do input) */

@@ -5,10 +5,10 @@ import PerfilList from '../../Components/PerfilList/PerfilList';
 
 const Home = () => {
   return (
-    <>
-      <Header />
-      <PerfilList />
-    </>
+<div className='background-color-homepage'>
+  <Header />
+  <PerfilList />
+</div>
   );
 }
 

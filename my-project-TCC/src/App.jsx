@@ -3,7 +3,7 @@ import AccInfo from './pages/AccInfo/AccInfo';
 import CreatePerfil from './pages/CreatePerfil/CreatePerfil';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
+import Login from './pages/LoginForm/LoginForm'
 import Perfil from './pages/Profile/Profile';
 import Register from './pages/Register/Register';
 import SobreNos from './pages/SobreNos/SobreNos';

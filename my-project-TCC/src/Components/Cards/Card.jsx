@@ -11,7 +11,7 @@ const Card = ({ data }) => {
       <Link to={"/profile"}>
       <h2 className='card-p'>{data.name}</h2>
       <p id='icon' className='card-p'><MdStars className='edit-icon'/>{data.categoria}</p>
-      <p className='card-p'>Descrição {data.description}</p>
+      <p className='card-p'>{data.description}</p>
       </Link>
     </div>
   );

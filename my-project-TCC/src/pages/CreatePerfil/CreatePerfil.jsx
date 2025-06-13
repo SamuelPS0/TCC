@@ -209,8 +209,11 @@ export default function CreatePerfil() {
                   <div className="create-profile-icon">
                     <FaLink  className="icon-profile" />
                     <span>Contato</span>
-                    <span className='reminder-text'>Certifique-se de que seu link está correto!</span>
-                  </div>
+                    </div>
+                    <span className='reminder-text'>
+                      Certifique-se de que seu link está correto! - As pessoas acessarão suas redes através dele.
+                      </span>
+                  
 
                   {contacts.map((contact, index) => (
                     <div key={index} className="input-with-button">
@@ -223,7 +226,7 @@ export default function CreatePerfil() {
                         autoComplete="off"
                       />
 
-                      {index === contacts.length - 1 && (
+                      {index === contacts.length - 1 &&  (
                         <button
                           type="button"
                           className="button-add-region"
@@ -235,7 +238,7 @@ export default function CreatePerfil() {
                         </button>
                       )}
 
-                      {contacts.length > 1 && (
+                      {contacts.length > 1 && index !== 0 && (
                         <button
                           type="button"
                           className="button-remove-region"
@@ -323,7 +326,7 @@ export default function CreatePerfil() {
                     <span>Categoria</span>
                   </div>
                   <select className="forms-input" defaultValue="" {...register("categoria", { required: true })}>
-                    <option value="" disabled>Selecione a categoria</option>
+                    <option value="" disabled >Selecione a categoria</option>
                     <option value="Comidas Prontas">Comidas Prontas</option>
                     <option value="Lanches e Fast Food">Lanches e Fast Food</option>
                     <option value="Doces e Sobremesas">Doces e Sobremesas</option>
@@ -362,7 +365,7 @@ export default function CreatePerfil() {
                     {imagePreview1 ? (
                       <img src={imagePreview1} alt="Preview 1" className="image-preview-inside-button" />
                     ) : (
-                      "Escolher arquivo"
+                      <FiUpload className='upload-icon-edit-2'/>
                     )}
                   </button>
                   {errors.arquivo1 && <span className="forms-span">Campo obrigatório</span>}
