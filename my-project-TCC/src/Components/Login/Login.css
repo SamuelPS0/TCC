@@ -2,17 +2,6 @@
     margin: 0;
     padding: 0;
 }
-.background-login{
-    background-color: white;
-}
-.login-container {
-  height: 100vh; 
-  width: 100vw; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
 
 .login-wrapper {
   max-width: 400px;

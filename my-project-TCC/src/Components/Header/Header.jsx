@@ -15,7 +15,7 @@ export default function Header() {
         <Link to={"/categorias"}>Categorias</Link>
         <div className="frame-2">
           
-        <Link to={"/empresas"}>Empresas perto de mim</Link>          
+        <Link to={"/Register"}>Cadastrar</Link>          
           <span className="container-login">
             <Link to={"/Login"}>Login</Link>
           </span>

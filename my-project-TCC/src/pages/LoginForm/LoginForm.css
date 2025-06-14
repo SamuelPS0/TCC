@@ -1,0 +1,12 @@
+.loginform-adjustment{
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.forgot-quick-edit{
+    display: flex;
+    padding-right: 15rem;
+}
