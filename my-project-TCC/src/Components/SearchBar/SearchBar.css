@@ -5,7 +5,6 @@
   flex-direction: column;
   align-items: center;
   position: fixed;
-  top: 60px; /* mantém logo abaixo do header */
   left: 0;
   width: 100%;
   padding-top: 25px;

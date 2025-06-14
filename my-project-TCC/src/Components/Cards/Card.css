@@ -21,7 +21,6 @@
 }
 
 .card p {
-  margin: 0.5rem 0;
   color: #939393;
 }
 #icon{
@@ -31,11 +30,21 @@
   gap: 10px;
   margin-bottom: 25px;
 }
+#card-p-2{
+  margin-left: -5px;
+}
 .edit-icon {
   color: #338787;
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+}
+.edit-icon-2 {
+  color: #338787  ;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-left: 20px;
 }
 .card-p {
   display: flex;

@@ -7,7 +7,7 @@ import { FiUpload } from "react-icons/fi";
 import { FaRegImage } from "react-icons/fa6";
 import { FaRegEnvelope, FaCoffee } from "react-icons/fa";
 import { FaLink } from "react-icons/fa6";
-import { IoPersonCircleOutline, IoCallOutline, IoLocationOutline } from "react-icons/io5";
+import { IoPersonCircleOutline, IoLocationOutline } from "react-icons/io5";
 import { MdAddLocationAlt } from "react-icons/md";
 
 export default function CreatePerfil() {
@@ -46,9 +46,7 @@ export default function CreatePerfil() {
     if (file) {
       setSelectedFileName1(file.name);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview1(reader.result);
-      };
+      reader.onloadend = () => setImagePreview1(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -58,9 +56,7 @@ export default function CreatePerfil() {
     if (file) {
       setSelectedFileName2(file.name);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview2(reader.result);
-      };
+      reader.onloadend = () => setImagePreview2(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -85,16 +81,12 @@ export default function CreatePerfil() {
           }));
 
         setSuggestions(filtered);
-      } catch (err) {
-        console.error("Erro ao buscar cidades:", err);
+      } catch {
         setSuggestions([]);
       }
     };
 
-    const delayDebounce = setTimeout(() => {
-      fetchCities();
-    }, 300);
-
+    const delayDebounce = setTimeout(fetchCities, 300);
     return () => clearTimeout(delayDebounce);
   }, [localInput]);
 
@@ -105,10 +97,7 @@ export default function CreatePerfil() {
     setSuggestions([]);
   };
 
-  const handleAddRegion = () => {
-    setShowRegionInput(true);
-  };
-
+  const handleAddRegion = () => setShowRegionInput(true);
   const handleRemoveRegion = () => {
     setShowRegionInput(false);
     unregister("region");
@@ -121,18 +110,13 @@ export default function CreatePerfil() {
     setValue(`contact[${index}]`, value);
   };
 
-  const handleAddContact = () => {
-    setContacts([...contacts, ""]);
-  };
+  const handleAddContact = () => setContacts([...contacts, ""]);
 
   const handleRemoveContact = (index) => {
     const newContacts = contacts.filter((_, i) => i !== index);
     setContacts(newContacts);
     unregister(`contact[${index}]`);
-
-    newContacts.forEach((c, i) => {
-      setValue(`contact[${i}]`, c);
-    });
+    newContacts.forEach((c, i) => setValue(`contact[${i}]`, c));
   };
 
   return (
@@ -187,6 +171,7 @@ export default function CreatePerfil() {
                     className="forms-input"
                     placeholder="Digite o nome do seu serviço"
                     {...register("name", { required: true })}
+                    maxLength={24}
                   />
                   {errors.name && <span className="forms-span">Campo obrigatório</span>}
                 </label>
@@ -200,20 +185,19 @@ export default function CreatePerfil() {
                     className="forms-input"
                     placeholder="Digite aqui a descrição"
                     {...register("description", { required: true })}
-                    maxLength={50}
+                    maxLength={104}
                   />
                   {errors.description && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
                 <label className="forms-label">
                   <div className="create-profile-icon">
-                    <FaLink  className="icon-profile" />
+                    <FaLink className="icon-profile" />
                     <span>Contato</span>
-                    </div>
-                    <span className='reminder-text'>
-                      Certifique-se de que seu link está correto! - As pessoas acessarão suas redes através dele.
-                      </span>
-                  
+                  </div>
+                  <span className='reminder-text'>
+                    Certifique-se de que seu link está correto! - As pessoas acessarão suas redes através dele.
+                  </span>
 
                   {contacts.map((contact, index) => (
                     <div key={index} className="input-with-button">
@@ -226,13 +210,12 @@ export default function CreatePerfil() {
                         autoComplete="off"
                       />
 
-                      {index === contacts.length - 1 &&  (
+                      {index === contacts.length - 1 && (
                         <button
                           type="button"
                           className="button-add-region"
                           onClick={handleAddContact}
                           aria-label="Adicionar contato"
-
                         >
                           +
                         </button>
@@ -243,7 +226,8 @@ export default function CreatePerfil() {
                           type="button"
                           className="button-remove-region"
                           onClick={() => handleRemoveContact(index)}
-                          aria-label="Remover contato">
+                          aria-label="Remover contato"
+                        >
                           ×
                         </button>
                       )}
@@ -326,21 +310,21 @@ export default function CreatePerfil() {
                     <span>Categoria</span>
                   </div>
                   <select className="forms-input" defaultValue="" {...register("categoria", { required: true })}>
-                    <option value="" disabled >Selecione a categoria</option>
+                    <option value="" disabled>Selecione a categoria</option>
                     <option value="Comidas Prontas">Comidas Prontas</option>
                     <option value="Lanches e Fast Food">Lanches e Fast Food</option>
                     <option value="Doces e Sobremesas">Doces e Sobremesas</option>
                     <option value="Padaria e Confeitaria">Padaria e Confeitaria</option>
                     <option value="Sucos naturais">Sucos naturais</option>
-                    <option value="Drinks artesanais">Drinks artesanais </option>
+                    <option value="Drinks artesanais">Drinks artesanais</option>
                     <option value="Cafés e chás especiais">Cafés e chás especiais</option>
                     <option value="Saudável e Fitness">Saudável e Fitness</option>
-                    <option value="Comida italiana">Comida italiana</option>  
+                    <option value="Comida italiana">Comida italiana</option>
                     <option value="Comida japonesa">Comida japonesa</option>
                     <option value="Comida nordestina">Comida nordestina</option>
                     <option value="Comida árabe">Comida árabe</option>
                     <option value="Comida mexicana">Comida mexicana</option>
-                    <option value="Buffet para festas">Buffet para festas</option>                                                                                 
+                    <option value="Buffet para festas">Buffet para festas</option>
                   </select>
                   {errors.categoria && <span className="forms-span">Campo obrigatório</span>}
                 </label>
@@ -365,7 +349,7 @@ export default function CreatePerfil() {
                     {imagePreview1 ? (
                       <img src={imagePreview1} alt="Preview 1" className="image-preview-inside-button" />
                     ) : (
-                      <FiUpload className='upload-icon-edit-2'/>
+                      <FiUpload className='upload-icon-edit-2' />
                     )}
                   </button>
                   {errors.arquivo1 && <span className="forms-span">Campo obrigatório</span>}

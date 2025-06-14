@@ -5,6 +5,7 @@ import LogoRegister from '../../img/DivulgAÍ-removebg-preview.png';
 import { useForm } from 'react-hook-form';
 import { FaRegEnvelope } from "react-icons/fa";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa6";
+import { IoPersonOutline } from "react-icons/io5";  
 
 export default function Register() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export default function Register() {
           <label className="register-label">
             <div>Nome</div>
             <div className="register-input-icon-wrapper">
-              <FaRegEnvelope className="register-input-icon" />
+              <IoPersonOutline  className="register-input-icon" />
               <input
                 type="text"
                 placeholder="Digite seu apelido"

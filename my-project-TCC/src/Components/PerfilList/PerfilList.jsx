@@ -1,35 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../../Components/Cards/Card';
-import './PerfilList.css'
-import { useNavigate } from 'react-router-dom';
+import './PerfilList.css';
 
-export default function PerfilList() {
+export default function PerfilList({ filters }) {
   const [perfis, setPerfis] = useState([]);
-  const navigate = useNavigate();
+  const [filteredPerfis, setFilteredPerfis] = useState([]);
 
   useEffect(() => {
     const dados = JSON.parse(localStorage.getItem("perfis")) || [];
     setPerfis(dados);
   }, []);
 
-  if (perfis.length === 0) {
-    return <p className='no-profile'>Nenhum perfil cadastrado.</p>;
-  }
+  useEffect(() => {
+    if (!filters) {
+      setFilteredPerfis(perfis);
+      return;
+    }
+
+    const { category, location } = filters;
+
+    const filtered = perfis.filter(perfil => {
+      const categoryMatch = category ? perfil.categoria === category : true;
+      const locationMatch = location
+        ? perfil.local.toLowerCase().includes(location.toLowerCase())
+        : true;
+
+      return categoryMatch && locationMatch;
+    });
+
+    setFilteredPerfis(filtered);
+  }, [filters, perfis]);
+
+  const handleClearAll = () => {
+    localStorage.removeItem("perfis");
+    setPerfis([]);
+    setFilteredPerfis([]);
+  };
 
   return (
-    <div className="cards-container">
-      {perfis.map(perfil => (
-        <Card
-          key={perfil.id}
-          data={perfil}
-          onEdit={() => navigate('/createperfil', { state: { perfilParaEditar: perfil } })}
-          onRemove={() => {
-            const novosPerfis = perfis.filter(p => p.id !== perfil.id);
-            setPerfis(novosPerfis);
-            localStorage.setItem('perfis', JSON.stringify(novosPerfis));
-          }}
-        />
-      ))}
+    <div>
+      <button className="clear-all-button" onClick={handleClearAll}>
+        Apagar Todos
+      </button>
+
+      {filteredPerfis.length === 0 ? (
+        <p className='no-profile'>Nenhum perfil encontrado.</p>
+      ) : (
+        <div className="cards-container">
+          {filteredPerfis.map(perfil => (
+            <Card
+              key={perfil.id || perfil.name}
+              data={perfil}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
