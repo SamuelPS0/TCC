@@ -29,7 +29,6 @@ export default function Login({ buttonText = "Entrar" }) {
 
         <label className="login-form">
           <div className="email-margin">Email</div>
-
           <div className="input-icon-wrapper">
             <FaRegEnvelope className="input-icon" />
             <input
@@ -38,7 +37,6 @@ export default function Login({ buttonText = "Entrar" }) {
               {...register('email', { required: 'Email é obrigatório' })}
             />
           </div>
-
           {errors.email && <span className="error">{errors.email.message}</span>}
         </label>
 
