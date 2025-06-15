@@ -15,6 +15,9 @@
   align-items: center;
   padding-bottom: 3rem;
 }
+.span-color{
+  color: black;
+}
 
 .create-perfil-header {
   display: flex;
@@ -187,6 +190,7 @@
 .upload-icon-edit-2{
   width: 5rem;
   height: auto;
+  color: #000;
 }
 
 

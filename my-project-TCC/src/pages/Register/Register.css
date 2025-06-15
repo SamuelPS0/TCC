@@ -12,6 +12,7 @@
   width: 100vw;   
   height: 100vh;  
   margin: 0 auto;
+  background-color: #ffffff;
 }
 .register-link{
     color: #FF432A;
@@ -128,6 +129,7 @@
   background: transparent;
   outline: none;
   transition: border-color 0.3s;
+  color: #000;
 }
 
 .register-input-icon-wrapper input:focus {

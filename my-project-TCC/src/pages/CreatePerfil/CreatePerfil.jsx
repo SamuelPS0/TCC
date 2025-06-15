@@ -165,7 +165,7 @@ export default function CreatePerfil() {
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <IoPersonCircleOutline className="icon-profile" />
-                    <span>Nome</span>
+                    <span  className='span-color'>Nome</span>
                   </div>
                   <input
                     className="forms-input"
@@ -179,7 +179,7 @@ export default function CreatePerfil() {
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <FaRegEnvelope className="icon-profile" />
-                    <span>Descrição</span>
+                    <span className='span-color'>Descrição</span>
                   </div>
                   <input
                     className="forms-input"
@@ -193,7 +193,7 @@ export default function CreatePerfil() {
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <FaLink className="icon-profile" />
-                    <span>Contato</span>
+                    <span className='span-color'>Contato</span>
                   </div>
                   <span className='reminder-text'>
                     Certifique-se de que seu link está correto! - As pessoas acessarão suas redes através dele.
@@ -240,7 +240,7 @@ export default function CreatePerfil() {
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <IoLocationOutline className="icon-profile" />
-                    <span>Local</span>
+                    <span className='span-color'>Local</span>
                   </div>
                   <div className="input-with-button">
                     <input
@@ -283,7 +283,7 @@ export default function CreatePerfil() {
                   <label className="forms-label">
                     <div className="create-profile-icon">
                       <MdAddLocationAlt className="icon-profile" />
-                      <span>Região</span>
+                      <span className='span-color'>Região</span>
                     </div>
                     <div className="input-with-button">
                       <input
@@ -307,7 +307,7 @@ export default function CreatePerfil() {
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <FaCoffee className="icon-profile" />
-                    <span>Categoria</span>
+                    <span className='span-color'>Categoria</span>
                   </div>
                   <select className="forms-input" defaultValue="" {...register("categoria", { required: true })}>
                     <option value="" disabled>Selecione a categoria</option>
@@ -332,7 +332,7 @@ export default function CreatePerfil() {
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <FaRegImage className="icon-profile" />
-                    <span>Arquivo</span>
+                    <span className='span-color'>Arquivo</span>
                   </div>
                   <input
                     id="forms-archive-1"

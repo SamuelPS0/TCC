@@ -38,6 +38,7 @@
   background: transparent;
   outline: none;
   transition: border-color 0.3s;
+  color: black;
 }
 .forgot-quick-edit{
     margin-top: 5px;

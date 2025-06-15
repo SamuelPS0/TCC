@@ -5,6 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: white;
 }
 .forgot-quick-edit{
     display: flex;
