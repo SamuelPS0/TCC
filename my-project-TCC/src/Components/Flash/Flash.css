@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata&family=Edu+NSW+ACT+Hand+Pre:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.flash-header{
+    display: flex;
+    flex-direction: row;
+}
+.flash-wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    height: 193px;
+    padding: 15px 61px 137px 30px;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 17px;
+    border-radius: 20px;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.flash-wrapper:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 3px solid #F05221;
+  transition: border 0.050s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.flash-h1{
+    display: flex;
+    color: #000;
+    font-family: Alata;
+    font-size: 25px;
+    font-style: normal;
+    line-height: normal;
+}
+.flash-p{
+    width: 332px;
+    height: 109px;
+    flex-shrink: 0;
+    color: #4B4141;
+    text-align: center;
+    font-family: Alata;
+    padding: 20px 0 0 30px;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.flash-content{
+    display: flex;
+    flex-direction: row;
+}

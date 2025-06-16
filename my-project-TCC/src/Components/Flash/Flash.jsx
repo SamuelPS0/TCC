@@ -1,9 +1,17 @@
 import React from 'react';
 import './Flash.css';
 
-const Flash = () => {
+const Flash = (flashprops) => {
   return (
-    <div><h1>Flash</h1></div>
+      <div className="flash-wrapper">
+
+      <div className="flash-header">
+      <h1 className='flash-h1'>{flashprops.title}</h1>
+      </div>
+      <div className="flash-content">
+      <p className='flash-p'>{flashprops.paragraph}</p>
+      </div>
+    </div>
   )
 }
 

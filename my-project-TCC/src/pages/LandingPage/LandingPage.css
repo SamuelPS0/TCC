@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata&family=Anuphan:wght@100..700&family=Edu+NSW+ACT+Hand+Pre:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.lp-allpage-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    min-width: 100vw;
+}
+.lp-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 19rem;
+    border-radius: 0 0 100% 100%;
+    background-color: #F05221;;
+}
+
+.lp-h1{
+    color: #000;
+    text-align: center;
+    font-family: Anuphan;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top: 80px;
+}
+.lp-p{
+    width: 837px;
+    height: 270px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    flex-shrink: 0;
+    color: #000;
+    text-align: justify;
+    font-family: Alata;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.lp-flashcards-container{
+    display: flex;
+    gap: 50px;
+}
+.lp-flashcards-second-container{
+    display: flex;
+    gap: 50px;
+    margin-bottom: 9rem;
+}
+.lp-flashcards-second-container-firstcard{
+    display: flex;
+    flex-direction: column;
+    align-items: justify;
+    justify-content: center;
+}
+
+.lp-flashcards-second-container-secondcard{
+    display: flex;
+    flex-direction: column;
+    align-items: justify;
+    justify-content: center;
+}
+
+.lp-flashcards-second-container-firstcard button{
+    margin-top: 16px;
+    color: white;
+    background-color: #F05221;
+    border-radius: 20px;
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 120% */
+    letter-spacing: 0.5px;
+}
+.lp-flashcards-second-container-firstcard button:hover{
+    margin-top: 16px;
+    color: #F05221;
+    background-color: white;
+    border: 2px solid #F05221;
+    transition: 0.3s ease-in-out;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: border 0.050s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lp-flashcards-second-container-secondcard button{
+    margin-top: 16px;
+    color: white;
+    background-color: #F05221;
+    border-radius: 20px;
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 120% */
+    letter-spacing: 0.5px;
+}
+.lp-flashcards-second-container-secondcard button:hover{
+    margin-top: 16px;
+    color: #F05221;
+    background-color: white;
+    border: 2px solid #F05221;
+    transition: 0.3s ease-in-out;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: border 0.050s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.lp-flashcontainer-h1{
+    color: #000;
+    text-align: center;
+    font-family: Anuphan;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    margin-top: 90px;
+    margin-bottom: 80px;
+}

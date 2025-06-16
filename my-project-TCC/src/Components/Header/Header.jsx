@@ -7,7 +7,7 @@ export default function Header({ onSearch, initialFilters }) {
   return (
     <header className="header">
       <nav className="nav">
-        <Link to={"/sobre-nos"}>Sobre Nós</Link>
+        <Link to={"/"}>Sobre Nós</Link>
         <Link to={"/acc-info"}>Info-conta</Link>
         <Link to={"/create-perfil"}>Perfil (provisório)</Link>
         <Link to={"/categorias"}>Categorias</Link>
