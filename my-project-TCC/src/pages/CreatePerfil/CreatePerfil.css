@@ -1,388 +1,388 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-.all-page {
-  width: 100vw;
-  min-height: 100vh;
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 3rem;
-}
-.span-color{
-  color: black;
-}
+  .all-page {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 3rem;
+  }
+  .span-color{
+    color: black;
+  }
 
-.create-perfil-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  margin-top: 6rem;
-}
+  .create-perfil-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    margin-top: 6rem;
+  }
 
-.create-perfil-header h1 {
-  color: #000;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 50px;
-  font-weight: 600;
-  line-height: normal;
-}
+  .create-perfil-header h1 {
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 50px;
+    font-weight: 600;
+    line-height: normal;
+  }
 
-.create-perfil-header h2 {
-  color: #AFAFAF;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 50px;
-  font-weight: 300;
-  line-height: normal;
-  margin-bottom: 2rem;
-}
+  .create-perfil-header h2 {
+    color: #AFAFAF;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 50px;
+    font-weight: 300;
+    line-height: normal;
+    margin-bottom: 2rem;
+  }
 
-.header-layout {
+  .header-layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 6rem;
+      padding: 0 1rem;
+      gap: 8.3rem;
+  }
+
+  .header-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px; 
+    height: 200px;
+  }
+
+  .header-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header-text h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 50px;
+    color: #000;
+    margin: 0;
+  }
+
+  .header-text h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 50px;
+    color: #AFAFAF;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .container-forms {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: 9rem;
+  }
+
+  .container-sidemenu {
+    align-self: flex-start;
+  }
+
+  .forms {
+    display: flex;
+    flex-direction: column;
+  }
+  .reminder-text{
+    font-size: 1rem;
+    color: rgb(187, 187, 187);
+  }
+  .forms-label {
+    
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    position: relative;
+  }
+
+  .create-profile-icon {
+    display: flex;
+    align-items: center;
+    
+  }
+
+  .icon-profile {
+    width: 24px;
+    height: 24px;
+    margin-right: 1rem;
+    color: #000;
+  }
+
+  .forms-input {
+    width: 820px;
+    height: 75px;
+    border-radius: 5px;
+    border: 1px solid #B2ADAD;
+    background: #FFF;
+    color: #7C7C7C;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 0 1rem;
+    font-size: 18px;
+    padding-right: 50px; /* espaço para botões dentro do input */
+  }
+
+  .forms-input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  }
+
+  .forms-input::placeholder {
+    color: #999;
+    font-style: italic;
+  }
+  /* Aplica o mesmo estilo do input */
+  .forms-select {
+    width: 820px;
+    height: 75px;
+    border-radius: 5px;
+    border: 1px solid #B2ADAD;
+    background: #FFF;
+    color: #7C7C7C;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 0 1rem;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    appearance: none; /* remove o estilo padrão do select */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 24px;
+    cursor: pointer;
+  }
+
+  .forms-select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  }
+
+  .forms-select option {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    color: #333;
+  }
+  .upload-icon-edit-2{
+    width: 5rem;
+    height: auto;
+    color: #000;
+  }
+
+
+  .forms-select option:disabled {
+    color: #AFAFAF;
+  }
+
+
+  /* Upload grande (retangular) */
+  .custom-upload-button-banner {
+    width: 824px;
+    height: 262px;
+    border-radius: 5px;
+    border: 1px solid #B2ADAD;
+    background: #FFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 6rem;
-    padding: 0 1rem;
-    gap: 8.3rem;
-}
-
-.header-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 200px; 
-  height: 200px;
-}
-
-.header-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.header-text h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 50px;
-  color: #000;
-  margin: 0;
-}
-
-.header-text h2 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  font-size: 50px;
-  color: #AFAFAF;
-  margin-top: 1rem;
-  margin-bottom: 0;
-}
-
-.container-forms {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 2rem;
-  margin-top: 9rem;
-}
-
-.container-sidemenu {
-  align-self: flex-start;
-}
-
-.forms {
-  display: flex;
-  flex-direction: column;
-}
-.reminder-text{
-  font-size: 1rem;
-  color: rgb(187, 187, 187);
-}
-.forms-label {
-  
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 2rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-  position: relative;
-}
-
-.create-profile-icon {
-  display: flex;
-  align-items: center;
-  
-}
-
-.icon-profile {
-  width: 24px;
-  height: 24px;
-  margin-right: 1rem;
-  color: #000;
-}
-
-.forms-input {
-  width: 820px;
-  height: 75px;
-  border-radius: 5px;
-  border: 1px solid #B2ADAD;
-  background: #FFF;
-  color: #7C7C7C;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 0 1rem;
-  font-size: 18px;
-  padding-right: 50px; /* espaço para botões dentro do input */
-}
-
-.forms-input:focus {
-  outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-}
-
-.forms-input::placeholder {
-  color: #999;
-  font-style: italic;
-}
-/* Aplica o mesmo estilo do input */
-.forms-select {
-  width: 820px;
-  height: 75px;
-  border-radius: 5px;
-  border: 1px solid #B2ADAD;
-  background: #FFF;
-  color: #7C7C7C;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 0 1rem;
-  font-size: 18px;
-  font-family: 'Montserrat', sans-serif;
-  appearance: none; /* remove o estilo padrão do select */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 24px;
-  cursor: pointer;
-}
-
-.forms-select:focus {
-  outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-}
-
-.forms-select option {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 18px;
-  color: #333;
-}
-.upload-icon-edit-2{
-  width: 5rem;
-  height: auto;
-  color: #000;
-}
-
-
-.forms-select option:disabled {
-  color: #AFAFAF;
-}
-
-
-/* Upload grande (retangular) */
-.custom-upload-button-banner {
-  width: 824px;
-  height: 262px;
-  border-radius: 5px;
-  border: 1px solid #B2ADAD;
-  background: #FFF;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 0;
-  user-select: none;
-}
-
-.custom-upload-button-banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 5px;
-  display: block;
-}
-
-/* Upload de perfil (circular) */
-.custom-upload-button-profile {
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  background-color: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-  padding: 0;
-  border: 2px dashed #999;
-  transition: border-color 0.3s ease;
-}
-
-.custom-upload-button-profile:hover {
-  border-color: #FF432A;
-}
-
-.image-preview-inside-button {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%; 
-  display: block;
-}
-
-.upload-icon-edit {
-  width: 72px;
-  height: 72px;
-  flex-shrink: 0;
-  aspect-ratio: 1 / 1;
-}
-.dropdown-edit{
-  color: red;
-}
-
-.forms-button {
-  width: 100%;
-  height: 60px;
-  background-color: #FF432A;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 2rem;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.forms-button:hover {
-  background-color: #ffffff;
-  color: #FF432A;
-  border: 1px solid #FF432A;
-}
-
-.forms-span {
-  color: red;
-  margin-top: 0.5rem;
-}
-#forms-archive-2 {
-  display: none;
-}
-#forms-archive-1 {
-  display: none;
-}
-
-.selected-file-name {
-  margin-top: 0.5rem;
-  font-size: 14px;
-  color: #333;
-}
-
-/* Estilos para o autocomplete (lista de sugestões) */
-.autocomplete-suggestions {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  width: 820px;
-  background: white;
-  border: 1px solid #B2ADAD;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  max-height: 160px;
-  overflow-y: auto;
-  z-index: 10;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 18px;
-}
-
-.autocomplete-item {
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.autocomplete-item:hover {
-  background-color: #f0f0f0;
-}
-
-/* Container para input com botão dentro */
-.input-with-button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-top: 5px;
-}
-
-/* Botão Adicionar Região (dentro do input) */
-.button-add-region {
-  position: absolute;
-  right: 4px;
-  top: 49%;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 75px;
-  background-color: #d3d3d3; /* cinza claro */
-  border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  color: #ffffff;
-    box-shadow: 0 4px 4px rgba(100, 100, 100, 0.25);
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 20px;
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s ease;
-}
-
-
-.button-add-region:hover {
-  background-color: #b0b0b0;
-}
-
-/* Botão Remover Região (dentro do input) */
-.button-remove-region {
-    padding: 0;
-    left: 6px;
-    position: absolute;
-    top: 18%;
-    transform: translateY(-50%);
-    background-color: transparent;
-    border: none;
-    color: #727272;
-    font-size: 30px;
     cursor: pointer;
-}
+    padding: 0;
+    user-select: none;
+  }
 
-.button-remove-region:hover {
-  color: #ff0400;
-  transition:0.8s ease;
-}
+  .custom-upload-button-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    display: block;
+  }
+
+  /* Upload de perfil (circular) */
+  .custom-upload-button-profile {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    border: 2px dashed #999;
+    transition: border-color 0.3s ease;
+  }
+
+  .custom-upload-button-profile:hover {
+    border-color: #FF432A;
+  }
+
+  .image-preview-inside-button {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; 
+    display: block;
+  }
+
+  .upload-icon-edit {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
+  }
+  .dropdown-edit{
+    color: red;
+  }
+
+  .forms-button {
+    width: 100%;
+    height: 60px;
+    background-color: #FF432A;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .forms-button:hover {
+    background-color: #ffffff;
+    color: #FF432A;
+    border: 1px solid #FF432A;
+  }
+
+  .forms-span {
+    color: red;
+    margin-top: 0.5rem;
+  }
+  #forms-archive-2 {
+    display: none;
+  }
+  #forms-archive-1 {
+    display: none;
+  }
+
+  .selected-file-name {
+    margin-top: 0.5rem;
+    font-size: 14px;
+    color: #333;
+  }
+
+  /* Estilos para o autocomplete (lista de sugestões) */
+  .autocomplete-suggestions {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 820px;
+    background: white;
+    border: 1px solid #B2ADAD;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-height: 160px;
+    overflow-y: auto;
+    z-index: 10;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+  }
+
+  .autocomplete-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .autocomplete-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  /* Container para input com botão dentro */
+  .input-with-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  }
+
+  /* Botão Adicionar Região (dentro do input) */
+  .button-add-region {
+    position: absolute;
+    right: 4px;
+    top: 49%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 75px;
+    background-color: #d3d3d3; /* cinza claro */
+    border: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    color: #ffffff;
+      box-shadow: 0 4px 4px rgba(100, 100, 100, 0.25);
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 20px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+  }
+
+
+  .button-add-region:hover {
+    background-color: #b0b0b0;
+  }
+
+  /* Botão Remover Região (dentro do input) */
+  .button-remove-region {
+      padding: 0;
+      left: 6px;
+      position: absolute;
+      top: 18%;
+      transform: translateY(-50%);
+      background-color: transparent;
+      border: none;
+      color: #727272;
+      font-size: 30px;
+      cursor: pointer;
+  }
+
+  .button-remove-region:hover {
+    color: #ff0400;
+    transition:0.8s ease;
+  }
 

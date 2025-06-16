@@ -1,98 +1,185 @@
-import React, { useState } from 'react';
-import './AccInfo.css';
-import SideMenu from '../../Components/SideMenu/SideMenu';
-import Input from '../../Components/Input/Input';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // import para navegar
+import "./AccInfo.css";
+import SideMenu from "../../Components/SideMenu/SideMenu";
+import {
+  FaEye,
+  FaEyeSlash,
+  FaUser,
+  FaPhone,
+  FaEnvelope,
+  FaLock,
+  FaBirthdayCake,
+  FaVenusMars,
+  FaMapMarkedAlt,
+} from "react-icons/fa";
 
 export default function AccInfo() {
   const [formData, setFormData] = useState({
-    nome: '',
-    telefoneDDD: '',
-    telefone: '',
-    email: '',
-    senha: '',
-    datanascimento: '',
-    genero: '',
-    estado: ''
+    nome: "",
+    telefoneDDD: "",
+    telefone: "",
+    email: "",
+    senha: "",
+    datanascimento: "",
+    genero: "",
+    estado: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const togglePasswordVisibility = () => setShowPassword((v) => !v);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aqui você pode enviar os dados para um backend, por exemplo
-    console.log('Dados do formulário:', formData);
-    alert('Formulário enviado! Veja os dados no console.');
+    // Aqui você pode salvar os dados onde quiser, por exemplo API ou localStorage
+    console.log("Dados enviados:", formData);
+
+    // Navega para a rota '/'
+    navigate("/");
   };
 
   return (
-    <div className='accinfo-background'>
-      <div className='accinfo-container'>
+    <div className="accinfo-background-accinfo">
+      <div className="header-wrapper-accinfo">
+        <h1 className="form-title-accinfo">INFORMAÇÕES DA CONTA</h1>
+        <p className="form-subtitle-accinfo">
+          Apenas você tem acesso a estas informações pessoais.
+        </p>
+      </div>
+
+      <div className="accinfo-wrapper-accinfo">
         <SideMenu />
+        <form
+          className="input-accinfo-wrapper-accinfo"
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          {/* ... seus inputs continuam iguais ... */}
 
-        <form className="input-accinfo-wrapper" onSubmit={handleSubmit}>
-          <Input
-            name="Nome"
-            inputName="nome"
-            placeholder="Digite seu nome"
-            value={formData.nome}
-            onChange={handleChange}
-          />
-          <div className="close-input-wrapper">
-            <Input
-              name="DDD"
-              inputName="telefoneDDD"
-              placeholder="Ex: 11"
-              value={formData.telefoneDDD}
+          <div className="input-block-accinfo">
+            <label htmlFor="nome" className="input-label-accinfo">
+              <FaUser className="input-icon-accinfo" /> <span>Nome</span>
+            </label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              placeholder="Digite seu nome"
+              value={formData.nome}
               onChange={handleChange}
-            />
-
-            <Input
-              name="Telefone"
-              inputName="telefone"
-              placeholder="Digite seu telefone"
-              value={formData.telefone}
-              onChange={handleChange}
+              className="input-text-accinfo"
             />
           </div>
 
-          <Input
-            name="Email"
-            inputName="email"
-            placeholder="Digite seu email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+          <div className="input-block-accinfo telefone-ddd-group-accinfo">
+            <div className="input-group-accinfo ddd-group-accinfo">
+              <label htmlFor="telefoneDDD" className="input-label-accinfo">
+                <FaPhone className="input-icon-accinfo" /> <span>Telefone</span>
+              </label>
+              <input
+                type="text"
+                id="telefoneDDD"
+                name="telefoneDDD"
+                placeholder="DDD"
+                maxLength={3}
+                value={formData.telefoneDDD}
+                onChange={handleChange}
+                className="input-text-accinfo input-ddd-accinfo"
+              />
+            </div>
 
-          <Input
-            name="Senha"
-            inputName="senha"
-            placeholder="Crie uma senha"
-            type="password"
-            value={formData.senha}
-            onChange={handleChange}
-          />
-          <div className="close-input-wrapper">
-            <Input
-              name="Data de Nascimento"
-              inputName="datanascimento"
-              type="date"
-              placeholder="dd/mm/aaaa"
-              value={formData.datanascimento}
+            <div className="input-group-accinfo telefone-group-accinfo">
+              <label htmlFor="telefone" className="input-label-accinfo">
+                <span className="invisible-accinfo">.</span>
+              </label>
+              <input
+                type="text"
+                id="telefone"
+                name="telefone"
+                placeholder="Digite seu telefone"
+                value={formData.telefone}
+                onChange={handleChange}
+                className="input-text-accinfo input-telefone-accinfo"
+              />
+            </div>
+          </div>
+
+          <div className="input-block-accinfo">
+            <label htmlFor="email" className="input-label-accinfo">
+              <FaEnvelope className="input-icon-accinfo" /> <span>Email</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Digite seu email"
+              value={formData.email}
               onChange={handleChange}
+              className="input-text-accinfo"
             />
+          </div>
 
-            <div className='select-wrapper'>
-              <p>Gênero</p>
+          <div className="input-block-accinfo password-block-accinfo">
+            <label htmlFor="senha" className="input-label-accinfo">
+              <FaLock className="input-icon-accinfo" /> <span>Senha</span>
+            </label>
+            <div className="password-wrapper-accinfo">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="senha"
+                name="senha"
+                placeholder="Crie uma senha"
+                value={formData.senha}
+                onChange={handleChange}
+                className="input-text-accinfo input-password-accinfo"
+              />
+              <span
+                className="password-toggle-icon-accinfo"
+                onClick={togglePasswordVisibility}
+                role="button"
+                tabIndex={0}
+                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") togglePasswordVisibility();
+                }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+          </div>
+
+          <div className="input-block-accinfo data-genero-group-accinfo">
+            <div className="input-group-accinfo data-group-accinfo">
+              <label htmlFor="datanascimento" className="input-label-accinfo">
+                <FaBirthdayCake className="input-icon-accinfo" /> <span>Data de Nascimento</span>
+              </label>
+              <input
+                type="date"
+                id="datanascimento"
+                name="datanascimento"
+                value={formData.datanascimento}
+                onChange={handleChange}
+                className="input-text-accinfo"
+              />
+            </div>
+
+            <div className="input-group-accinfo genero-group-accinfo">
+              <label htmlFor="genero" className="input-label-accinfo">
+                <FaVenusMars className="input-icon-accinfo" /> <span>Gênero</span>
+              </label>
               <select
+                id="genero"
                 name="genero"
                 value={formData.genero}
                 onChange={handleChange}
+                className="input-select-accinfo"
               >
                 <option value="">Selecione</option>
                 <option value="Masculino">Masculino</option>
@@ -103,12 +190,16 @@ export default function AccInfo() {
             </div>
           </div>
 
-          <div className='select-wrapper'>
-            <p>Estado</p>
+          <div className="input-block-accinfo">
+            <label htmlFor="estado" className="input-label-accinfo">
+              <FaMapMarkedAlt className="input-icon-accinfo" /> <span>Estado</span>
+            </label>
             <select
+              id="estado"
               name="estado"
               value={formData.estado}
               onChange={handleChange}
+              className="input-select-accinfo"
             >
               <option value="">Selecione</option>
               <option value="AC">Acre</option>
@@ -141,7 +232,12 @@ export default function AccInfo() {
             </select>
           </div>
 
-          <button type="submit" className="forms-button">Enviar</button>
+          {/* Botão submit */}
+          <div className="input-block-accinfo">
+            <button type="submit" className="forms-button-accinfo">
+              Enviar
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -1,0 +1,34 @@
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  flex: 1;
+}
+
+.input-container p {
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.input-container input {
+  height: 48px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0 12px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.input-container input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.input-container input::placeholder {
+  color: #aaa;
+}
