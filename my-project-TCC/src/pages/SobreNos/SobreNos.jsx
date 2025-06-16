@@ -6,7 +6,7 @@ export default function SobreNos(){
     return(
         <div className='center'>
             <h1>SobreNos</h1>
-            <Link to={"/"}>Home</Link>
+            <Link to={"/home-list"}>Lista</Link>
         </div>
     )
 }

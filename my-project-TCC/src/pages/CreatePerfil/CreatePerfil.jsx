@@ -38,7 +38,7 @@ export default function CreatePerfil() {
     const savedProfiles = JSON.parse(localStorage.getItem('perfis')) || [];
     savedProfiles.push(userData);
     localStorage.setItem('perfis', JSON.stringify(savedProfiles));
-    navigate('/');
+    navigate('/home-list');
   }
 
   const handleFileChange1 = (e) => {

@@ -3,16 +3,18 @@ import { Routes, Route } from 'react-router-dom';
 import AccInfo from '../pages/AccInfo/AccInfo';
 import CreatePerfil from '../pages/CreatePerfil/CreatePerfil';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
-import Home from '../pages/Home/Home';
+import HomeList from '../pages/HomeList/HomeList';
 import Login from '../pages/LoginForm/LoginForm';
 import Perfil from '../pages/Profile/Profile';
+import LandingPage from '../pages/LandingPage/LandingPage';
 import Register from '../pages/Register/Register';
 import SobreNos from '../pages/SobreNos/SobreNos';
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element ={<LandingPage />} />
+      <Route path="/home-list" element={<HomeList />} />
       <Route path="/sobre-nos" element={<SobreNos />} />
       <Route path="/login" element={<Login />} />
       <Route path="/acc-info" element={<AccInfo />} />

@@ -3,7 +3,7 @@ import './Header.css';
 import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 
-export default function Header({ onSearch }) {
+export default function Header({ onSearch, initialFilters }) {
   return (
     <header className="header">
       <nav className="nav">
@@ -19,9 +19,9 @@ export default function Header({ onSearch }) {
         </div>
       </nav>
       <div className='container-logo'>
-        {/* <img className='logo' src={Logo} alt="Logo DivulgAí" title="LogoDivulgAí" /> */}
+        {/* logo aqui */}
       </div>
-      <SearchBar onSearch={onSearch} />
+      <SearchBar onSearch={onSearch} initialCategory={initialFilters?.category} initialLocation={initialFilters?.location} />
     </header>
   );
 }

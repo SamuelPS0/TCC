@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: fixed;
+  position: relative; /* para o dropdown posicionar corretamente */
   left: 0;
   width: 100%;
   padding-top: 25px;
@@ -57,6 +57,7 @@
   font-size: 15px;
   color: #000000;
   padding: 5px 0;
+  cursor: pointer;
 }
 
 .input-field::placeholder {
@@ -72,20 +73,39 @@
   padding: 10px 25px;
   cursor: pointer;
   font-size: 1rem;
-  margin-left: auto; /* empurra o botão para a direita */
+  margin-left: auto;
+}
+
+/* Dropdown das sugestões */
+.suggestions-list {
+  position: absolute;
+  top: 70px; /* abaixo da barra */
+  left: calc(50% + 40px);
+  transform: translateX(-50%);
+  width: 280px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  z-index: 999;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
 }
 
 @media (min-width: 1000px) and (max-width: 1180px){
   .input-group.horizontal {
-        display: flex;
-        align-items: center;
-        background: #ffffff;
-        border-radius: 40px;
-        width: 600px;
-        height: 56px;
-        padding: 5px 15px;
-        gap: 20px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-}
+    width: 600px;
+  }
 }

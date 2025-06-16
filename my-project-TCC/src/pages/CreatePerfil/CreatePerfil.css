@@ -152,7 +152,6 @@
 
   .forms-input::placeholder {
     color: #999;
-    font-style: italic;
   }
   /* Aplica o mesmo estilo do input */
   .forms-select {

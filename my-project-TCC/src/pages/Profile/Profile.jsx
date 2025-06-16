@@ -8,7 +8,7 @@ export default function Perfil(){
     return(
         <div className='container-profile'>
             <h1>Perfil</h1>
-            <Link to={"/"}>Home</Link>
+            <Link to={"/home-list"}>Pesquisa</Link>
             <Header />
             <div className='container-wrapper'>
                 <div className='container-main'>

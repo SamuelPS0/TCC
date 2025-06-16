@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './SearchBar.css'
+import { useNavigate } from 'react-router-dom';
+import './SearchBar.css';
 
 const categories = [
   "Comidas Prontas",
@@ -18,10 +19,24 @@ const categories = [
   "Buffet para festas",
 ];
 
-export default function SearchBar({ onSearch }) {
-  const [category, setCategory] = useState('');
-  const [location, setLocation] = useState('');
+export default function SearchBar({
+  onSearch,
+  shouldNavigate = false,
+  initialCategory = '',
+  initialLocation = '',
+}) {
+  const [category, setCategory] = useState(initialCategory);
+  const [location, setLocation] = useState(initialLocation);
   const [suggestions, setSuggestions] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setCategory(initialCategory);
+  }, [initialCategory]);
+
+  useEffect(() => {
+    setLocation(initialLocation);
+  }, [initialLocation]);
 
   useEffect(() => {
     if (location.length < 3) {
@@ -57,74 +72,76 @@ export default function SearchBar({ onSearch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (onSearch) {
       onSearch({ category, location });
+    }
+
+    if (shouldNavigate) {
+      const params = new URLSearchParams();
+      if (category) params.append('category', category);
+      if (location) params.append('location', location);
+
+      navigate('/home-list?' + params.toString());
     }
   };
 
   return (
-    <section className="container-searchbar" aria-label="Barra de busca" style={{ position: 'relative' }}>
+    <section className="container-searchbar" aria-label="Barra de busca">
       <div className="search-wrapper">
-        <form className="input-group horizontal" role="search" onSubmit={handleSubmit} autoComplete="off">
+        <form
+          className="input-group horizontal"
+          role="search"
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
           <div className="input-wrapper">
-            <label htmlFor="search-keyword" className="input-label">O que?</label>
+            <label htmlFor="search-keyword" className="input-label">
+              O que?
+            </label>
             <select
               id="search-keyword"
               className="input-field"
               value={category}
-              onChange={e => setCategory(e.target.value)}
+              onChange={(e) => setCategory(e.target.value)}
             >
               <option value="">Todas as categorias</option>
               {categories.map((cat, i) => (
-                <option key={i} value={cat}>{cat}</option>
+                <option key={i} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
 
           <div className="input-wrapper input-wrapper-right">
-            <label htmlFor="search-location" className="input-label">Onde?</label>
+            <label htmlFor="search-location" className="input-label">
+              Onde?
+            </label>
             <input
               id="search-location"
               type="text"
               placeholder="Digite a cidade"
               className="input-field"
               value={location}
-              onChange={e => setLocation(e.target.value)}
+              onChange={(e) => setLocation(e.target.value)}
             />
           </div>
 
-          <button type="submit" className="search-button">Buscar</button>
+          <button type="submit" className="search-button">
+            Buscar
+          </button>
         </form>
       </div>
 
-      {/* Dropdown fora da search-wrapper */}
       {suggestions.length > 0 && (
-        <ul className="suggestions-list" style={{
-          position: 'absolute',
-          top: '70px', // ajustar pra aparecer abaixo da barra
-          left: 'calc(50% + 40px)', // considerando margem do input-location
-          transform: 'translateX(-50%)',
-          width: '280px',
-          backgroundColor: 'white',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-          borderRadius: '8px',
-          padding: '0',
-          margin: '0',
-          listStyle: 'none',
-          zIndex: 999,
-          maxHeight: '200px',
-          overflowY: 'auto',
-        }}>
+        <ul className="suggestions-list">
           {suggestions.map((cidade, i) => (
             <li
               key={i}
-              onMouseDown={e => e.preventDefault()}
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => handleSelectSuggestion(cidade)}
-              style={{
-                padding: '10px 15px',
-                cursor: 'pointer',
-                borderBottom: '1px solid #eee'
-              }}
+              className="suggestion-item"
             >
               {cidade.display}
             </li>
