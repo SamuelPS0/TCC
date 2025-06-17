@@ -98,9 +98,15 @@ my-project-TCC/
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package-lock.json
 ├── package.json
 ├── README.md
-└── vite.config.js
+├── vite.config.js
+└── package-lock.json
+
 ```
 
 ---
