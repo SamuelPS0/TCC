@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // import para navegar
-import "./AccInfo.css";
+import { useNavigate } from "react-router-dom"; // Import para navegar entre rotas
+import "./AccInfo.css"; 
 import SideMenu from "../../Components/SideMenu/SideMenu";
 import {
   FaEye,
@@ -12,9 +12,10 @@ import {
   FaBirthdayCake,
   FaVenusMars,
   FaMapMarkedAlt,
-} from "react-icons/fa";
+} from "react-icons/fa"; // Ícones usados nos inputs do formulário
 
 export default function AccInfo() {
+  // Estado que guarda os valores do formulário
   const [formData, setFormData] = useState({
     nome: "",
     telefoneDDD: "",
@@ -26,27 +27,32 @@ export default function AccInfo() {
     estado: "",
   });
 
+  // Estado para controlar se a senha está visível ou não
   const [showPassword, setShowPassword] = useState(false);
+
+  // Hook para navegação entre rotas
   const navigate = useNavigate();
 
+  // Função para atualizar o estado conforme o usuário digita nos inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Alterna a visibilidade da senha (mostrar/ocultar)
   const togglePasswordVisibility = () => setShowPassword((v) => !v);
 
+  // Função chamada quando o formulário é enviado
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aqui você pode salvar os dados onde quiser, por exemplo API ou localStorage
-    console.log("Dados enviados:", formData);
+    e.preventDefault(); // Previne o comportamento padrão de recarregar a página
+    console.log("Dados enviados:", formData); // Aqui pode salvar os dados (localStorage)
 
-    // Navega para a rota '/'
-    navigate("/");
+    navigate("/"); // Navega para a rota inicial após enviar
   };
 
   return (
     <div className="accinfo-background-accinfo">
+      {/* Cabeçalho do formulário */}
       <div className="header-wrapper-accinfo">
         <h1 className="form-title-accinfo">INFORMAÇÕES DA CONTA</h1>
         <p className="form-subtitle-accinfo">
@@ -55,14 +61,15 @@ export default function AccInfo() {
       </div>
 
       <div className="accinfo-wrapper-accinfo">
-        <SideMenu />
+        <SideMenu /> {/* Menu lateral fixo */}
+
+        {/* Formulário com inputs controlados */}
         <form
           className="input-accinfo-wrapper-accinfo"
           onSubmit={handleSubmit}
           noValidate
         >
-          {/* ... seus inputs continuam iguais ... */}
-
+          {/* Input para nome */}
           <div className="input-block-accinfo">
             <label htmlFor="nome" className="input-label-accinfo">
               <FaUser className="input-icon-accinfo" /> <span>Nome</span>
@@ -78,6 +85,7 @@ export default function AccInfo() {
             />
           </div>
 
+          {/* Grupo de inputs para telefone (DDD e número) */}
           <div className="input-block-accinfo telefone-ddd-group-accinfo">
             <div className="input-group-accinfo ddd-group-accinfo">
               <label htmlFor="telefoneDDD" className="input-label-accinfo">
@@ -96,6 +104,7 @@ export default function AccInfo() {
             </div>
 
             <div className="input-group-accinfo telefone-group-accinfo">
+              {/* Label invisível só para manter alinhamento */}
               <label htmlFor="telefone" className="input-label-accinfo">
                 <span className="invisible-accinfo">.</span>
               </label>
@@ -111,6 +120,7 @@ export default function AccInfo() {
             </div>
           </div>
 
+          {/* Input para email */}
           <div className="input-block-accinfo">
             <label htmlFor="email" className="input-label-accinfo">
               <FaEnvelope className="input-icon-accinfo" /> <span>Email</span>
@@ -126,6 +136,7 @@ export default function AccInfo() {
             />
           </div>
 
+          {/* Input para senha com botão para mostrar/ocultar */}
           <div className="input-block-accinfo password-block-accinfo">
             <label htmlFor="senha" className="input-label-accinfo">
               <FaLock className="input-icon-accinfo" /> <span>Senha</span>
@@ -140,6 +151,7 @@ export default function AccInfo() {
                 onChange={handleChange}
                 className="input-text-accinfo input-password-accinfo"
               />
+              {/* Ícone para alternar visibilidade da senha */}
               <span
                 className="password-toggle-icon-accinfo"
                 onClick={togglePasswordVisibility}
@@ -155,6 +167,7 @@ export default function AccInfo() {
             </div>
           </div>
 
+          {/* Inputs para data de nascimento e gênero lado a lado */}
           <div className="input-block-accinfo data-genero-group-accinfo">
             <div className="input-group-accinfo data-group-accinfo">
               <label htmlFor="datanascimento" className="input-label-accinfo">
@@ -190,6 +203,7 @@ export default function AccInfo() {
             </div>
           </div>
 
+          {/* Select para estado */}
           <div className="input-block-accinfo">
             <label htmlFor="estado" className="input-label-accinfo">
               <FaMapMarkedAlt className="input-icon-accinfo" /> <span>Estado</span>
@@ -232,7 +246,7 @@ export default function AccInfo() {
             </select>
           </div>
 
-          {/* Botão submit */}
+          {/* Botão para enviar o formulário */}
           <div className="input-block-accinfo">
             <button type="submit" className="forms-button-accinfo">
               Enviar

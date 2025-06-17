@@ -11,21 +11,27 @@ import { IoPersonCircleOutline, IoLocationOutline } from "react-icons/io5";
 import { MdAddLocationAlt } from "react-icons/md";
 
 export default function CreatePerfil() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook para navegação programática
 
+  // Estado para armazenar nome e preview da primeira imagem (arquivo1)
   const [selectedFileName1, setSelectedFileName1] = useState("");
   const [imagePreview1, setImagePreview1] = useState(null);
 
+  // Estado para armazenar nome e preview da segunda imagem (arquivo2)
   const [selectedFileName2, setSelectedFileName2] = useState("");
   const [imagePreview2, setImagePreview2] = useState(null);
 
+  // Estado para o input de local e sugestões para autocomplete de cidades
   const [localInput, setLocalInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
+  // Controla se o campo de região está visível ou não
   const [showRegionInput, setShowRegionInput] = useState(false);
 
+  // Estado para armazenar contatos, começa com um contato vazio
   const [contacts, setContacts] = useState([""]);
 
+  // Inicialização do react-hook-form para controle do formulário
   const {
     register,
     handleSubmit,
@@ -34,23 +40,46 @@ export default function CreatePerfil() {
     formState: { errors },
   } = useForm();
 
-  function onSubmit(userData) {
-    const savedProfiles = JSON.parse(localStorage.getItem('perfis')) || [];
-    savedProfiles.push(userData);
-    localStorage.setItem('perfis', JSON.stringify(savedProfiles));
-    navigate('/home-list');
+        // Função chamada ao enviar o formulário, salva os dados no localStorage e redireciona
+      function onSubmit(userData) {
+        // Pega os perfis já salvos no localStorage, ou cria um array vazio se não existir
+        const savedProfiles = JSON.parse(localStorage.getItem('perfis')) || [];
+        
+        // Adiciona os dados do novo perfil enviado ao array de perfis salvos
+        savedProfiles.push(userData);
+        
+        // Salva novamente o array atualizado no localStorage, convertendo para string JSON
+        localStorage.setItem('perfis', JSON.stringify(savedProfiles));
+        
+        // Redireciona o usuário para a página '/home-list' após salvar o perfil
+        navigate('/home-list');
+      }
+
+
+  // Função para lidar com mudança no arquivo 1, atualizando nome e preview da imagem
+const handleFileChange1 = (e) => {
+  // Pega o primeiro arquivo selecionado pelo input de arquivo
+  const file = e.target.files[0];
+  
+  // Se um arquivo foi selecionado
+  if (file) {
+    // Atualiza o estado com o nome do arquivo selecionado
+    setSelectedFileName1(file.name);
+    
+    // Cria um novo objeto FileReader para ler o arquivo
+    const reader = new FileReader();
+    
+    // Quando a leitura do arquivo for finalizada, atualiza o estado com a prévia da imagem
+    reader.onloadend = () => setImagePreview1(reader.result);
+    
+    // Lê o arquivo como uma URL de dados base64 para exibir a prévia da imagem
+    reader.readAsDataURL(file);
   }
+};
 
-  const handleFileChange1 = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFileName1(file.name);
-      const reader = new FileReader();
-      reader.onloadend = () => setImagePreview1(reader.result);
-      reader.readAsDataURL(file);
-    }
-  };
 
+  // Função para lidar com mudança no arquivo 2, atualizando nome e preview da imagem
+  // Mesmo esquema explicado no caso anterior
   const handleFileChange2 = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -61,35 +90,51 @@ export default function CreatePerfil() {
     }
   };
 
-  useEffect(() => {
-    const fetchCities = async () => {
-      if (localInput.length < 3) {
-        setSuggestions([]);
-        return;
-      }
+// useEffect para buscar cidades via API com base no input de local
+useEffect(() => {
+  // Função assíncrona (funciona ao mesmo tempo que o site roda) para buscar as cidades da API do IBGE
+  const fetchCities = async () => {
+    // Se o input de local tiver menos de 3 caracteres, limpa sugestões e não faz a busca
+    if (localInput.length < 3) {
+      setSuggestions([]); // Limpa sugestões se input tiver menos de 3 caracteres
+      return;
+    }
+
 
       try {
+        // Busca lista completa de municípios (API)
         const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios`);
         const data = await res.json();
-        const filtered = data
-          .filter(city => city.nome.toLowerCase().includes(localInput.toLowerCase()))
-          .slice(0, 5)
-          .map(city => ({
-            display: `${city.nome} - ${city.microrregiao.mesorregiao.UF.sigla}`,
-            nome: city.nome,
-            uf: city.microrregiao.mesorregiao.UF.sigla
-          }));
+
+      // Filtra os municípios que contêm o texto digitado no input localInput, ignorando maiúsculas/minúsculas
+      const filtered = data
+        .filter(city => city.nome.toLowerCase().includes(localInput.toLowerCase()))
+        // Limita o resultado às 5 primeiras sugestões para não sobrecarregar a lista
+        .slice(0, 5)
+        // Mapeia cada cidade filtrada para um objeto com as propriedades necessárias para exibir na lista de sugestões:
+      // 'display' que junta o nome da cidade e a sigla do estado,
+      // 'nome' que é o nome da cidade,
+      // 'uf' que é a sigla do estado.
+        .map(city => ({
+          display: `${city.nome} - ${city.microrregiao.mesorregiao.UF.sigla}`,
+          nome: city.nome,
+          uf: city.microrregiao.mesorregiao.UF.sigla
+        }));
+
 
         setSuggestions(filtered);
       } catch {
-        setSuggestions([]);
+        setSuggestions([]); // Em caso de erro, limpa sugestões
       }
     };
 
+    // Faz debounce para não buscar a cada tecla digitada instantaneamente
+    // Evitar lentidão no sistema
     const delayDebounce = setTimeout(fetchCities, 300);
-    return () => clearTimeout(delayDebounce);
+    return () => clearTimeout(delayDebounce); // Limpa timeout ao desmontar ou mudar input
   }, [localInput]);
 
+  // Quando o usuário seleciona uma sugestão, atualiza o input e limpa as sugestões
   const handleSelectSuggestion = (cidadeObj) => {
     const fullString = `${cidadeObj.nome} - ${cidadeObj.uf}`;
     setValue("local", fullString);
@@ -97,32 +142,43 @@ export default function CreatePerfil() {
     setSuggestions([]);
   };
 
-  const handleAddRegion = () => setShowRegionInput(true);
-  const handleRemoveRegion = () => {
-    setShowRegionInput(false);
-    unregister("region");
-  };
+    // Mostra o campo para adicionar a região no formulário, ativando sua exibição
+    const handleAddRegion = () => setShowRegionInput(true);
 
-  const handleContactChange = (index, value) => {
-    const newContacts = [...contacts];
-    newContacts[index] = value;
-    setContacts(newContacts);
-    setValue(`contact[${index}]`, value);
-  };
+    // Esconde o campo de região e remove o registro dele do formulário para evitar erros na validação
+    const handleRemoveRegion = () => {
+      setShowRegionInput(false);
+      unregister("region"); // Remove o campo 'region' do controle do react-hook-form
+    };
 
-  const handleAddContact = () => setContacts([...contacts, ""]);
 
-  const handleRemoveContact = (index) => {
-    const newContacts = contacts.filter((_, i) => i !== index);
-    setContacts(newContacts);
-    unregister(`contact[${index}]`);
-    newContacts.forEach((c, i) => setValue(`contact[${i}]`, c));
-  };
+      // Atualiza o valor do contato no índice especificado e sincroniza essa alteração com o react-hook-form
+      const handleContactChange = (index, value) => {
+        const newContacts = [...contacts];  // Cria uma cópia do array de contatos
+        newContacts[index] = value;          // Atualiza o contato no índice dado
+        setContacts(newContacts);            // Atualiza o estado com a nova lista de contatos
+        setValue(`contact[${index}]`, value); // Atualiza o valor no react-hook-form para manter sincronização
+      };
+
+      // Adiciona um novo campo vazio para contato no array de contatos
+      const handleAddContact = () => setContacts([...contacts, ""]);
+
+      // Remove o contato no índice especificado, atualiza o estado e sincroniza com react-hook-form
+      const handleRemoveContact = (index) => {
+        const newContacts = contacts.filter((_, i) => i !== index); // Remove o contato do índice
+        setContacts(newContacts);                                   // Atualiza o estado com a lista filtrada
+        unregister(`contact[${index}]`);                            // Remove o campo do react-hook-form
+        // Reatribui os valores restantes para corrigir índices após remoção
+        newContacts.forEach((c, i) => setValue(`contact[${i}]`, c));
+      };
+
 
   return (
     <div className="all-page">
       <div className="create-perfil-header">
         <div className="header-layout">
+
+          {/* Upload da imagem arquivo2 */}
           <div className="header-upload">
             <label className="forms-label">
               <input
@@ -137,16 +193,19 @@ export default function CreatePerfil() {
                 className="custom-upload-button-profile"
                 onClick={() => document.getElementById('forms-archive-2').click()}
               >
+                {/* Mostra preview da imagem ou ícone de upload */}
                 {imagePreview2 ? (
                   <img src={imagePreview2} alt="Preview 2" className="image-preview-inside-button" />
                 ) : (
                   <FiUpload className="upload-icon-edit" />
                 )}
               </button>
+              {/* Mensagem de erro se não preencher */}
               {errors.arquivo2 && <span className="forms-span">Campo obrigatório</span>}
             </label>
           </div>
 
+          {/* Título e subtítulo do formulário */}
           <div className="header-text">
             <h1>CRIAÇÃO DE PERFIL</h1>
             <h2>Essas informações ficarão visíveis <br />para todos os usuários</h2>
@@ -159,13 +218,15 @@ export default function CreatePerfil() {
               <SideMenu />
             </div>
 
+            {/* Formulário de criação de perfil */}
             <div className="forms">
               <form onSubmit={handleSubmit(onSubmit)}>
 
+                {/* Campo Nome */}
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <IoPersonCircleOutline className="icon-profile" />
-                    <span  className='span-color'>Nome</span>
+                    <span className='span-color'>Nome</span>
                   </div>
                   <input
                     className="forms-input"
@@ -176,6 +237,7 @@ export default function CreatePerfil() {
                   {errors.name && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
+                {/* Campo Descrição */}
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <FaRegEnvelope className="icon-profile" />
@@ -190,6 +252,7 @@ export default function CreatePerfil() {
                   {errors.description && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
+                {/* Campo Contatos Dinâmicos */}
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <FaLink className="icon-profile" />
@@ -199,6 +262,7 @@ export default function CreatePerfil() {
                     Certifique-se de que seu link está correto! - As pessoas acessarão suas redes através dele.
                   </span>
 
+                  {/* Mapeia os contatos para inputs editáveis */}
                   {contacts.map((contact, index) => (
                     <div key={index} className="input-with-button">
                       <input
@@ -210,6 +274,7 @@ export default function CreatePerfil() {
                         autoComplete="off"
                       />
 
+                      {/* Botão para adicionar contato apenas no último input */}
                       {index === contacts.length - 1 && (
                         <button
                           type="button"
@@ -221,6 +286,7 @@ export default function CreatePerfil() {
                         </button>
                       )}
 
+                      {/* Botão para remover contato se houver mais de um e não for o primeiro */}
                       {contacts.length > 1 && index !== 0 && (
                         <button
                           type="button"
@@ -237,6 +303,7 @@ export default function CreatePerfil() {
                   {errors.contact && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
+                {/* Campo Local com autocomplete */}
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <IoLocationOutline className="icon-profile" />
@@ -251,6 +318,7 @@ export default function CreatePerfil() {
                       onChange={(e) => setLocalInput(e.target.value)}
                       autoComplete="off"
                     />
+                    {/* Botão para adicionar região, aparece se não estiver visível */}
                     {!showRegionInput && (
                       <button
                         type="button"
@@ -264,6 +332,7 @@ export default function CreatePerfil() {
                   </div>
                   {errors.local && <span className="forms-span">Campo obrigatório</span>}
 
+                  {/* Lista de sugestões para autocomplete de local */}
                   {suggestions.length > 0 && (
                     <ul className="autocomplete-suggestions">
                       {suggestions.map((cidadeObj, index) => (
@@ -279,6 +348,7 @@ export default function CreatePerfil() {
                   )}
                 </label>
 
+                {/* Campo Região que aparece condicionalmente */}
                 {showRegionInput && (
                   <label className="forms-label">
                     <div className="create-profile-icon">
@@ -304,6 +374,7 @@ export default function CreatePerfil() {
                   </label>
                 )}
 
+                {/* Campo Categoria com select */}
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <FaCoffee className="icon-profile" />
@@ -329,6 +400,7 @@ export default function CreatePerfil() {
                   {errors.categoria && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
+                {/* Upload da imagem arquivo1 */}
                 <label className="forms-label">
                   <div className="create-profile-icon">
                     <FaRegImage className="icon-profile" />
@@ -346,6 +418,7 @@ export default function CreatePerfil() {
                     className="custom-upload-button-banner"
                     onClick={() => document.getElementById('forms-archive-1').click()}
                   >
+                    {/* Mostra preview da imagem ou ícone de upload */}
                     {imagePreview1 ? (
                       <img src={imagePreview1} alt="Preview 1" className="image-preview-inside-button" />
                     ) : (
@@ -355,6 +428,7 @@ export default function CreatePerfil() {
                   {errors.arquivo1 && <span className="forms-span">Campo obrigatório</span>}
                 </label>
 
+                {/* Botão para enviar o formulário */}
                 <button type="submit" className="forms-button">Enviar</button>
               </form>
             </div>
