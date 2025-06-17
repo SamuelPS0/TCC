@@ -22,7 +22,7 @@ O DivulgAí é uma plataforma digital que conecta consumidores a prestadores de 
 
 * React.js (hooks, react-router-dom)
 * React Hook Form (validação e manipulação de formulários)
-* CSS Modules / CSS puro para estilização
+* CSS puro para estilização
 * Vite (configuração e bundling)
 * React Icons (ícones no front-end)
 
