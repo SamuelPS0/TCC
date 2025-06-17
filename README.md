@@ -144,9 +144,9 @@ no seu navegador para ver a aplicação.
 
 ## Como criar um CARD?
 
-   Clicar em **"Buscar"** ou em **"Procure já!"** no card no fim da página para ser direcionado para a **Página de lista de serviços**
-   Clicar em *Perfil (provisório)*
-   Inserir os dados nos inputs e clicar em **Enviar**
-   Você será direcionado novamente para a **Página de lista de serviços**
-   O card deverá aparecer assim que você for direcionado.
+   * Clicar em **"Buscar"** ou em **"Procure já!"** no card no fim da página para ser direcionado para a **Página de lista de serviços**
+   * Clicar em *Perfil (provisório)*
+   * Inserir os dados nos inputs e clicar em **Enviar**
+   * Você será direcionado novamente para a **Página de lista de serviços**
+   * O card deverá aparecer assim que você for direcionado.
 
