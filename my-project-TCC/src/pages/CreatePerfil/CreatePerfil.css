@@ -330,7 +330,7 @@
   .input-with-button {
     position: relative;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     margin-top: 5px;
   }
 
@@ -366,12 +366,45 @@
     background-color: #b0b0b0;
   }
 
+    .button-add-region-2 {
+    position: absolute;
+    right: 4px;
+    top: 69%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 75px;
+    background-color: #d3d3d3; /* cinza claro */
+    border: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    color: #ffffff;
+      box-shadow: 0 4px 4px rgba(100, 100, 100, 0.25);
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 20px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+  }
+
+
+  .button-add-region-2:hover {
+    background-color: #b0b0b0;
+  }
+
+
+
   /* Botão Remover Região (dentro do input) */
   .button-remove-region {
       padding: 0;
       left: 6px;
       position: absolute;
-      top: 18%;
+      top: 50%;
       transform: translateY(-50%);
       background-color: transparent;
       border: none;
@@ -384,4 +417,39 @@
     color: #ff0400;
     transition:0.8s ease;
   }
+
+  .dropdown-menu {
+  position: absolute; /* para sobrepor */
+  left: 52rem;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px 0;
+  margin-left: 8px; /* distancia do botão + */
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  min-width: 100px;
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+.contact-label-edit{
+  gap: 20px;
+  color: blue;
+}
+.label-text{
+  margin-top: 1rem;
+}
+
+.dropdown-menu button:hover {
+  background-color: #eee;
+}
 

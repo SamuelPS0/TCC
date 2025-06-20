@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import SideMenu from '../../Components/SideMenu/SideMenu';
 import { FiUpload } from "react-icons/fi";
 import { FaRegImage } from "react-icons/fa6";
-import { FaRegEnvelope, FaCoffee } from "react-icons/fa";
+import { FaRegEnvelope, FaCoffee, FaInstagram, FaFacebook, FaWhatsapp   } from "react-icons/fa";
 import { FaLink } from "react-icons/fa6";
 import { IoPersonCircleOutline, IoLocationOutline } from "react-icons/io5";
 import { MdAddLocationAlt } from "react-icons/md";
@@ -29,7 +29,11 @@ export default function CreatePerfil() {
   const [showRegionInput, setShowRegionInput] = useState(false);
 
   // Estado para armazenar contatos, começa com um contato vazio
-  const [contacts, setContacts] = useState([""]);
+const [contacts, setContacts] = useState([
+  { value: "", placeholder: "Selecione os contatos", label: "" }
+]);
+
+
 
   // Inicialização do react-hook-form para controle do formulário
   const {
@@ -153,12 +157,29 @@ useEffect(() => {
 
 
       // Atualiza o valor do contato no índice especificado e sincroniza essa alteração com o react-hook-form
-      const handleContactChange = (index, value) => {
-        const newContacts = [...contacts];  // Cria uma cópia do array de contatos
-        newContacts[index] = value;          // Atualiza o contato no índice dado
-        setContacts(newContacts);            // Atualiza o estado com a nova lista de contatos
-        setValue(`contact[${index}]`, value); // Atualiza o valor no react-hook-form para manter sincronização
-      };
+          const handleContactChange = (index, value) => {
+            const newContacts = [...contacts];
+            newContacts[index] = {
+              ...newContacts[index],
+              value: value
+            };
+            setContacts(newContacts);
+            setValue(`contact[${index}].value`, value);
+          };
+
+          const handleAddContactWithValue = (label) => {
+            const newContact = {
+              value: "",
+              label: label,
+              placeholder: `Ex: https://www.${label}.com`
+            };
+            setContacts([...contacts, newContact]);
+            setValue(`contact[${contacts.length}].value`, ""); // Inicializa vazio no react-hook-form
+            setShowContactDropdown(false);
+          };
+
+      // Adicionar o estado de dropdown para seleção
+      const [showContactDropdown, setShowContactDropdown] = useState(false);
 
       // Adiciona um novo campo vazio para contato no array de contatos
       const handleAddContact = () => setContacts([...contacts, ""]);
@@ -263,27 +284,46 @@ useEffect(() => {
                   </span>
 
                   {/* Mapeia os contatos para inputs editáveis */}
-                  {contacts.map((contact, index) => (
-                    <div key={index} className="input-with-button">
-                      <input
-                        className="forms-input"
-                        placeholder="Ex: https://www.seuperfil.com"
-                        value={contact}
-                        {...register(`contact[${index}]`, { required: true })}
-                        onChange={(e) => handleContactChange(index, e.target.value)}
-                        autoComplete="off"
-                      />
+                    {contacts.map((contact, index) => (
+                      <div key={index} className="input-with-button">
+                        {contact.label && <label className="label-text"> 
+                          Selecionado: <span className='contact-label-edit'>{contact.label}</span></label>}
+                        <input
+                          id = "form-contact-input"
+                          className="forms-input"
+                          type='none'
+                          placeholder={contact.placeholder} readOnly
+                          tabIndex={-1}
+                          
+                          value={contact.value}
+                          {...register(`contact[${index}].value`, { required: true })}
+                          onChange={(e) => handleContactChange(index, e.target.value)}
+                          autoComplete="off"
+                          
+                        />
+                        
+
 
                       {/* Botão para adicionar contato apenas no último input */}
-                      {index === contacts.length - 1 && (
-                        <button
-                          type="button"
-                          className="button-add-region"
-                          onClick={handleAddContact}
-                          aria-label="Adicionar contato"
-                        >
-                          +
-                        </button>
+                      {index === contacts.length -1 && (
+                        <>
+                            <button
+                              type="button"
+                              className="button-add-region-2"
+                              onClick={() => setShowContactDropdown(!showContactDropdown)}
+                              aria-label="Abrir opções de contato"
+                            >
+                              +
+                            </button>
+
+                            {showContactDropdown && (
+                              <div className="dropdown-menu">                              
+                                <button type="button" onClick={() => handleAddContactWithValue("Facebook")}><FaFacebook className='social-edit' /></button>
+                                <button type="button" onClick={() => handleAddContactWithValue("Instagram")}><FaInstagram className='social-edit' /></button>
+                                <button type="button" onClick={() => handleAddContactWithValue("WhatsApp")}><FaWhatsapp className='social-edit' /></button>
+                              </div>
+                            )}
+                          </>
                       )}
 
                       {/* Botão para remover contato se houver mais de um e não for o primeiro */}
