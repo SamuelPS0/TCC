@@ -366,36 +366,7 @@
     background-color: #b0b0b0;
   }
 
-    .button-add-region-2 {
-    position: absolute;
-    right: 4px;
-    top: 69%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 75px;
-    background-color: #d3d3d3; /* cinza claro */
-    border: none;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    color: #ffffff;
-      box-shadow: 0 4px 4px rgba(100, 100, 100, 0.25);
-    font-weight: bold;
-    font-size: 30px;
-    line-height: 20px;
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.2s ease;
-  }
 
-
-  .button-add-region-2:hover {
-    background-color: #b0b0b0;
-  }
 
 
 
@@ -404,13 +375,41 @@
       padding: 0;
       left: 6px;
       position: absolute;
-      top: 50%;
+      top: 20%;
       transform: translateY(-50%);
       background-color: transparent;
       border: none;
       color: #727272;
       font-size: 30px;
       cursor: pointer;
+  }
+
+  .social-edit{
+    box-sizing: border-box;
+    color: #FF432A;
+    width: 4rem;
+    height: 4rem;
+    content: icon;
+  }
+  #facebook{
+    color: #0866FF;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;    
+  }
+
+  #instagram{
+    color: #000100;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+  }
+
+  #whatsapp{
+    color: #25D366;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;    
   }
 
   .button-remove-region:hover {
@@ -420,17 +419,25 @@
 
   .dropdown-menu {
   position: absolute; /* para sobrepor */
-  left: 52rem;
-  background: white;
-  border: 1px solid #ccc;
-  padding: 5px 0;
-  margin-left: 8px; /* distancia do botão + */
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  z-index: 10;
+  left: 53rem;
+  bottom: -4rem;
   display: flex;
+  width: 102px;
+  height: 202px;
+  padding: 14px 28px;
   flex-direction: column;
-  min-width: 100px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  border: 2px solid #B2ADAD;
+  background: #FFF;
+}
+
+.dropdown-menu:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 3px solid #F05221;
+  transition: border 0.050s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dropdown-menu button {
@@ -441,15 +448,9 @@
   cursor: pointer;
   font-size: 14px;
 }
-.contact-label-edit{
-  gap: 20px;
-  color: blue;
-}
-.label-text{
-  margin-top: 1rem;
-}
 
 .dropdown-menu button:hover {
   background-color: #eee;
+  transition: 0.2s ease;
 }
 

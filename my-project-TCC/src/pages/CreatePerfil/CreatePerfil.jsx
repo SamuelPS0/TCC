@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from "react-hook-form";
 import './CreatePerfil.css';
 import { useNavigate } from 'react-router-dom';
@@ -105,6 +105,8 @@ useEffect(() => {
     }
 
 
+
+    
       try {
         // Busca lista completa de municípios (API)
         const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios`);
@@ -286,8 +288,6 @@ useEffect(() => {
                   {/* Mapeia os contatos para inputs editáveis */}
                     {contacts.map((contact, index) => (
                       <div key={index} className="input-with-button">
-                        {contact.label && <label className="label-text"> 
-                          Selecionado: <span className='contact-label-edit'>{contact.label}</span></label>}
                         <input
                           id = "form-contact-input"
                           className="forms-input"
@@ -309,7 +309,7 @@ useEffect(() => {
                         <>
                             <button
                               type="button"
-                              className="button-add-region-2"
+                              className="button-add-region"
                               onClick={() => setShowContactDropdown(!showContactDropdown)}
                               aria-label="Abrir opções de contato"
                             >
@@ -318,9 +318,9 @@ useEffect(() => {
 
                             {showContactDropdown && (
                               <div className="dropdown-menu">                              
-                                <button type="button" onClick={() => handleAddContactWithValue("Facebook")}><FaFacebook className='social-edit' /></button>
-                                <button type="button" onClick={() => handleAddContactWithValue("Instagram")}><FaInstagram className='social-edit' /></button>
-                                <button type="button" onClick={() => handleAddContactWithValue("WhatsApp")}><FaWhatsapp className='social-edit' /></button>
+                                <button type="button" onClick={() => handleAddContactWithValue("Facebook")}><FaFacebook className='social-edit' id='facebook'/></button>
+                                <button type="button" onClick={() => handleAddContactWithValue("Instagram")}><FaInstagram className='social-edit' id='instagram'/></button>
+                                <button type="button" onClick={() => handleAddContactWithValue("WhatsApp")}><FaWhatsapp className='social-edit' id='whatsapp' /></button>
                               </div>
                             )}
                           </>
