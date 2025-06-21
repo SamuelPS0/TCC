@@ -45,9 +45,22 @@ const [contacts, setContacts] = useState([
   } = useForm();
 
 function onSubmit(userData) {
-  // Adiciona as imagens base64 (previews) ao objeto userData
+  // Adiciona as imagens base64 (previews)
   userData.imagem1 = imagePreview1;
   userData.imagem2 = imagePreview2;
+
+  // Junta contatos válidos (que tenham value preenchido)
+  const contatosFiltrados = contacts
+    .map((c, i) => ({
+      label: c.label,
+      value: userData.contact?.[i]?.value || ''
+    }))
+    .filter(c => c.value !== '');
+
+  userData.contacts = contatosFiltrados;
+
+  // Remove a versão antiga de contact se quiser
+  delete userData.contact;
 
   const savedProfiles = JSON.parse(localStorage.getItem('perfis')) || [];
   savedProfiles.push(userData);

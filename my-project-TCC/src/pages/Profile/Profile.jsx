@@ -2,6 +2,9 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
 import './Profile.css';
+import SearchBar from '../../Components/SearchBar/SearchBar';
+import { FaInstagram, FaFacebook, FaWhatsapp, FaLink } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 export default function Perfil() {
   const location = useLocation();
@@ -14,7 +17,7 @@ export default function Perfil() {
   return (
     <div className='profile-container'>
       <div className="profile-headeronly">
-        <Header />
+        <Header/>
       </div>
 
       <div className="profile-positioning">
@@ -36,9 +39,48 @@ export default function Perfil() {
             <h1 className='profile-h1'>{perfil.name}</h1>
             <h3 className='profile-h3'>{perfil.description}</h3>
 
-            <div className="profile-main-container-footer">
-              <p>{perfil.meiosDeContato || "Contatos aqui"}</p>
-            </div>
+                  <div className="profile-main-container-footer">
+                    <p className='profile-meiocontato'>Meios de contato</p>
+                    </div>
+                    <div className="profile-main-container-footer-p2">
+                        {perfil.contacts && perfil.contacts.map((c, i) => {
+                          let Icon;
+                          let color = "#333";
+
+                          switch (c.label.toLowerCase()) {
+                            case "instagram":
+                              Icon = FaInstagram;
+                              color = "#E4405F";
+                              break;
+                            case "facebook":
+                              Icon = FaFacebook;
+                              color = "#1877F2";
+                              break;
+                            case "whatsapp":
+                              Icon = FaWhatsapp;
+                              color = "#25D366";
+                              break;
+                            default:
+                              Icon = FaLink;
+                              color = "#555";
+                          }
+
+                          return (
+                            <a
+                              key={i}
+                              href={c.value}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="contact-link"
+                              style={{ color }}
+                            >
+                              <Icon style={{ fontSize: "40px", marginRight: "8px"}} />
+                              {c.label}
+                            </a>
+                          );
+                        })}
+                  </div>
+
           </div>
         </div>
 

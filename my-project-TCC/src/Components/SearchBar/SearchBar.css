@@ -10,6 +10,7 @@
   padding-top: 25px;
   z-index: 998; /* logo abaixo do header */
   background-color: transparent;
+  color: black;
 }
 
 .search-wrapper {

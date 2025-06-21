@@ -12,6 +12,7 @@
     align-items: center;
     width: 100vw;
     min-width: 100vw;
+    background-color: white;
 }
 .lp-header{
     display: flex;

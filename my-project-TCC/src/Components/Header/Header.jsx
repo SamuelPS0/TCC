@@ -36,6 +36,8 @@ export default function Header({ onSearch, initialFilters }) {
         onSearch={onSearch} 
         initialCategory={initialFilters?.category} 
         initialLocation={initialFilters?.location} 
+        shouldNavigate={true}
+
       />
     </header>
   );
