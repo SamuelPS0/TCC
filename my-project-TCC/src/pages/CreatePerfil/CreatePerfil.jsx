@@ -44,42 +44,41 @@ const [contacts, setContacts] = useState([
     formState: { errors },
   } = useForm();
 
-        // Função chamada ao enviar o formulário, salva os dados no localStorage e redireciona
-      function onSubmit(userData) {
-        // Pega os perfis já salvos no localStorage, ou cria um array vazio se não existir
-        const savedProfiles = JSON.parse(localStorage.getItem('perfis')) || [];
-        
-        // Adiciona os dados do novo perfil enviado ao array de perfis salvos
-        savedProfiles.push(userData);
-        
-        // Salva novamente o array atualizado no localStorage, convertendo para string JSON
-        localStorage.setItem('perfis', JSON.stringify(savedProfiles));
-        
-        // Redireciona o usuário para a página '/home-list' após salvar o perfil
-        navigate('/home-list');
-      }
+function onSubmit(userData) {
+  // Adiciona as imagens base64 (previews) ao objeto userData
+  userData.imagem1 = imagePreview1;
+  userData.imagem2 = imagePreview2;
+
+  const savedProfiles = JSON.parse(localStorage.getItem('perfis')) || [];
+  savedProfiles.push(userData);
+  localStorage.setItem('perfis', JSON.stringify(savedProfiles));
+
+  navigate('/home-list');
+}
+
 
 
   // Função para lidar com mudança no arquivo 1, atualizando nome e preview da imagem
 const handleFileChange1 = (e) => {
-  // Pega o primeiro arquivo selecionado pelo input de arquivo
   const file = e.target.files[0];
-  
-  // Se um arquivo foi selecionado
+  console.log('file:', file);
+
   if (file) {
-    // Atualiza o estado com o nome do arquivo selecionado
-    setSelectedFileName1(file.name);
-    
-    // Cria um novo objeto FileReader para ler o arquivo
     const reader = new FileReader();
-    
-    // Quando a leitura do arquivo for finalizada, atualiza o estado com a prévia da imagem
-    reader.onloadend = () => setImagePreview1(reader.result);
-    
-    // Lê o arquivo como uma URL de dados base64 para exibir a prévia da imagem
+
+    reader.onload = () => {
+      console.log('reader.onload:', reader.result);
+      setImagePreview1(reader.result);
+    };
+
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
+    };
+
     reader.readAsDataURL(file);
   }
 };
+
 
 
   // Função para lidar com mudança no arquivo 2, atualizando nome e preview da imagem
@@ -289,17 +288,15 @@ useEffect(() => {
                     {contacts.map((contact, index) => (
                       <div key={index} className="input-with-button">
                         <input
-                          id = "form-contact-input"
+                          id="form-contact-input"
                           className="forms-input"
-                          type='none'
-                          placeholder={contact.placeholder} readOnly
-                          tabIndex={-1}
-                          
+                          type="text"
+                          placeholder={contact.placeholder}
+                          readOnly={index === 0}  // Só o primeiro é readonly
                           value={contact.value}
-                          {...register(`contact[${index}].value`, { required: true })}
+                          {...register(`contact[${index}].value`, { required:index !== 0 })}
                           onChange={(e) => handleContactChange(index, e.target.value)}
                           autoComplete="off"
-                          
                         />
                         
 
