@@ -22,14 +22,24 @@
   padding-top: 25px;
 }
 
+
 /* Navegação */
 .nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 40px;
 }
-
+.header-img-edit{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 263.636px; 
+  height: auto;
+}
+.header-img-wrapper{
+vertical-align: middle;
+}
 /* Estilo dos links */
 .nav a,
 .nav-link {

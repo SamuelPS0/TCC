@@ -65,7 +65,9 @@ export default function LandingPage() {
               title='👩‍🍳 Sou Prestador' 
               paragraph='Cadastre seus serviços alimentícios e seja encontrado com facilidade.'
             />     
+            <Link to='create-perfil' className='lp-flashcards-second-container-secondcard'>
             <button>Quero me cadastrar</button> {/* Aqui poderia ter um Link também */}
+            </Link>
           </div>
 
           {/* Card para Consumidor */}
