@@ -18,7 +18,9 @@ export default function Header({ onSearch, initialFilters }) {
 
         {/* Container para os links de cadastro e login */}
         <div className="frame-2">
-          <Link to={"/Register"}>Cadastre-se</Link>          
+          <div className="container-register">
+          <Link to={"/Register"}>Cadastre-se</Link>  
+          </div>        
           <span className="container-login">
             <Link to={"/Login"}>Login</Link>
           </span>

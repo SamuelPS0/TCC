@@ -41,9 +41,8 @@
 vertical-align: middle;
 }
 /* Estilo dos links */
-.nav a,
-.nav-link {
-  color: #fff;
+.nav a{
+  color: white;
   font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
@@ -64,15 +63,17 @@ vertical-align: middle;
   gap: 20px;
   margin-left: 15rem;
 }
-
-.container-login .login-link {
-  color: #fff;
-  text-decoration: underline;
-  transition: 0.2s;
+.container-register{
+  border-right: 2px solid rgb(255, 255, 255);
+  padding-right: 20px;
+  color: black;
 }
 
-.container-login .login-link:hover {
-  color: #ffddcc;
+.container-login{
+  transition: 0.2s;
+  border: 2.2px solid white;
+  border-radius: 80px;
+  padding: 5px 10px;
 }
 
 /* Logo */

@@ -9,7 +9,7 @@ const Card = ({ data }) => {
 
   return (
     <div className="card">
-      {/* ✅ Passa o perfil como state */}
+      {/* Passa o perfil como state */}
       <Link to={"/profile"} state={{ perfil: data }}>
         <h2 className='card-p'>{data.name}</h2>
 
