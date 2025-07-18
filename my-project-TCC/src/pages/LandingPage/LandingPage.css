@@ -1,132 +1,338 @@
-@import url('https://fonts.googleapis.com/css2?family=Alata&family=Anuphan:wght@100..700&family=Edu+NSW+ACT+Hand+Pre:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 *{
     margin: 0;
     padding: 0;
 }
-
-.lp-allpage-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    min-width: 100vw;
-    background-color: white;
-}
-.lp-header{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 19rem;
-    border-radius: 0 0 100% 100%;
-    background-color: #F05221;;
+.lp-section{
+    margin-top: 280px;
 }
 
-.lp-h1{
+.lp-first-section-h1{
     color: #000;
     text-align: center;
-    font-family: Anuphan;
+    font-family: Poppins;
+    font-size: 46px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+}
+.lp-first-section-h1 span{
+    color: #F05221;
+}
+.lp-first-section-h3{
+    color: #8D8D8D;
+    margin-top: 2.5rem;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.lp-first-section-h3 span{
+    color: #F05221;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+.lp-full-article{
+    margin-top: 170px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+.lp-article{
+    display: flex;
+    flex-direction: row;
+}
+.lp-article-container{
+    max-width: 500px;
+    align-items: center;
+    justify-content: center;
+}
+.lp-article-container h1{
+    color: #F05221;
+    font-family: Montserrat;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+}
+.lp-article-h1{
+    display: flex;
+    align-items: start;
+    margin-bottom: 30px;
+}
+.lp-article-container p{
+    color: #000;
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: justify;
+}
+.lp-article-line{
+    border-top: 2px solid #A8A3A3;
+    margin-top: 25px;
+    margin-bottom: 25px
+}
+.lp-article-container span{
+    color: #F05221;
+}
+.lp-logo-img{
+    width: 559px;
+    height: auto;
+    margin-right: 80px;
+    margin-bottom: 50px;
+}
+.lp-section2-container{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    
+}
+.lp-section2-container-text{
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+.lp-section2-h4{
+    color: #A1A1A1;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 50px;
+    letter-spacing: 0.5px;
+}
+.lp-section2-h4 span{
+    color: #F05221;
+}
+.lp-section2-h2{
+    color: #000;
+    font-family: Poppins;
     font-size: 48px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin-top: 80px;
+    max-width: 500px;
+    margin-top: 133px;
+    text-align:left;
 }
-.lp-p{
-    width: 837px;
-    height: 270px;
-    margin-top: 50px;
-    margin-bottom: 50px;
+.lp-span-section2-edit{
+    color: #F05221;
+}
+.lp-section2-container{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 9rem;
+}
+.lp-section2-container-text{
+    display: flex;
+    align-items: flex-start;
+}
+
+.lp-section2-img{
+    width: 284px;
+    height: 467px;
+    transition: transform 0.3s ease, outline 0.3s ease;
+    outline: 0px solid transparent;
+}
+.lp-section2-img-container{
+    display: flex;
+    flex-direction: row;
+    margin-left:3rem;
+}
+.lp-section2-img-container img:hover{
+  transform: scale(1.03);
+  outline: 2px solid #FF432A;
+  border-radius: 1px;
+}
+.lp-section2-img-container-p1{
+    display: flex;
+    flex-direction: column;
+    margin-right: 60px;
+    gap: 40px;
+}
+.lp-section2-img-container-p2{
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    margin-right: 60px;
+    gap: 40px;
+}
+.lp-section3-cards{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 202px;
+    gap: 50px;
+}
+.lp-bodyCard h1{
+    color: #FF432A;
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lp-bodyCard-Container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 480px;
+    height: 174px;
+    border: 3px solid #F05221;
+    border-radius: 4px;
+    padding: 32px 31px 0 24px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.lp-bodyCard-Container p{
+    display: flex;
+    align-items:center;
+    text-align: flex-start;
+    color: #636363;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 20px;
+}
+.lp-bodyCard-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 466px;
+    height: 52px;
     flex-shrink: 0;
-    color: #000;
+    border: none;
+    border-radius: 4px;
+    background: #F05221;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.lp-bodyCard-button:hover,
+.lp-bodyCard-button:focus-visible {
+  background-color: #FF432A;
+  color: white;
+  outline: 3px solid #FF432A;
+  outline-offset: 4px;
+  box-shadow: 0 6px 12px rgba(255, 67, 42, 0.4);
+  transform: translateY(-2px);
+}
+.lp-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 333px;
+    background: #F05221;
+    width: 100vw;
+    height: 334px;
+    flex-shrink: 0;
+}
+.lp-footer-section1{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 410px;
+}
+.lp-footer-section1 p{
+    color: #FFF;
     text-align: justify;
-    font-family: Alata;
+    font-family: Montserrat;
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
-    line-height: normal;
-}
-.lp-flashcards-container{
-    display: flex;
-    gap: 50px;
-}
-.lp-flashcards-second-container{
-    display: flex;
-    gap: 50px;
-    margin-bottom: 9rem;
-}
-.lp-flashcards-second-container-firstcard{
-    display: flex;
-    flex-direction: column;
-    align-items: justify;
-    justify-content: center;
-}
-
-.lp-flashcards-second-container-secondcard{
-    display: flex;
-    flex-direction: column;
-    align-items: justify;
-    justify-content: center;
-}
-
-.lp-flashcards-second-container-firstcard button{
-    margin-top: 16px;
-    color: white;
-    background-color: #F05221;
-    border-radius: 20px;
-    color: #FFF;
-    font-family: Roboto;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 24px; /* 120% */
+    line-height: 24px; /* 100% */
     letter-spacing: 0.5px;
 }
-.lp-flashcards-second-container-firstcard button:hover{
-    margin-top: 16px;
-    color: #F05221;
-    background-color: white;
-    border: 2px solid #F05221;
-    transition: 0.3s ease-in-out;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    transition: border 0.050s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.lp-flashcards-second-container-secondcard button{
-    margin-top: 16px;
-    color: white;
-    background-color: #F05221;
-    border-radius: 20px;
+.lp-footer-section1-h1{
+    display: flex;
+    align-items: flex-start;
     color: #FFF;
-    font-family: Roboto;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 24px; /* 120% */
+    font-family: Montserrat;
+    font-size: 36px;
+    font-style: italic;
+    font-weight: 800;
+    line-height: 24px; /* 66.667% */
     letter-spacing: 0.5px;
+    margin-bottom: 40px;
 }
-.lp-flashcards-second-container-secondcard button:hover{
-    margin-top: 16px;
-    color: #F05221;
-    background-color: white;
-    border: 2px solid #F05221;
-    transition: 0.3s ease-in-out;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    transition: border 0.050s ease, transform 0.3s ease, box-shadow 0.3s ease;
+.lp-footer-section2{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
-.lp-flashcontainer-h1{
-    color: #000;
-    text-align: center;
-    font-family: Anuphan;
-    font-size: 48px;
+.lp-footer-section2 h1{
+    display: flex;
+    align-items: flex-start;
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 36px;
+    font-style: italic;
+    font-weight: 800;
+    line-height: 24px; /* 66.667% */
+    letter-spacing: 0.5px;
+    margin-bottom: 30px;
+}
+.lp-footer-section2 li{
+    color: #FFF;
+    text-align: justify;
+    font-family: Montserrat;
+    font-size: 24px;
     font-style: normal;
-    font-weight: 600;
-    line-height: normal;
+    font-weight: 400;
+    line-height: 24px; /* 100% */
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+}
 
-    margin-top: 90px;
-    margin-bottom: 80px;
+.lp-footer-section3{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.lp-footer-section3 h1{
+    display: flex;
+    align-items: flex-start;
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 36px;
+    font-style: italic;
+    font-weight: 800;
+    line-height: 24px; /* 66.667% */
+    letter-spacing: 0.5px;
+    margin-bottom: 30px;
+}
+.lp-footer-section3 li{
+    color: #FFF;
+    text-align: justify;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 100% */
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
 }

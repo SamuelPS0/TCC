@@ -1,88 +1,113 @@
-import React from 'react';
-import './LandingPage.css';
-import Flash from '../../Components/Flash/Flash';
-import SearchBar from '../../Components/SearchBar/SearchBar';
-import LogoLP from '../../img/divulgai-logo-branca.png';
-
-// Importa o Link do react-router-dom para navegação interna
+import React from 'react'
 import { Link } from 'react-router-dom';
+import Header0 from '../../Components/Header/levelHeaders/Header0';
+import SearchBar from '../../Components/SearchBar/SearchBar';
+import LogoFundoBranco from '../../img/logoParaFundoBranco.png';
+import Register from '../Register/Register';
+import LpImage1 from '../LandingPage/landingPageImages/sauteeing-food.jpg'
+import LpImage2 from '../LandingPage/landingPageImages/chef-masculino-cozinhando-na-cozinha.jpg'
+import LpImage3 from '../LandingPage/landingPageImages/woman-working-as-professional-chef.jpg'
+import LpImage4 from '../LandingPage/landingPageImages/peneira-de-mulher-flor-na-tigela-para-fazer-bolo.jpg'
+import '../LandingPage/LandingPage.css'
 
-// Define o componente funcional LandingPage
 export default function LandingPage() {
   return (
-    <div>
-      {/* Container principal da landing page */}
-      <div className="lp-allpage-container">
-        
-        {/* Cabeçalho com logo */}
-        <div className="lp-header">
-          <img className='lp-img-header' src={LogoLP} alt="Logo DivulgAí" />
-        </div>
+    <div className='lp'>
+        <Header0 className = 'lp-header'/>
+          <main >
+            <section className='lp-section'>
+              <h1 className='lp-first-section-h1'>
+                ENCONTRE OS MELHORES PROFISSIONAIS<br/>DA <span>GASTRONOMIA</span> NA SUA REGIÃO!
+              </h1>
+              <h3 className='lp-first-section-h3'>
+                Com a <span>DivulgAí</span>, os melhores sabores da sua região<br/> estão a apenas um clique. Experimente agora!
+              </h3>
+              <SearchBar shouldNavigate = {true}/>
+            </section>
 
-        {/* Barra de busca (filtra perfis ou categorias) */}
-        {/* Também navega para a página de lista de perfís */}
-        <SearchBar shouldNavigate={true} />
+            <article className='lp-full-article'>
+            <div className= 'lp-article'>
+               <img src={LogoFundoBranco} alt="Logo DivulgAí" className='lp-logo-img'/>
+               <div className='lp-article-container'>
+               <h1 className='lp-article-h1'>Nossa Missão</h1>
+               <p>Queremos dar visibilidade aos pequenos prestadores da área da culinária, facilitando o acesso dos consumidores a refeições autênticas, feitas com <span>dedicação</span> e <span>sabor</span>.</p>
+               <div className='lp-article-line'></div>
+               <p>Acreditamos que todo prato conta uma história — e estamos aqui para ajudar essas histórias a <span>chegarem mais longe</span>.</p> 
+              </div>
+            </div>
+            </article>
 
-        {/* Seção Sobre nós */}
-        <h1 className='lp-h1'>🍽️ Sobre nós</h1>
-        <p className="lp-p">
-          O DivulgAí é uma plataforma digital feita para conectar consumidores
-          a prestadores de serviços locais do ramo da alimentação de forma simples, prática e direta.
-          Aqui, você encontra aquele sabor caseiro feito com carinho, de pessoas que estão bem perto de você.
-          Nosso objetivo é valorizar os pequenos negócios, fortalecer a economia local e facilitar a divulgação  
-          de produtos alimentícios sem burocracia. No Divulgaí, você busca e encontra quem faz — e quem faz, se
-          conecta com quem quer provar!
-        </p>
+            <section>
+              <div className='lp-section2-container'>
+              <div className='lp-section2-container-text'>
+              <h4 className='lp-section2-h4'>SUA PRÓXIMA <span>EXPERIÊNCIA</span><br /> COMEÇA AQUI</h4>
+              <h2 className='lp-section2-h2'>DE MARMITAS A BOLOS ARTESANAIS, ENCONTRE <span className='lp-span-section2-edit'>PROFISSIONAIS AUTÔNOMOS</span> QUE COZINHAM COM DEDICAÇÃO NA SUA REGIÃO.</h2>
+              </div>
+              <div className='lp-section2-img-container'>
+              <div className='lp-section2-img-container-p1'>
+              <img src={LpImage1} alt="Pessoa cozinhando" className='lp-section2-img'/>
+              <img src={LpImage2} alt="Pessoa cozinhando" className='lp-section2-img'/>
+              </div>
+              <div className='lp-section2-img-container-p2'>
+              <img src={LpImage3} alt="Pessoa cozinhando" className='lp-section2-img'/>
+              <img src={LpImage4} alt="Pessoa cozinhando" className='lp-section2-img'/>
+              </div>
+              </div>
+              </div>
+            </section>
 
-        {/* Seção Por que usar o DivulgAí? */}
-        <h1 className='lp-flashcontainer-h1'>Por que usar o DivulgAí?</h1>
-        
-        {/* Container com Flash cards de vantagens */}
-        <div className="lp-flashcards-container">
-          <Flash 
-            title='🍲 Comida caseira' 
-            paragraph='Sabores autênticos feitos por quem entende de comida de verdade.'
-          />  
-          <Flash 
-            title='🤝 Apoie o local' 
-            paragraph='Valorize os pequenos negócios e fortaleça a economia do seu bairro.'
-          /> 
-          <Flash 
-            title='📍 Busca prática' 
-            paragraph='Encontre prestadores de serviço alimentício com facilidade pelo site.'
-          />       
-        </div>
+            <section>
+            <div className='lp-section3-cards'>
+              <div className="lp-bodyCard">
+              <h1>Pra quem ama comer</h1>
+              <div className='lp-bodyCard-Container'>
+                <p>Para suas festas, ceias e encontros especiais, descubra pratos caseiros preparados com carinho por quem vive a gastronomia.</p>
+                  <Link to="/home-list" className="lp-bodyCard-button">
+                  Sou Cliente
+                </Link>
+              </div>
+              </div>
 
-        {/* Seção Para quem é o DivulgAí? */}
-        <h1 className='lp-flashcontainer-h1'>Para quem é o DivulgAí?</h1>
+              <div className="lp-bodyCard">
+              <h1>Pra quem ama cozinhar</h1>
+              <div className='lp-bodyCard-Container'>
+                <p>Divulgue seu serviço, alcance mais pessoas e transforme sua paixão pela cozinha em renda.<br/>­</p>
+                <Link to="/register" className="lp-bodyCard-button">
+                  Sou Cozinheiro
+                </Link>
 
-        {/* Container com Flash cards específicos para prestador e consumidor */}
-        <div className="lp-flashcards-second-container">
-          
-          {/* Card para Prestador */}
-          <div className="lp-flashcards-second-container-firstcard">
-            <Flash 
-              title='👩‍🍳 Sou Prestador' 
-              paragraph='Cadastre seus serviços alimentícios e seja encontrado com facilidade.'
-            />     
-            <Link to='create-perfil' className='lp-flashcards-second-container-secondcard'>
-            <button>Quero me cadastrar</button> {/* Aqui poderia ter um Link também */}
-            </Link>
-          </div>
+              </div>
+              </div>
+              </div>
+            </section>
 
-          {/* Card para Consumidor */}
-          <div className="lp-flashcards-second-container-secondcard">
-            <Flash 
-              title='🍴 Sou Consumidor' 
-              paragraph='Encontre opções deliciosas na sua região. Pedidos são feitos diretamente com o prestador.'
-            />  
-            {/* Link para ir para a página de lista de perfis */}
-            <Link to='home-list' className='lp-flashcards-second-container-secondcard'>
-              <button>Procure já!</button>   
-            </Link>
-          </div>
-        </div>
-      </div>  
+            <footer>
+              <div className='lp-footer'>
+                <div className = 'lp-footer-section1'>
+                  <h1 className='lp-footer-section1-h1'>Divulgaí</h1>
+                  <p>Somos uma plataforma que valoriza o trabalho dos pequenos profissionais da culinária, aproximando você de pratos feitos com carinho e autenticidade.</p>
+                </div>
+                <div className='lp-footer-section2'>
+                  <h1>Links úteis</h1>
+                  <ul>
+                    <li>Sobre Nós</li>
+                    <li>Buscar Prestadores</li>
+                    <li>Cadastro</li>
+                    <li>Login</li>
+                  </ul>
+                </div>
+                <div className='lp-footer-section3'>
+                  <h1>Social</h1>
+                  <ul>
+                    <li>Instagram</li>
+                    <li>Facebook</li>
+                    <li>Email</li>
+                    <li>Telefone</li>
+                  </ul>
+                </div>
+                </div>
+            </footer>
+            </main>
     </div>
-  );
+  )
 }
