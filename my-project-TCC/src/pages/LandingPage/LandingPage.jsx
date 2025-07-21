@@ -101,7 +101,8 @@ export default function LandingPage() {
                   <ul>
                     <li>Instagram</li>
                     <li>Facebook</li>
-                    <li>Email</li>
+                    <Link to="/create-perfil">
+                    <li>Email</li></Link>
                     <li>Telefone</li>
                   </ul>
                 </div>

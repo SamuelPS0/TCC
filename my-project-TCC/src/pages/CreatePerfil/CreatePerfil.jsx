@@ -65,6 +65,7 @@ function onSubmit(userData) {
   const savedProfiles = JSON.parse(localStorage.getItem('perfis')) || [];
   savedProfiles.push(userData);
   localStorage.setItem('perfis', JSON.stringify(savedProfiles));
+console.log("Dados salvos:", userData);
 
   navigate('/home-list');
 }
