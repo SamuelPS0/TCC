@@ -14,6 +14,7 @@
     align-items: center;
     padding-bottom: 3rem;
     color: black;
+    box-sizing: border-box;
   }
   .span-color{
     color: black;
@@ -121,7 +122,7 @@
   .create-profile-icon {
     display: flex;
     align-items: center;
-    
+    box-sizing: border-box;
   }
 
   .icon-profile {
@@ -141,7 +142,8 @@
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     padding: 0 1rem;
     font-size: 18px;
-    padding-right: 50px; /* espaço para botões dentro do input */
+    padding-right: 50px; 
+    box-sizing: border-box;/* espaço para botões dentro do input */
   }
 
   .forms-input:focus {
@@ -201,6 +203,7 @@
   /* Upload grande (retangular) */
   .custom-upload-button-banner {
     width: 824px;
+    box-sizing: border-box;
     height: 262px;
     border-radius: 5px;
     border: 1px solid #B2ADAD;

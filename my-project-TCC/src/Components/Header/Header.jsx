@@ -2,43 +2,39 @@ import React from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
-import LogoLP from '../../img/divulgai-logo-branca.png';
+import LogoLP from '../../img/logoSemFundo.png';
 
-
-// Componente funcional Header recebe duas props: onSearch (função) e initialFilters (objeto opcional)
 export default function Header({ onSearch, initialFilters }) {
   return (
-    // Elemento semanticamente correto para cabeçalho da página
     <header className="header">
-      {/* Barra de navegação principal */}
-      <nav className="nav">
-        {/* Links para diferentes rotas do app */}
-        <Link to={"/"}>Inicio</Link>
-        <Link to={"/home-list"}>Encontrar serviços</Link>
+<nav className="nav">
+  <div className="nav-left">
+    <Link to={"/"}>INICIO</Link>
+    <Link to={"/home-list"}>BUSCAR PRESTADORES</Link>
+  </div>
 
-        {/* Container para os links de cadastro e login */}
-        <div className="frame-2">
-          <div className="container-register">
-          <Link to={"/Register"}>Cadastre-se</Link>  
-          </div>        
-          <span className="container-login">
-            <Link to={"/Login"}>Login</Link>
-          </span>
-        </div>
-      </nav>
+  <div className="container-logo">
+    <img src={LogoLP} alt="Logo DivulgAí" className="logo" />
+  </div>
 
-      {/* Área reservada para o logo */}
+  <div className="nav-right frame-2">
+    <div className="container-register">
+      <Link to={"/Register"}>CADASTRO</Link>  
+    </div>        
+    <span className="container-login">
+      <Link to={"/Login"}>LOGIN</Link>
+    </span>
+  </div>
+</nav>
 
-
-      {/* Componente de busca que recebe função onSearch e filtros iniciais opcionais */}
+    <div className='header-searchbar'>
       <SearchBar 
         onSearch={onSearch} 
         initialCategory={initialFilters?.category} 
         initialLocation={initialFilters?.location} 
         shouldNavigate={true}
-
       />
+      </div>
     </header>
   );
 }
-

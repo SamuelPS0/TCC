@@ -23,14 +23,23 @@
 }
 
 .header0-nav a {
-  color: #FFF;
-  font-family: Montserrat, sans-serif;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 24px;
-  letter-spacing: 0.5px;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
   text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  color: #FFF;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 120% */
+  letter-spacing: 0.5px;
+  margin-top: 45px;
+}
+.header0-nav a:hover{
+    text-decoration: underline;
+  font-weight: 800;
 }
 
 .header0-img {
@@ -39,4 +48,12 @@
 }
 .header0-login{
   margin-right: 6rem;
+    border-radius: 20px;
+  border: 1px solid #FFF;
+  padding: 2px 10px 2px 10px;
+}
+.header0-cadastro{
+  border-right: 2px solid white;
+  padding-right: 20px;
+  color: white;
 }
