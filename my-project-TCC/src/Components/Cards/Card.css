@@ -17,7 +17,7 @@
   border: 3px solid #F05221;
 }
 
-.card h2 {
+.card h2, a {
   margin-bottom: 1rem;
   color: #333;
     font-family: "Alata", sans-serif;
