@@ -12,6 +12,7 @@
   height: 100vh;  
   margin: 0 auto;
   background-color: #ffffff;
+  
 }
 .register-link{
     color: #FF432A;
@@ -46,7 +47,8 @@
 }
 
 .register-form-wrapper {
-  margin-left: 20rem; 
+  margin-left: 18rem; 
+  margin-right:4rem;
   max-width: 500px;  
   width: 100%;
 }
@@ -93,7 +95,7 @@
 }
 .register-eye-icon {
   position: absolute;
-  right: 10px; 
+  right: -60px; 
   top: 50%;
   transform: translateY(-50%);
   width: 17px;
@@ -115,6 +117,7 @@
   height: 17px;
   color: #000000;
   pointer-events: none;
+  
 }
 
 .register-input-icon-wrapper input {
@@ -146,6 +149,7 @@
   background-color: #F05221;
   color: white;
   font-weight: 600;
+  width: 570px;
   padding: 0.75rem;
   border: none;
   border-radius: 5px;

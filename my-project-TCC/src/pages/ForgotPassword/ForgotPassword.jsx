@@ -2,6 +2,7 @@
 import { React, useState } from 'react';
 import './ForgotPassword.css';
 import Login from '../../Components/Login/Login';
+import AccountSecurity from '../../Components/AccountSecurity/AccountSecurity'
 
 
 export default function ForgotPassword() {
@@ -18,34 +19,7 @@ export default function ForgotPassword() {
         <Login buttonText="Trocar senha" />
       </div>
 
-      {/* Container para as perguntas de segurança */}
-      <div className='fp-second-container'>
-        {/* Título das perguntas de segurança */}
-        <h1 className='fp-h1'>PERGUNTAS DE <span>SEGURANÇA</span></h1>
-
-        {/* Primeira pergunta */}
-        <h3 className='fp-h3'>QUAL NOME COMPLETO DA SUA MÃE?*</h3>
-        <input
-          id='margin-input'
-          className='fp-input'
-          type="text"
-          value={valorA} // Valor ligado ao estado valorA
-          onChange={(e) => setValorA(e.target.value)} // Atualiza estado ao digitar
-          placeholder="ESCREVA SUA RESPOSTA"
-        />
-
-        {/* Segunda pergunta */}
-        <h3 className='fp-h3'>
-          <span>QUAL NOME DO SEU MELHOR AMIGO(A) DE INFÂNCIA?*</span>
-        </h3>
-        <input
-          className='fp-input'
-          type="text"
-          value={valorB} // Valor ligado ao estado valorB
-          onChange={(e) => setValorB(e.target.value)} // Atualiza estado ao digitar
-          placeholder="ESCREVA SUA RESPOSTA"
-        />
+        <AccountSecurity />
       </div>
-    </div>
   );
 }

@@ -391,6 +391,7 @@
   color: white;
   outline: 3px solid #FF432A;
   outline-offset: 4px;
+  cursor: pointer;
   box-shadow: 0 6px 12px rgba(255, 67, 42, 0.4);
   transform: translateY(-2px);
 }

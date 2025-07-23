@@ -36,7 +36,11 @@ export default function Register() {
   // Função executada ao submeter o formulário corretamente
   const onSubmit = (data) => {
     console.log(data); // Aqui você pode enviar para uma API ou localStorage
-    navigate("/");     // Redireciona para a página inicial depois de cadastrar
+    if(data.email === 'a@a')
+      {navigate("/"); 
+      }else{
+        navigate('/security-questions')
+      } 
   };
 
   return (

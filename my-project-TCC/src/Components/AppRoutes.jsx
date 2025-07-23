@@ -1,53 +1,69 @@
-// Importa o componente Routes e Route do react-router-dom
 import { Routes, Route } from 'react-router-dom';
-
-// Importa todas as páginas do seu app
+import ProtectedRoute from '../Components/ProtectedRoute';
+import accessLevels from '../Components/accessLevels';
+import LandingPage from '../pages/LandingPage/LandingPage';
+import Login from '../pages/LoginForm/LoginForm';
+import Register from '../pages/Register/Register';
+import HomeList from '../pages/HomeList/HomeList';
+import Perfil from '../pages/Profile/Profile';
+import SobreNos from '../pages/SobreNos/SobreNos';
 import AccInfo from '../pages/AccInfo/AccInfo';
 import CreatePerfil from '../pages/CreatePerfil/CreatePerfil';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
-import HomeList from '../pages/HomeList/HomeList';
-import Login from '../pages/LoginForm/LoginForm';
-import Perfil from '../pages/Profile/Profile';
-import LandingPage from '../pages/LandingPage/LandingPage';
-import Register from '../pages/Register/Register';
-import SobreNos from '../pages/SobreNos/SobreNos';
+import SecurityQuestions from '../pages/SecurityQuestions/SecurityQuestions';
 
-// Define um componente funcional AppRoutes que contém TODAS as rotas
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Página principal */}
       <Route path="/" element={<LandingPage />} />
-
-      {/* Página de lista de perfis com filtros */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/sobre-nos" element={<SobreNos />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/home-list" element={<HomeList />} />
 
-      {/* Página "Sobre Nós" */}
-      <Route path="/sobre-nos" element={<SobreNos />} />
+      <Route path="/unauthorized" element={<h1>Você não tem permissão para acessar esta página.</h1>} />
 
-      {/* Página de login */}
-      <Route path="/login" element={<Login />} />
+      {/* Rotas protegidas */}
+      <Route
+        path="/acc-info"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.USER}>
+            <AccInfo />
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Informações da conta */}
-      <Route path="/acc-info" element={<AccInfo />} />
+      <Route
+        path="/create-perfil"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.USER}>
+            <CreatePerfil />
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Cadastro de novo perfil */}
-      <Route path="/create-perfil" element={<CreatePerfil />} />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.USER}>
+            <Perfil />
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Recuperar senha */}
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route
+        path="/security-questions"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.USER}>
+            <SecurityQuestions />
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Página de perfil individual */}
-      <Route path="/profile" element={<Perfil />} />
-
-      {/* Página de registro */}
-      <Route path="/register" element={<Register />} />
-
-      {/* Rota coringa para páginas não encontradas */}
-      <Route path="*" element={<h1>ERRO 404 - PÁGINA NÃO ENCONTRADA</h1>} />
+      <Route path="*" element={<h1>404 - Página não encontrada</h1>} />
     </Routes>
   );
 };
 
-// Exporta como default para usar no App.jsx
 export default AppRoutes;
