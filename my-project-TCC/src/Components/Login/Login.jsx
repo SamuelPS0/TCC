@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { FaRegEnvelope } from 'react-icons/fa';
 import { FaLock } from 'react-icons/fa6';
 
-import { useAuth } from '../../components/AuthContext';
-import accessLevels from '../../components/accessLevels';
+import {useAuth} from '../../Components/AuthContext';
+import accessLevels from '../../Components/accessLevels';
 
 export default function Login({ buttonText = "Entrar" }) {
   const navigate = useNavigate();
@@ -20,17 +20,21 @@ export default function Login({ buttonText = "Entrar" }) {
   } = useForm();
 
   const onSubmit = (dataLogin) => {
-    console.log(dataLogin);
+  let level;
 
-    // Simula definir o nível de acesso conforme o email, só exemplo
-    const level = dataLogin.email === 'admin@exemplo.com' ? accessLevels.ADMIN : accessLevels.USER;
+  // Simulação de níveis com base no email:
+  if (dataLogin.email === 'admin@exemplo.com') {
+    level = accessLevels.ADMIN;
+  } else if (dataLogin.email === 'prestador@exemplo.com') {
+    level = accessLevels.PROVIDER;
+  } else {
+    level = accessLevels.CLIENT;
+  }
 
-    // Atualiza o contexto com usuário logado e nível de acesso
-    login({ email: dataLogin.email, level });
+  login({ email: dataLogin.email, accessLevel: level });
+  navigate('/');
+};
 
-    // Redireciona para home
-    navigate('/');
-  };
 
   return (
     <div className="login-wrapper">

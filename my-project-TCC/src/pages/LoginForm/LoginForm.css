@@ -7,7 +7,12 @@
     align-items: center;
     background-color: white;
 }
-.forgot-quick-edit{
+
+.loginform-links{
     display: flex;
-    padding-right: 15rem;
+    flex-direction: row;
+    gap: 115px;
+}
+.loginform-links a{
+    color: #0095FF;
 }

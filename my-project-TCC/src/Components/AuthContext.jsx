@@ -1,18 +1,17 @@
-import { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import accessLevels from './accessLevels';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Mock de autenticação simples
-  const [user, setUser] = useState(null); // { name, level }
+  const [user, setUser] = useState({ email: null, accessLevel: accessLevels.GUEST });
 
-  const login = (name, level) => {
-    const newUser = { name, level };
-    setUser(newUser);
+  const login = (userData) => {
+    setUser(userData);
   };
 
   const logout = () => {
-    setUser(null);
+    setUser({ email: null, accessLevel: accessLevels.GUEST });
   };
 
   return (
@@ -22,5 +21,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook para acessar o contexto
 export const useAuth = () => useContext(AuthContext);

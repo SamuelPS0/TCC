@@ -18,7 +18,7 @@ export default function SideMenu() {
     { path: '/create-perfil', label: 'Perfil', icon: <IoPersonCircle className='icon' /> },
     { path: '/acc-info', label: 'Informações da conta', icon: <IoShieldOutline className='icon' /> },
     { path: '/', label: 'Voltar à tela inicial', icon: <IoMdArrowBack className='icon' /> },
-    { path: '/register', label: 'Sair', icon: <CiLogout className='icon' /> }, // redireciona para a página de registro/logout
+    { path: '/login', label: 'Sair', icon: <CiLogout className='icon' /> }, // redireciona para a página de registro/logout
   ];
 
   return (

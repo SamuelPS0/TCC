@@ -11,6 +11,7 @@ import AccInfo from '../pages/AccInfo/AccInfo';
 import CreatePerfil from '../pages/CreatePerfil/CreatePerfil';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import SecurityQuestions from '../pages/SecurityQuestions/SecurityQuestions';
+import Apagar from '../pages/Apagar'
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
       <Route path="/sobre-nos" element={<SobreNos />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/home-list" element={<HomeList />} />
+      <Route path='/apagar' element={<Apagar />} />
 
       <Route path="/unauthorized" element={<h1>Você não tem permissão para acessar esta página.</h1>} />
 

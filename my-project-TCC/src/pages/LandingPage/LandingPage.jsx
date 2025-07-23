@@ -103,7 +103,9 @@ export default function LandingPage() {
                     <li>Facebook</li>
                     <Link to="/create-perfil">
                     <li>Email</li></Link>
+                    <Link to='apagar'>
                     <li>Telefone</li>
+                    </Link>
                   </ul>
                 </div>
                 </div>
