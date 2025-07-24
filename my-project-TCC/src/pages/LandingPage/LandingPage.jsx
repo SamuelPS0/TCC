@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import HeaderCliente from '../../Components/Header/levelHeaders/HeaderCliente';
-import Header0 from '../../Components/Header/levelHeaders/Header0';
 import { useAuth } from '../../Components/AuthContext';
+import HeaderCliente from '../../Components/Header/levelHeaders/HeaderCliente';
+import HeaderPrestador from '../../Components/Header/levelHeaders/HeaderPrestador';
+import Header0 from '../../Components/Header/levelHeaders/Header0';
 import accessLevels from '../../Components/accessLevels';
 import SearchBar from '../../Components/SearchBar/SearchBar';
 import LogoFundoBranco from '../../img/logoParaFundoBranco.png';
@@ -19,8 +20,11 @@ export default function LandingPage() {
 
   return (
     <div className='lp'>
-              {user.accessLevel === accessLevels.GUEST ? <Header0 /> : null}
-      {user.accessLevel === accessLevels.CLIENTE ? <HeaderCliente /> : null}
+{user?.accessLevel === accessLevels.CLIENTE && <HeaderCliente />}
+{user?.accessLevel === accessLevels.PRESTADOR && <HeaderPrestador />}
+{user?.accessLevel === accessLevels.GUEST && <Header0 />}
+{!user && <Header0 />}
+
           <main >
             <section className='lp-section'>
               <h1 className='lp-first-section-h1'>

@@ -10,7 +10,7 @@ import Header from '../Components/Header/Header'
 const apagar = () => {
   return (
     <div><h1>apagar</h1>
-    <Header0 /></div>
+    <HeaderCliente /></div>
   )
 }
 

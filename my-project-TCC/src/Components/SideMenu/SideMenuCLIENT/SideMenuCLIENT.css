@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.smclient-container{
+width: 313px;
+height: fit-content;
+flex-shrink: 0;
+border-radius: 10px;
+background: white;
+}
+
+.smclient-ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.smclient-ul li, 
+.smclient-ul a {
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    gap: 15px;
+}
+
+#smclient-firstli {
+  border-top: 1px solid #ADADAD;
+  border-right: 1px solid #ADADAD;
+  border-left: 1px solid #ADADAD;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+}
+
+#smclient-middleli{
+    border: 1px solid #ADADAD
+}
+#smclient-lastli{
+    border-bottom: 1px solid #ADADAD;
+    border-right: 1px solid #ADADAD;
+    border-left: 1px solid #ADADAD;
+    border-radius: 0 0 10px 10px
+}
+
+.smclient-li {
+  width: 100%;
+  list-style: none;
+  transition: 0.3s ease-in-out;
+}
+.smclient-li.active a {
+  border-radius: 10px 10px 0 0;
+  background: #FF432A;
+  color: white;
+  transition: 0.3s ease-in-out;
+}
+
+/* Garante que o link ocupe todo o espaço do <li> */
+.smclient-li a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+  padding-top: 16.5px;
+  padding-bottom: 16.5px;
+  text-decoration: none;
+  color: #000; /* ou inherit */
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+.smclient-li a:hover {
+  background: #FF432A;
+  color: white;
+  transition: 0.2s ease-in-out;
+}
+
+
+.smclient-link{
+    margin-bottom: 0;
+}
+
+.smclient-icon{
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+    margin-left: 9px;
+}

@@ -24,7 +24,7 @@ const onSubmit = (dataLogin) => {
     ? accessLevels.ADMIN
     : dataLogin.email === 'prestador@exemplo.com'
       ? accessLevels.PRESTADOR
-      : accessLevels.CLIENT;
+      : accessLevels.CLIENTE;
 
   login({ email: dataLogin.email, accessLevel: level });
   localStorage.setItem('userLevel', level);

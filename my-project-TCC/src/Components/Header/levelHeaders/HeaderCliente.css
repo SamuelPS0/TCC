@@ -5,6 +5,27 @@
   padding: 0;
 }
 
+.headerclient-nav button{
+  color: white;
+    background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  font-style: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+}
+
 .headerclient-header {
   display: flex;
   flex-direction: column;

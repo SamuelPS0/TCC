@@ -10,15 +10,24 @@ export default function HeaderSwitcher(props) {
   const { user } = useAuth();
   const location = useLocation();
 
-    if (user.accessLevel === accessLevels.GUEST && location.pathname === '/') {
+  // Proteção caso user seja null
+  if (!user || user.accessLevel === accessLevels.GUEST) {
+    // Se quiser o Header0 só na landing '/', pode usar:
+    if (location.pathname === '/') {
+      return <Header0 {...props} />;
+    }
+    // Se quiser Header0 para guest em todas as páginas:
     return <Header0 {...props} />;
   }
 
-  if (user.accessLevel === accessLevels.ADMIN) {
-    return <HeaderAdmin {...props} />;
-  } else if (user.accessLevel === accessLevels.PRESTADOR) {
-    return <HeaderPrestador {...props} />;
-  } else {
-    return <HeaderCliente {...props} />;
+  switch(user.accessLevel) {
+  //  case accessLevels.ADMIN:
+  //    return <HeaderAdmin {...props} />;
+    case accessLevels.PRESTADOR:
+      return <HeaderPrestador {...props} />;
+    case accessLevels.CLIENTE:
+      return <HeaderCliente {...props} />;
+    default:
+      return <Header0 {...props} />;
   }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './HeaderPrestador.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchBar from '../../SearchBar/SearchBar';
 import LogoLP from '../../../img/logoSemFundo.png';
 
@@ -10,8 +10,18 @@ import { FaRegAngry, FaRegClipboard } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import { IoMdMenu } from "react-icons/io";
 
+// Importa o contexto de autenticação
+import { useAuth } from '../../AuthContext';
+
 export default function HeaderPrestador({ onSearch, initialFilters }) {
   const [openProfile, setOpenProfile] = useState(false);
+  const { logout } = useAuth(); // Função de logout
+  const navigate = useNavigate(); // Para redirecionar
+
+  const handleLogout = () => {
+    logout();         // Limpa localStorage + AuthContext
+    navigate('/');    // Redireciona para a landing page
+  };
 
   return (
     <header className="headerprestador-header">
@@ -43,7 +53,9 @@ export default function HeaderPrestador({ onSearch, initialFilters }) {
             <li><Link to='/acc-info' className='headerprestador-link'><MdOutlineShield className="headerprestador-list-icon" />MINHA CONTA</Link></li>
             <li><Link to='/profile' className='headerprestador-link'><FaRegAngry className="headerprestador-list-icon" />MINHAS DENÚNCIAS</Link></li>
             <li><Link to='/profile' className='headerprestador-link'><FaRegClipboard className="headerprestador-list-icon" />MEUS FEEDBACKS</Link></li>
-            <li><Link to='/login' className='headerprestador-link'><CiLogout className="headerprestador-list-icon" />SAIR</Link></li>
+            <li onClick={handleLogout} className='headerprestador-link' style={{ cursor: 'pointer' }}>
+              <CiLogout className="headerprestador-list-icon" />SAIR
+            </li>
           </ul>
         </div>
       )}

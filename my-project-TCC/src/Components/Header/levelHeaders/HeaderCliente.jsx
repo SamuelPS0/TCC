@@ -1,10 +1,19 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../Components/AuthContext';
 import './HeaderCliente.css';
-import { Link } from 'react-router-dom';
-import SearchBar from '../../SearchBar/SearchBar';
 import LogoLP from '../../../img/logoSemFundo.png';
+import SearchBar from '../../SearchBar/SearchBar';
 
-export default function Header({ onSearch, initialFilters }) {
+export default function HeaderCliente({ onSearch, initialFilters }) {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();          // limpa user e localStorage
+    navigate('/');     // redireciona para landing page
+  }
+
   return (
     <header className="headerclient-header">
       <nav className="headerclient-nav">
@@ -19,11 +28,13 @@ export default function Header({ onSearch, initialFilters }) {
 
         <div className="headerclient-nav-right headerclient-frame-2">
           <div className="headerclient-container-register">
-            <Link to={"/Register"}>MINHA CONTA</Link>  
-          </div>        
-          <span className="headerclient-container-login">
-            <Link to={"/Login"}>SAIR</Link>
-          </span>
+            <Link to={"/client-accinfo"}>MINHA CONTA</Link>
+            </div>
+            <span className="headerclient-container-login">
+              <button onClick={handleLogout} className="headerclient-nav">
+                SAIR
+              </button>
+            </span>
         </div>
       </nav>
 

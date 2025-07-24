@@ -107,11 +107,10 @@ export default function Perfil() {
   }
 
   return (
-    <div className='profile-container'>
-      <div className="profile-headeronly">
-        <HeaderSwitcher />
-      </div>
+    <div>
+    <HeaderSwitcher />
 
+    <div className='profile-container'>
       <div className="profile-positioning">
         <div className='profile-main'>
           <div className="profile-header-container">
@@ -221,6 +220,7 @@ export default function Perfil() {
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 }
