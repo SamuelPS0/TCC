@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 // Importa o hook useLocation do react-router-dom para acessar a URL e seus parâmetros de busca
 import { useLocation } from 'react-router-dom'; 
 // Importa o componente Header (contém a barra de busca e filtros)
-import Header from '../../Components/Header/Header';
+import HeaderSwitcher from '../../Components/HeaderSwitcher';
 // Importa o componente PerfilList (exibe a lista de perfis filtrados)
 import PerfilList from '../../Components/PerfilList/PerfilList';
 import './HomeList.css';
@@ -40,7 +40,7 @@ const HomeList = () => {
   return (
     <div className='background-color-homepage'>
       {/* Renderiza o Header passando a função para lidar com busca e os filtros atuais */}
-      <Header onSearch={handleSearch} initialFilters={filters} />
+      <HeaderSwitcher onSearch={handleSearch} initialFilters={filters} />
       {/* Renderiza a lista de perfis filtrados conforme o estado filters */}
       <PerfilList filters={filters} />
     </div>

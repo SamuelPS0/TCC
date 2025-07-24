@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import HeaderCliente from '../../Components/Header/levelHeaders/HeaderCliente';
 import Header0 from '../../Components/Header/levelHeaders/Header0';
+import { useAuth } from '../../Components/AuthContext';
+import accessLevels from '../../Components/accessLevels';
 import SearchBar from '../../Components/SearchBar/SearchBar';
 import LogoFundoBranco from '../../img/logoParaFundoBranco.png';
 import Register from '../Register/Register';
@@ -11,9 +14,13 @@ import LpImage4 from '../LandingPage/landingPageImages/peneira-de-mulher-flor-na
 import '../LandingPage/LandingPage.css'
 
 export default function LandingPage() {
+    const { user } = useAuth();
+    
+
   return (
     <div className='lp'>
-        <Header0 className = 'lp-header'/>
+              {user.accessLevel === accessLevels.GUEST ? <Header0 /> : null}
+      {user.accessLevel === accessLevels.CLIENTE ? <HeaderCliente /> : null}
           <main >
             <section className='lp-section'>
               <h1 className='lp-first-section-h1'>
@@ -22,6 +29,7 @@ export default function LandingPage() {
               <h3 className='lp-first-section-h3'>
                 Com a <span>DivulgAí</span>, os melhores sabores da sua região<br/> estão a apenas um clique. Experimente agora!
               </h3>
+              
               <SearchBar shouldNavigate = {true}/>
             </section>
 

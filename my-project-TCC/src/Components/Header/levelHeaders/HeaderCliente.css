@@ -5,7 +5,7 @@
   padding: 0;
 }
 
-.headerprestador-header {
+.headerclient-header {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,7 +19,7 @@
   padding-top: 25px;
 }
 
-.headerprestador-nav {
+.headerclient-nav {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,7 +30,7 @@
   gap: 20px;
 }
 
-.headerprestador-nav-left {
+.headerclient-nav-left {
   display: flex;
   align-items: center;
   gap: 40px;
@@ -38,42 +38,42 @@
   padding-top: 1.3rem;
 }
 
-.headerprestador-nav-right {
+.headerclient-nav-right {
   display: flex;
   align-items: center;
   gap: 40px;
   margin-right: 5rem;
 }
 
-.headerprestador-logo {
+.headerclient-logo {
   width: 150px;
   height: auto;
   padding-right: 7rem;
 }
 
-.headerprestador-container-logo {
+.headerclient-container-logo {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.headerprestador-container-register {
+.headerclient-container-register {
   border-right: 2px solid white;
   padding-right: 20px;
   color: white;
 }
 
-.headerprestador-searchbar {
+.headerclient-searchbar {
   margin-top: -1rem;
 }
 
-.headerprestador-container-login {
+.headerclient-container-login {
   border-radius: 20px;
   border: 1px solid #FFF;
   padding: 2px 10px 2px 10px;
 }
 
-.headerprestador-nav a {
+.headerclient-nav a {
   color: white;
   font-weight: 700;
   font-size: 1rem;
@@ -87,7 +87,7 @@
   letter-spacing: 0.5px;
 }
 
-.headerprestador-nav a:hover {
+.headerclient-nav a:hover {
   text-decoration: underline;
   font-weight: 800;
 }

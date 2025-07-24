@@ -33,7 +33,6 @@
 .headerprestador-nav-left {
   display: flex;
   align-items: center;
-  gap: 40px;
   margin-left: 9rem;
   padding-top: 1.3rem;
 }
@@ -43,12 +42,14 @@
   align-items: center;
   gap: 40px;
   padding-top: 1.3rem;
+  padding-right: 7rem;
 }
 
 .headerprestador-logo {
   width: 150px;
   height: auto;
-  padding-right: 7rem;
+  padding-right: 5rem;
+  padding-left: 7rem;
 }
 
 .headerprestador-container-logo {

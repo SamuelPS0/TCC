@@ -19,19 +19,15 @@ export default function Login({ buttonText = "Entrar" }) {
     formState: { errors }
   } = useForm();
 
-  const onSubmit = (dataLogin) => {
-  let level;
-
-  // Simulação de níveis com base no email:
-  if (dataLogin.email === 'admin@exemplo.com') {
-    level = accessLevels.ADMIN;
-  } else if (dataLogin.email === 'prestador@exemplo.com') {
-    level = accessLevels.PROVIDER;
-  } else {
-    level = accessLevels.CLIENT;
-  }
+const onSubmit = (dataLogin) => {
+  const level = dataLogin.email === 'admin@exemplo.com'
+    ? accessLevels.ADMIN
+    : dataLogin.email === 'prestador@exemplo.com'
+      ? accessLevels.PRESTADOR
+      : accessLevels.CLIENT;
 
   login({ email: dataLogin.email, accessLevel: level });
+  localStorage.setItem('userLevel', level);
   navigate('/');
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Header from '../../Components/Header/Header';
+import HeaderSwitcher from '../../Components/HeaderSwitcher';
 import './Profile.css';
 import { FaInstagram, FaFacebook, FaWhatsapp, FaLink, FaPaperclip, FaRegAngry } from "react-icons/fa";
 
@@ -109,7 +109,7 @@ export default function Perfil() {
   return (
     <div className='profile-container'>
       <div className="profile-headeronly">
-        <Header />
+        <HeaderSwitcher />
       </div>
 
       <div className="profile-positioning">

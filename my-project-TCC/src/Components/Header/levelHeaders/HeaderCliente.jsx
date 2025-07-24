@@ -19,7 +19,7 @@ export default function Header({ onSearch, initialFilters }) {
 
         <div className="headerclient-nav-right headerclient-frame-2">
           <div className="headerclient-container-register">
-            <Link to={"/Register"}>CADASTRO</Link>  
+            <Link to={"/Register"}>MINHA CONTA</Link>  
           </div>        
           <span className="headerclient-container-login">
             <Link to={"/Login"}>SAIR</Link>
