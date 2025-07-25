@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children, requiredLevel }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (user.level < requiredLevel) {
+  if (user.level > requiredLevel) {
     return <Navigate to="/unauthorized" replace />;
   }
 

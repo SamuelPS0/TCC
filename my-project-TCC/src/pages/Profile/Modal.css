@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Overlay do modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Container central */
+.modal-wrapper {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: relative;
+  
+}
+.modal-span{
+    color: #FF432A;
+}
+/* Título e subtítulo */
+.modal-wrapper h1 {
+    display: flex;
+    justify-content: center;
+    color: #15B406;
+    font-family: Poppins;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.modal-wrapper p {
+color: #A1A1A1;
+text-align: center;
+font-family: Montserrat;
+font-size: 23px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+/* Grade dos cards */
+.modal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 88px 30px; /* vertical 88px, horizontal 30px */
+}
+
+.modal-card {
+  margin-top: 50px;
+  width: 274px;
+  height: 387px;
+  flex-shrink: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  border: 1px solid #585757;
+  background: #FFF;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.modal-card h2 {
+color: #000;
+text-align: center;
+font-family: Poppins;
+font-size: 32px;
+font-style: normal;
+font-weight: 900;
+line-height: 20px; /* 62.5% */
+text-transform: uppercase;
+}
+
+.modal-card p {
+color: #888;
+text-align: justify;
+font-family: Montserrat;
+font-size: 23px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+
+.modal-card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.modal-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Botão de fechar */
+.profilePrestador-modal .modal-close-btn {
+  width: 620px;
+  background: #F05221;
+  color: white;
+  border-radius: 8px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 100px;
+
+    color: #FFF;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 20px; /* 62.5% */
+    text-transform: uppercase;
+}
+
+.profilePrestador-modal .modal-close-btn:hover {
+  background-color: #b30000;
+}
+
+
+/* Scroll em telas menores */
+@media (max-width: 768px) {
+  .modal-wrapper {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+}

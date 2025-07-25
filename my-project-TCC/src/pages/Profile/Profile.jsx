@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import HeaderSwitcher from '../../Components/HeaderSwitcher';
 import './Profile.css';
 import { FaInstagram, FaFacebook, FaWhatsapp, FaLink, FaPaperclip, FaRegAngry } from "react-icons/fa";
@@ -109,9 +110,9 @@ export default function Perfil() {
   return (
     <div>
     <HeaderSwitcher />
-
     <div className='profile-container'>
       <div className="profile-positioning">
+        <Link to="/profileprestador" state={{ perfil }}>PRESTADOR PROFILE</Link>
         <div className='profile-main'>
           <div className="profile-header-container">
 
@@ -137,34 +138,34 @@ export default function Perfil() {
               {perfil.contacts && perfil.contacts.map((c, i) => {
                 let Icon;
                 let color = "#333";
-
+                
                 switch (c.label.toLowerCase()) {
                   case "instagram":
                     Icon = FaInstagram;
                     color = "#E4405F";
                     break;
-                  case "facebook":
-                    Icon = FaFacebook;
+                    case "facebook":
+                      Icon = FaFacebook;
                     color = "#1877F2";
                     break;
-                  case "whatsapp":
-                    Icon = FaWhatsapp;
-                    color = "#25D366";
-                    break;
-                  default:
-                    Icon = FaLink;
-                    color = "#555";
-                }
-
-                return (
-                  <a
-                    key={i}
-                    href={c.value}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-link"
-                    style={{ color }}
-                  >
+                    case "whatsapp":
+                      Icon = FaWhatsapp;
+                      color = "#25D366";
+                      break;
+                      default:
+                        Icon = FaLink;
+                        color = "#555";
+                      }
+                      
+                      return (
+                        <a
+                        key={i}
+                        href={c.value}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="contact-link"
+                        style={{ color }}
+                        >
                     <Icon style={{ fontSize: "40px", marginRight: "8px" }} />
                     {c.label}
                   </a>
@@ -179,9 +180,9 @@ export default function Perfil() {
         <div className="profile-input-container">
           {perfil.imagem1 && (
             <img
-              src={perfil.imagem1}
-              alt="Imagem 2"
-              className="profile-image-2"
+            src={perfil.imagem1}
+            alt="Imagem 2"
+            className="profile-image-2"
             />
           )}
         </div>
