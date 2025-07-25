@@ -6,6 +6,9 @@
     height: 100vh;
     background: #F6F6F6;
 }
+.clientinfo-sidemenu{
+    margin-top: 200px;
+}
 
 .clientinfo-container h1{
     color: #000;
@@ -14,6 +17,7 @@
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    margin-top: 100px;
 }
 .clientinfo-container h3{
     color: #AFAFAF;
@@ -22,6 +26,7 @@
     font-style: normal;
     font-weight: 300;
     line-height: normal;
+    margin-bottom: 80px;
 }
 
 .clientinfo-content{

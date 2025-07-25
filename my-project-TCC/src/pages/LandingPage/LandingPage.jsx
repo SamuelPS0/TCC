@@ -84,7 +84,7 @@ export default function LandingPage() {
               <h1>Pra quem ama cozinhar</h1>
               <div className='lp-bodyCard-Container'>
                 <p>Divulgue seu serviço, alcance mais pessoas e transforme sua paixão pela cozinha em renda.<br/>­</p>
-                <Link to="/register" className="lp-bodyCard-button">
+                <Link to="/login" className="lp-bodyCard-button">
                   Sou Cozinheiro
                 </Link>
 

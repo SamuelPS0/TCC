@@ -53,7 +53,7 @@
   opacity: 0.3;
   position: fixed;
   top: 10px;
-  right: 10px;
+  left: 10px;
   z-index: 9999;
   transition: opacity 0.2s ease;
   padding: 4px 8px;

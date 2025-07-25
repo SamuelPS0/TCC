@@ -1,6 +1,8 @@
 // Importa dependências principais e estilos
 import React, { useState } from 'react';
-import './Register.css'; 
+import { useAuth } from '../../Components/AuthContext';
+import './Register.css';
+import accessLevels from '../../Components/accessLevels';
 import { Link, useNavigate } from 'react-router-dom'; // Navegação SPA
 import LogoRegister from '../../img/DivulgAÍ-removebg-preview.png'; 
 import { useForm } from 'react-hook-form'; // Lib de formulários react
@@ -11,6 +13,7 @@ import { IoPersonOutline } from "react-icons/io5";
 export default function Register() {
   // Hook para redirecionar o usuário programaticamente
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Inicializa react-hook-form com algumas funções úteis
   const {
@@ -34,14 +37,18 @@ export default function Register() {
   const password = watch('password');
 
   // Função executada ao submeter o formulário corretamente
-  const onSubmit = (data) => {
-    console.log(data); // Aqui você pode enviar para uma API ou localStorage
-    if(data.email === 'a@a')
-      {navigate("/"); 
-      }else{
-        navigate('/security-questions')
-      } 
-  };
+const onSubmit = (data) => {
+  console.log(data);
+
+login({
+  email: data.email,
+  accessLevel: accessLevels.CLIENTE, // isso vai ser 2, número
+});
+
+  navigate('/security-questions');
+};
+
+
 
   return (
     <div className='register-container'>

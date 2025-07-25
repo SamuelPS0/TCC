@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import { IoShieldOutline } from "react-icons/io5";
 import { CiSearch, CiLogout } from "react-icons/ci";
-import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../../Components/AuthContext';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './SideMenuCLIENT.css'
 
 export default function SideMenuCLIENT() {
   const location = useLocation();
   const [hoverOther, setHoverOther] = useState(false);
+   const { logout } = useAuth();
+   const navigate = useNavigate(); 
+
+     const handleLogout = () => {
+    logout();   
+    navigate('/');    
+  };
 
   return (
     <div className='smclient-container'>
@@ -37,6 +45,7 @@ export default function SideMenuCLIENT() {
           className='smclient-li'
           onMouseEnter={() => setHoverOther(true)}
           onMouseLeave={() => setHoverOther(false)}
+          onClick={handleLogout}
         >
           <Link to='/logout' className='smclient-link'>
             <CiLogout className='smclient-icon' />Sair

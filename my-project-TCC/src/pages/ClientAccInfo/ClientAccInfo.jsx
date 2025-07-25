@@ -20,12 +20,12 @@ function ClientAccInfo() {
 
   return (
     <div className='clientinfo-page'>
+      <div className='clientinfo-sidemenu'>
+      <SideMenuCLIENT /></div>
       <div className='clientinfo-container'>
+      <div className='clientinfo-inputs-container'>
         <h1>INFORMAÇÕES DA CONTA</h1>
         <h3>Apenas você tem acesso a estas<br/> informações pessoais.</h3>
-      <div className='clientinfo-content'>
-      <SideMenuCLIENT />
-      <div className='clientinfo-inputs-container'>
         <p className='clientinfo-label'>NOME</p>  
         <input
           className='clientinfo-input'
@@ -58,7 +58,7 @@ function ClientAccInfo() {
          </div>
         </div>
       </div>
-    </div>
+
   );
 }
 
