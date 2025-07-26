@@ -328,11 +328,14 @@ useEffect(() => {
                             </button>
 
                             {showContactDropdown && (
-                              <div className="dropdown-menu">                              
+                            <div className="dropdown-menu">     
+                              <h1>Escolha a rede social que você deseja utilizar.</h1>      
+                              <div className="dropdown-menu-button">                
                                 <button type="button" onClick={() => handleAddContactWithValue("Facebook")}><FaFacebook className='social-edit' id='facebook'/></button>
                                 <button type="button" onClick={() => handleAddContactWithValue("Instagram")}><FaInstagram className='social-edit' id='instagram'/></button>
                                 <button type="button" onClick={() => handleAddContactWithValue("WhatsApp")}><FaWhatsapp className='social-edit' id='whatsapp' /></button>
                               </div>
+                            </div>
                             )}
                           </>
                       )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import HeaderSwitcher from '../../Components/HeaderSwitcher';
 import './ProfilePrestador.css';
@@ -94,10 +94,19 @@ function ProfilePrestadorCard({ titulo, mensagem }) {
 const ProfilePrestador = () => {
   const location = useLocation();
   const perfil = location.state?.perfil;
+  const openTarget = location.state?.open;
 
   const [OpenModal, setOpenModal] = useState(false);
   const [OpenDenunciaModal, setOpenDenunciaModal] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
+
+    useEffect(() => {
+    if (openTarget === 'denuncias') {
+      setOpenDenunciaModal(true);
+    } else if (openTarget === 'feedbacks') {
+      setOpenModal(true);
+    }
+  }, [openTarget]);
 
   if (!perfil) {
     return <p>Perfil não encontrado.</p>;
