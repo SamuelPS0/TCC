@@ -8,6 +8,7 @@ import accessLevels from '../../Components/accessLevels';
 import SearchBar from '../../Components/SearchBar/SearchBar';
 import LogoFundoBranco from '../../img/logoParaFundoBranco.png';
 import Register from '../Register/Register';
+import DevHub from '../DevPages/DevHub/DevHub';
 import LpImage1 from '../LandingPage/landingPageImages/sauteeing-food.jpg'
 import LpImage2 from '../LandingPage/landingPageImages/chef-masculino-cozinhando-na-cozinha.jpg'
 import LpImage3 from '../LandingPage/landingPageImages/woman-working-as-professional-chef.jpg'
@@ -112,7 +113,8 @@ export default function LandingPage() {
                   <h1>Social</h1>
                   <ul>
                     <li>Instagram</li>
-                    <li>Facebook</li>
+                    <Link to ='dev-hub'>
+                    <li>Facebook</li></Link>
                     <Link to="/create-perfil">
                     <li>Email</li></Link>
                     <Link to='apagar'>

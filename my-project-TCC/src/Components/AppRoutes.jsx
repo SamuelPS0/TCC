@@ -14,6 +14,11 @@ import CreatePerfil from '../pages/CreatePerfil/CreatePerfil';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import SecurityQuestions from '../pages/SecurityQuestions/SecurityQuestions';
 import ClientAccInfo from '../pages/ClientAccInfo/ClientAccInfo';
+import DevHub from '../pages/DevPages/DevHub/DevHub';
+import DevCategory from '../pages/DevPages/DevCategory/DevCategory';
+import DevStatistics from '../pages/DevPages/DevStatistics/DevStatistics';
+import DevUser from '../pages/DevPages/DevUser/DevUser';
+
 
 const AppRoutes = () => {
   return (
@@ -70,6 +75,42 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute requiredLevel={accessLevels.CLIENTE}>
             <SecurityQuestions />
+          </ProtectedRoute>
+        }
+      />
+
+            <Route
+        path="/dev-hub"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
+            <DevHub />
+          </ProtectedRoute>
+        }
+      />
+
+            <Route
+        path="/dev-category"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
+            <DevCategory />
+          </ProtectedRoute>
+        }
+      />
+
+                  <Route
+        path="/dev-statistics"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
+            <DevStatistics />
+          </ProtectedRoute>
+        }
+      />
+
+                  <Route
+        path="/dev-user"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
+            <DevUser />
           </ProtectedRoute>
         }
       />
