@@ -1,0 +1,13 @@
+.devuser-body{
+    margin-top: 150px;
+}
+.devuser-auc{
+    width: 100vw;
+    display: flex;
+    margin-top: 50px;
+    margin-bottom: 60px;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

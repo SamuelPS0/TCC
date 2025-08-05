@@ -23,6 +23,7 @@ export default function LandingPage() {
     <div className='lp'>
 {user?.accessLevel === accessLevels.CLIENTE && <HeaderCliente />}
 {user?.accessLevel === accessLevels.PRESTADOR && <HeaderPrestador />}
+{user?.accessLevel === accessLevels.ADMIN && <HeaderPrestador />}
 {user?.accessLevel === accessLevels.GUEST && <Header0 />}
 {!user && <Header0 />}
 

@@ -19,10 +19,8 @@ export default function HeaderSwitcher(props) {
     // Se quiser Header0 para guest em todas as páginas:
     return <Header0 {...props} />;
   }
-
+  
   switch(user.accessLevel) {
-  //  case accessLevels.ADMIN:
-  //    return <HeaderAdmin {...props} />;
     case accessLevels.PRESTADOR:
       return <HeaderPrestador {...props} />;
     case accessLevels.CLIENTE:
