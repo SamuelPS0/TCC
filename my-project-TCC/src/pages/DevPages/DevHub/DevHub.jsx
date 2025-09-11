@@ -10,21 +10,17 @@ const DevHub = () => {
     <HeaderSwitcher />
     <div className="devhub-body">
       <div className="devhub-container-card">
-      <div className="devhub-card">
-        <Link to='/dev-user'>
+      <Link to='/dev-user' className="devhub-card">
         <h1>GERENCIAR USUARIOS</h1>
         </Link>
-      </div>
-      <div className="devhub-card">
-        <Link to='/dev-category'>
-        <h1>GERENCIAR CATEGORIAS</h1>
+    
+        <Link to='/dev-category' className="devhub-card">
+        <h1>GERENCIAR<br/>  CATEGORIAS</h1>
         </Link>
-      </div>
-      <div className="devhub-card">
-        <Link to='/dev-statistics'>
-        <h1>GERENCIAR ESTATÍSTICAS</h1>
+
+        <Link to='/dev-statistics' className="devhub-card">
+        <h1>GERENCIAR<br/> ESTATÍSTICAS</h1>
         </Link>
-      </div>
 
       </div>
     </div>

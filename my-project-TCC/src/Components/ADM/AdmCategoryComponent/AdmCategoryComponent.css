@@ -1,0 +1,35 @@
+.admcc-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 800px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    border: 2px solid #000;
+    background: #FFF;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.admcc-body h1{
+    text-align: center;
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 9px;
+}
+.admcc-icons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.admcc-pencil{
+    width: 30px;
+    height: 30px;
+}
+.admcc-x {
+    color: red;
+    margin-right: 20px;
+}

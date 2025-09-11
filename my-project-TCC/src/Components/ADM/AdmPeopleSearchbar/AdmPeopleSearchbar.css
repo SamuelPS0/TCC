@@ -1,0 +1,61 @@
+.APS-h2{
+    color: #F05221;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 120% */
+    letter-spacing: 0.5px;
+    position: relative;
+    top: 30px;
+    left: 30px;
+}
+.APS-inputcontainer{
+    width: 1056px;
+    height: 65px;
+    flex-shrink: 0;
+    border-radius: 90px;
+    border: 3px solid #000;
+    background: #FFF;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.APS-inputcontainer::placeholder{
+    position: relative;
+    top: 8px;
+    left: 23px;
+    color: #BFBFBF;
+    font-family: Roboto;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Static-Body-Large-Line-Height, 24px); /* 120% */
+    letter-spacing: var(--Static-Body-Large-Tracking, 0.5px);
+}
+
+.APS-button{
+    width: 192px;
+    height: 51px;
+    flex-shrink: 0;
+    border-radius: 90px;
+    background: #F05221;
+    border: none;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    transition: 0.2s ease-in-out;
+    position: relative;
+    top: 2px;
+    right: 200px;
+
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 104.348% */
+    letter-spacing: 0.5px;
+}
+.APS-button:hover{
+    transform: translateY(-1px);
+    outline: 2px solid #FF432A;
+    outline-offset: 4px;
+    cursor: pointer;
+}
