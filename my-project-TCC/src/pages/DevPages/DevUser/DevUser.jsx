@@ -7,21 +7,17 @@ import SearchBar from '../../../Components/SearchBar/SearchBar'
 
 const DevUser = () => {
   return (
-    <div>DevUser
+    <div>
       <HeaderSwitcher />
       <div className="devuser-body">
-      <AdmPeopleSearchbar />
+        <div className='devuser-APS'>
+      <AdmPeopleSearchbar /></div>
       <div className='devuser-auc'>
-      <AdmUserComponent/>
-      <AdmUserComponent/>
-      <AdmUserComponent/>
-      <AdmUserComponent/>
-      <AdmUserComponent/>
-      <AdmUserComponent/>
-      <AdmUserComponent/>
-      <AdmUserComponent/>
-      <AdmUserComponent/>
-      </div>
+      <AdmUserComponent />
+      <AdmUserComponent />
+      <AdmUserComponent />
+      <AdmUserComponent />
+        </div>
       </div>
     </div>
   )

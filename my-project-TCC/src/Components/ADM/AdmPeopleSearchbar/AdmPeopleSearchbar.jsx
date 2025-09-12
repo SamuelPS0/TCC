@@ -13,8 +13,9 @@ const AdmPeopleSearchbar = () => {
 
   return (
     <div className='APS'>
-      <h2 className='APS-h2'>Pesquisa</h2>
+       <label class="APS-label">Pesquisa</label>
       <form onSubmit={handleSubmit} >
+        
         <input className='APS-inputcontainer'
           type="text"
           placeholder="Insira o nome do usuário"
@@ -22,7 +23,7 @@ const AdmPeopleSearchbar = () => {
           onChange={(e) => setAdmppl(e.target.value)}
         />
         <button className='APS-button'>
-          Enviar
+          Buscar
         </button>
       </form>
     </div>
