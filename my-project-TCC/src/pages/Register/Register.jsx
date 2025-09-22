@@ -29,16 +29,20 @@ export default function Register() {
 
   const password = watch('password');
 
-  // Função de envio para a API
+
   const onSubmit = async (data) => {
     try {
-      // Ajuste aqui a URL do endpoint de cadastro
-      const response = await axios.post('http://localhost:8080/api/v1/usuario', {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        accessLevel: accessLevels.CLIENTE // número 2
-      });
+
+const response = await axios.post('http://localhost:8080/api/v1/Usuario', {
+  nome: data.name,
+  email: data.email,
+  senha: data.password,
+  nivelAcesso: accessLevels.CLIENTE,  // String "CLIENTE", exato
+  dataCadastro: '2025-09-22T12:00:00', // sem o "Z" no final (sem timezone)
+  statusUsuario: true,
+});
+
+
 
       console.log('Resposta da API:', response.data);
 
