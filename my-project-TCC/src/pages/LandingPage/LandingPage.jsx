@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../Components/AuthContext';
 import HeaderCliente from '../../Components/Header/levelHeaders/HeaderCliente';
 import HeaderPrestador from '../../Components/Header/levelHeaders/HeaderPrestador';
+import HeaderAdmin from '../../Components/Header/levelHeaders/HeaderAdmin';
 import Header0 from '../../Components/Header/levelHeaders/Header0';
 import accessLevels from '../../Components/accessLevels';
 import SearchBar from '../../Components/SearchBar/SearchBar';
@@ -20,10 +21,10 @@ export default function LandingPage() {
     
 
   return (
-    <div className='lp'>
+    <div className='lp'> 
 {user?.accessLevel === accessLevels.CLIENTE && <HeaderCliente />}
 {user?.accessLevel === accessLevels.PRESTADOR && <HeaderPrestador />}
-{user?.accessLevel === accessLevels.ADMIN && <HeaderPrestador />}
+{user?.accessLevel === accessLevels.ADMIN && <HeaderAdmin />}
 {user?.accessLevel === accessLevels.GUEST && <Header0 />}
 {!user && <Header0 />}
 

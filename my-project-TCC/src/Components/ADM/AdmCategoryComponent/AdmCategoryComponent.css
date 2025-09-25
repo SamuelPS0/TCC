@@ -1,35 +1,88 @@
-.admcc-body{
+.adm-category-body{
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    width: 800px;
-    height: 50px;
-    flex-shrink: 0;
-    border-radius: 15px;
-    border: 2px solid #000;
+    
+}
+
+.adm-category-table {
+  width: 50%;
+  margin-top: 180px;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.adm-category-table tr {
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-align: left;
+    gap: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: 3px solid #000;
     background: #FFF;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+
+    
 }
-.admcc-body h1{
+
+.adm-category-table input {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  font-size: 16px;
+  
+  
+}
+
+.adm-category-table input:focus {
+  outline: 2px solid #4CAF50;
+  background-color: #f0fff0;gap:50px;
+}
+
+.adm-category-item{
+    color: #000;
     text-align: center;
     font-family: Poppins;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin-left: 9px;
 }
-.admcc-icons{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.adm-category-actions {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 10px; 
+  flex: 1; 
 }
-.admcc-pencil{
-    width: 30px;
-    height: 30px;
+
+.adm-category-button {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
-.admcc-x {
+
+.adm-category-icon {
+  width: 32px;
+  height: 32px;
+}
+
+#adm-category-icon-edit {
+  color: rgb(23, 143, 7);
+}
+
+#adm-category-icon-delete {
+  color: red;
+}
+
+#adm-category-icon-edit{
+    color: rgb(23, 143, 7);
+}
+#adm-category-icon-delete{
     color: red;
-    margin-right: 20px;
 }

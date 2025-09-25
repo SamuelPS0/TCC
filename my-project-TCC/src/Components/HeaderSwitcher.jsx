@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import accessLevels from './accessLevels';
 import HeaderCliente from './Header/levelHeaders/HeaderCliente';
 import HeaderPrestador from './Header/levelHeaders/HeaderPrestador';
+import HeaderAdmin from './Header/levelHeaders/HeaderAdmin';
 import Header0 from './Header/levelHeaders/Header0';
 
 export default function HeaderSwitcher(props) {
@@ -21,6 +22,8 @@ export default function HeaderSwitcher(props) {
   }
   
   switch(user.accessLevel) {
+    case accessLevels.ADMIN:
+      return <HeaderAdmin {...props} />;
     case accessLevels.PRESTADOR:
       return <HeaderPrestador {...props} />;
     case accessLevels.CLIENTE:
