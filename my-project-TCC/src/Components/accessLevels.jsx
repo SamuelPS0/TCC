@@ -2,7 +2,7 @@ const accessLevels = {
   ADMIN: "ADMIN",
   PRESTADOR: "PRESTADOR",   // Prestador
   CLIENTE: "CLIENTE",     // Cliente
-  GUEST: "GUEST"       // Sem login
+  GUEST: 0       // Sem login
 };
 
 export default accessLevels;

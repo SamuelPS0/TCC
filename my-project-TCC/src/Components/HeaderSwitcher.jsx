@@ -11,7 +11,7 @@ export default function HeaderSwitcher(props) {
   const { user } = useAuth();
   const location = useLocation();
 
-  // Proteção caso user seja null
+
   if (!user || user.accessLevel === accessLevels.GUEST) {
     // Se quiser o Header0 só na landing '/', pode usar:
     if (location.pathname === '/') {
