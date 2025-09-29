@@ -2,7 +2,7 @@ import React from 'react';
 import './AdmCategoryComponent.css';
 import { MdDeleteForever , MdModeEditOutline } from "react-icons/md";
 
-const AdmCategoryComponent = ({ categorias }) => {
+const AdmCategoryComponent = ({ categorias, onEdit }) => {
 
   return (
     <div className='adm-category-body'>
@@ -12,7 +12,10 @@ const AdmCategoryComponent = ({ categorias }) => {
             <tr className='adm-category-item' key={fget.id}>
               <td>{fget.nome}</td>
               <td className='adm-category-actions'>
-                <button className='adm-category-button'>
+                <button
+                  className='adm-category-button'
+                  onClick={() => onEdit(fget)}  // Passa categoria para editar
+                >
                   <MdModeEditOutline id='adm-category-icon-edit' className='adm-category-icon'/>
                 </button>
                 <button className='adm-category-button'>

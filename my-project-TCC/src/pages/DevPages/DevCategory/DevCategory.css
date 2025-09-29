@@ -10,7 +10,7 @@
     align-items: center;
     padding: 12px 0 8px 0;
     border-radius: 10px;
-    border: 3px solid #000;
+    border: 3px solid #000000;
     background: #FFF;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     width: 49%; 
@@ -29,7 +29,15 @@
     font-weight: 700;
     line-height: normal;
     padding-left: 15px;
+    transition: 0.8s;
 }
+
+.devc-input-editando {
+  background-color: #ffd3b6;
+  border: 2px solid #F05221;
+  transition: background-color 0.3s ease, border 0.3s ease;
+}
+
 .devc-submit{
     display: flex;
     align-items: center;

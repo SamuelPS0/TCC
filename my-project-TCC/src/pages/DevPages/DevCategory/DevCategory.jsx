@@ -6,7 +6,8 @@ import axios from 'axios';
 import './DevCategory.css';
 
 const DevCategory = () => {
-  const [categorias, setCategorias] = useState([]);  // Estado para lista de categorias
+  const [categorias, setCategorias] = useState([]);
+  const [editarCategorias, setEditarCategorias] = useState(null);
 
   const {
     register,
@@ -15,7 +16,17 @@ const DevCategory = () => {
     formState: { errors }
   } = useForm();
 
-  // Função para carregar categorias do backend
+  // Função para iniciar edição
+  const iniciarEdicao = (categoria) => {
+    setEditarCategorias(categoria);
+    reset({ name: categoria.nome });
+      window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth'
+  });
+  };
+
+  // Carregar categorias
   const carregarCategorias = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/v1/categoria");
@@ -25,23 +36,48 @@ const DevCategory = () => {
     }
   };
 
-  // Função para criar nova categoria
-  const aoEnviar = async (postdata) => {
+  // Criar categoria
+  const criarCategoria = async (postdata) => {
     try {
       await axios.post("http://localhost:8080/api/v1/categoria", {
         nome: postdata.name,
         status_categoria: "1"
       });
-      alert(`A categoria ${postdata.name} foi criada com sucesso!`)
-      reset(); 
-      carregarCategorias(); // Atualiza lista ao criar categoria
+      alert(`A categoria ${postdata.name} foi criada com sucesso!`);
+      reset();
+      carregarCategorias();
     } catch (error) {
       console.error("Erro ao cadastrar:", error.response?.data || error.message);
       alert("Houve um erro ao registrar a categoria, tente novamente.");
     }
   };
 
-  // Carrega categorias ao montar o componente
+  // Atualizar categoria
+  const atualizarCategoria = async (postdata) => {
+    try {
+      await axios.put(`http://localhost:8080/api/v1/categoria/${editarCategorias.id}`, {
+        nome: postdata.name,
+        status_categoria: "1"
+      });
+      alert(`Categoria atualizada com sucesso!`);
+      reset();
+      carregarCategorias();
+      setEditarCategorias(null);
+    } catch (error) {
+      console.error("Erro ao atualizar categoria:", error.response?.data || error.message);
+      alert("Houve um erro ao atualizar a categoria, tente novamente.");
+    }
+  };
+
+  // Enviar formulário (criar ou atualizar)
+  const aoEnviar = async (postdata) => {
+    if (editarCategorias) {
+      await atualizarCategoria(postdata);
+    } else {
+      await criarCategoria(postdata);
+    }
+  };
+
   useEffect(() => {
     carregarCategorias();
   }, []);
@@ -50,16 +86,20 @@ const DevCategory = () => {
     <div>
       <HeaderSwitcher />
       <div>
-   <AdmCategoryComponent categorias={categorias} />
+        <AdmCategoryComponent categorias={categorias} onEdit={iniciarEdicao} />
         <form onSubmit={handleSubmit(aoEnviar)} className='devc-form'>
-          <input  className='devc-input'
-            type="text"
-            placeholder="Digite a categoria..."
-            {...register('name', { required: true })}     
-          />
-          <button type="submit" className='devc-submit'>Adicionar categoria</button>
+          <input
+          className={`devc-input ${editarCategorias ? 'devc-input-editando' : ''}`}
+          type="text"
+          placeholder="Digite a categoria..."
+          {...register('name', { required: true })}
+          onBlur={() => setEditarCategorias(null)}
+        />
 
-          
+
+          <button type="submit" className='devc-submit'>
+            {editarCategorias ? "Salvar alteração" : "Adicionar categoria"}
+          </button>
         </form>
       </div>
     </div>
