@@ -1,22 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdmCategoryComponent from '../../../Components/ADM/AdmCategoryComponent/AdmCategoryComponent';
 import HeaderSwitcher from '../../../Components/HeaderSwitcher';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import './DevCategory.css';
 
 const DevCategory = () => {
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
-  const [novoNome, setNovoNome] = useState('');
+  const [categorias, setCategorias] = useState([]);  // Estado para lista de categorias
 
-  // Função passada para AdmCategoryComponent para abrir a edição
-  const handleEdit = (fget) => {
-    setCategoriaSelecionada(fget);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm();
+
+  // Função para carregar categorias do backend
+  const carregarCategorias = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/v1/categoria");
+      setCategorias(response.data);
+    } catch (error) {
+      console.error("Erro ao carregar categorias:", error);
+    }
   };
+
+  // Função para criar nova categoria
+  const aoEnviar = async (postdata) => {
+    try {
+      await axios.post("http://localhost:8080/api/v1/categoria", {
+        nome: postdata.name,
+        status_categoria: "1"
+      });
+
+      reset(); 
+      carregarCategorias(); // Atualiza lista ao criar categoria
+    } catch (error) {
+      console.error("Erro ao cadastrar:", error.response?.data || error.message);
+      alert("Houve um erro ao registrar a categoria, tente novamente.");
+    }
+  };
+
+  // Carrega categorias ao montar o componente
+  useEffect(() => {
+    carregarCategorias();
+  }, []);
 
   return (
     <div>
-     <HeaderSwitcher />
+      <HeaderSwitcher />
       <div className="devcategory-body">
-        <AdmCategoryComponent/>
+   <AdmCategoryComponent categorias={categorias} />
 
+        <form onSubmit={handleSubmit(aoEnviar)} className='devc-form'>
+          <input  className='devc-input'
+            type="text"
+            placeholder="Nome da categoria"
+            {...register('name', { required: true })}     
+          />
+          <button type="submit">Cadastrar</button>
+
+          
+        </form>
       </div>
     </div>
   );
