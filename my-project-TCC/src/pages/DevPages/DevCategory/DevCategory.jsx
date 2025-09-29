@@ -32,7 +32,7 @@ const DevCategory = () => {
         nome: postdata.name,
         status_categoria: "1"
       });
-
+      alert(`A categoria ${postdata.name} foi criada com sucesso!`)
       reset(); 
       carregarCategorias(); // Atualiza lista ao criar categoria
     } catch (error) {
@@ -49,16 +49,15 @@ const DevCategory = () => {
   return (
     <div>
       <HeaderSwitcher />
-      <div className="devcategory-body">
+      <div>
    <AdmCategoryComponent categorias={categorias} />
-
         <form onSubmit={handleSubmit(aoEnviar)} className='devc-form'>
           <input  className='devc-input'
             type="text"
-            placeholder="Nome da categoria"
+            placeholder="Digite a categoria..."
             {...register('name', { required: true })}     
           />
-          <button type="submit">Cadastrar</button>
+          <button type="submit" className='devc-submit'>Adicionar categoria</button>
 
           
         </form>
