@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './AdmCategoryComponent.css';
 import { MdDeleteForever, MdModeEditOutline, MdCheck, MdClose } from "react-icons/md";
 
-const AdmCategoryComponent = ({ categorias, onUpdate }) => {
+const AdmCategoryComponent = ({ categorias, onUpdate, onDelete }) => {
   const [editandoId, setEditandoId] = useState(null);
   const [novoNome, setNovoNome] = useState('');
-  const [enviando, setEnviando] = useState(false);
+  const [enviando, setEnviando] = useState(false); 
 
   const iniciarEdicao = (categoria) => {
     setEditandoId(categoria.id);
@@ -26,12 +26,18 @@ const AdmCategoryComponent = ({ categorias, onUpdate }) => {
 
     try {
       setEnviando(true);
-      await onUpdate(categoria.id, novoNome);  // Atualiza no backend
-      cancelarEdicao();                        // Fecha modo de edição
+      await onUpdate(categoria.id, novoNome);
+      cancelarEdicao();                      
     } catch (error) {
       alert("Erro ao atualizar.");
       console.error(error);
       setEnviando(false);
+    }
+  };
+
+  const confirmarDelete = (categoria) => {
+    if (window.confirm(`Deseja realmente excluir a categoria "${categoria.nome}"?`)) {
+      onDelete(categoria.id);
     }
   };
 
@@ -63,14 +69,14 @@ const AdmCategoryComponent = ({ categorias, onUpdate }) => {
                 {editandoId === categoria.id ? (
                   <>
                     <button
-                      className='adm-category-button'
+                      className='adm-category-button edit-button'
                       onClick={() => confirmarEdicao(categoria)}
                       disabled={enviando}
                     >
                       {enviando ? "Enviando..." : <MdCheck className='adm-category-icon' />}
                     </button>
                     <button
-                      className='adm-category-button'
+                      className='adm-category-button cancel-button'
                       onClick={cancelarEdicao}
                       disabled={enviando}
                     >
@@ -79,10 +85,16 @@ const AdmCategoryComponent = ({ categorias, onUpdate }) => {
                   </>
                 ) : (
                   <>
-                    <button className='adm-category-button' onClick={() => iniciarEdicao(categoria)}>
+                    <button 
+                      className='adm-category-button edit-button' 
+                      onClick={() => iniciarEdicao(categoria)}
+                    >
                       <MdModeEditOutline className='adm-category-icon' />
                     </button>
-                    <button className='adm-category-button'>
+                    <button 
+                      className='adm-category-button delete-button' 
+                      onClick={() => confirmarDelete(categoria)}
+                    >
                       <MdDeleteForever className='adm-category-icon' />
                     </button>
                   </>

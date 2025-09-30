@@ -16,17 +16,9 @@ const DevCategory = () => {
     formState: { errors }
   } = useForm();
 
-  // Função para iniciar edição
-  const iniciarEdicao = (categoria) => {
-    setEditarCategorias(categoria);
-    reset({ name: categoria.nome });
-      window.scrollTo({
-    top: document.body.scrollHeight,
-    behavior: 'smooth'
-  });
-  };
 
-  // Carregar categorias
+
+  // FUNÇÃO GET (Read)
   const carregarCategorias = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/v1/categoria");
@@ -37,30 +29,16 @@ const DevCategory = () => {
     }
   };
 
-  const confirmarEdicao = async (categoria) => {
-  if (!novoNome.trim() || novoNome === categoria.nome) {
-    cancelarEdicao();
-    return;
-  }
+    useEffect(() => {
+    carregarCategorias();
+  }, []);
 
-  try {
-    setEnviando(true);
-    console.log('Atualizando categoria:', categoria.id, 'Novo nome:', novoNome); // ✅ DEBUG
-    await onUpdate(categoria.id, novoNome);  // Atualiza no backend
-    cancelarEdicao(); // Fecha modo de edição
-  } catch (error) {
-    alert("Erro ao atualizar.");
-    console.error(error);
-    setEnviando(false);
-  }
-};
-
-
+  //FUNÇÃO PUT (Update)
   const atualizarNomeCategoria = async (id, novoNome) => {
   try {
     await axios.put(`http://localhost:8080/api/v1/categoria/${id}`, {
       nome: novoNome,
-      status_categoria: "1"
+      status_categoria: "ATIVO"
     });
     alert("Categoria atualizada com sucesso!");
     carregarCategorias();
@@ -71,13 +49,30 @@ const DevCategory = () => {
 };
 
 
+  const confirmarEdicao = async (categoria) => {
+  if (!novoNome.trim() || novoNome === categoria.nome) {
+    cancelarEdicao();
+    return;
+  }
 
-  // Criar categoria
+  try {
+    setEnviando(true);
+    console.log('Atualizando categoria:', categoria.id, 'Novo nome:', novoNome);
+    await onUpdate(categoria.id, novoNome);  // Atualiza no backend
+    cancelarEdicao(); // Fecha modo de edição
+  } catch (error) {
+    alert("Erro ao atualizar.");
+    console.error(error);
+    setEnviando(false);
+  }
+};
+
+  // FUNÇÃO POST (Create)
   const criarCategoria = async (postdata) => {
     try {
       await axios.post("http://localhost:8080/api/v1/categoria", {
         nome: postdata.name,
-        status_categoria: "1"
+        status_categoria: "ATIVO"
       });
       alert(`A categoria ${postdata.name} foi criada com sucesso!`);
       reset();
@@ -93,7 +88,7 @@ const DevCategory = () => {
     try {
       await axios.put(`http://localhost:8080/api/v1/categoria/${editarCategorias.id}`, {
         nome: postdata.name,
-        status_categoria: "1"
+        status_categoria: "ATIVO"
       });
       alert(`Categoria atualizada com sucesso!`);
       reset();
@@ -113,16 +108,32 @@ const DevCategory = () => {
       await criarCategoria(postdata);
     }
   };
+// DELETE DO CRUD
+const deleteCategoria = async (id) => {
+  try {
+    if (window.confirm("Deseja realmente excluir esta categoria?")) {
+      await axios.delete(`http://localhost:8080/api/v1/categoria/${id}`);
+      alert("Categoria deletada com sucesso!");
+      carregarCategorias(); // Atualiza a lista
+    }
+  } catch (error) {
+    console.error("Erro ao deletar categoria:", error.response?.data || error.message);
+    alert("Erro ao deletar categoria, tente novamente.");
+  }
+};
+  
 
-  useEffect(() => {
-    carregarCategorias();
-  }, []);
 
   return (
     <div>
       <HeaderSwitcher />
       <div>
-        <AdmCategoryComponent categorias={categorias} onUpdate={atualizarNomeCategoria}/>
+        <AdmCategoryComponent 
+  categorias={categorias} 
+  onUpdate={atualizarNomeCategoria} 
+  onDelete={deleteCategoria}
+/>
+
 
         <form onSubmit={handleSubmit(aoEnviar)} className='devc-form'>
           <input

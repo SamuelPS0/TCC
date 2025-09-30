@@ -2,43 +2,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
 }
 
 .adm-category-table {
   width: 50%;
   margin-top: 180px;
   border-collapse: collapse;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
 }
 
 .adm-category-table tr {
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    text-align: left;
-    margin-top: 20px;
-    border-radius: 10px;
-    border: 3px solid #000;
-    background: #FFF;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);   
-}
-
-.adm-category-table input {
-  width: 100%;
-  border: none;
-  padding: 4px;
-  font-size: 16px;
-  
-  
-}
-
-.adm-category-table input:focus {
-  outline: 2px solid #4CAF50;
-  background-color: #f0fff0;gap:50px;
+  border: 3px solid #000;
+  border-radius: 10px;
+  background: #FFF;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-top: 20px;
 }
 
 .adm-category-item{
@@ -46,10 +26,9 @@
     text-align: center;
     font-family: Poppins;
     font-size: 24px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
 }
+
 .adm-category-actions {
   display: flex;
   justify-content: flex-end; 
@@ -61,6 +40,33 @@
   background: none;
   border: none;
   cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.edit-button {
+  color: #17BF07; /* verde */
+}
+
+.edit-button:hover {
+  background-color: #e5f5e5;
+}
+
+.delete-button {
+  color: #FF3B3B; /* vermelho */
+}
+
+.delete-button:hover {
+  background-color: #ffe5e5;
+}
+
+.cancel-button {
+  color: #555;
+}
+
+.cancel-button:hover {
+  background-color: #eee;
 }
 
 .adm-category-icon {
@@ -68,17 +74,22 @@
   height: 32px;
 }
 
-#adm-category-icon-edit {
-  color: rgb(23, 143, 7);
+/* Input igual ao input normal do formulário */
+.adm-category-edit-input {
+  width: 100%;
+  padding: 8px 0 ;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+
+    color: #000;
+    padding-left: 10px;
+    font-family: Poppins;
+    font-size: 24px;
+    font-weight: 700;
 }
 
-#adm-category-icon-delete {
-  color: red;
-}
-
-#adm-category-icon-edit{
-    color: rgb(23, 143, 7);
-}
-#adm-category-icon-delete{
-    color: red;
+.adm-category-edit-input:focus {
+  outline: 2px solid #4CAF50;
+  background-color: #f0fff0;
 }
