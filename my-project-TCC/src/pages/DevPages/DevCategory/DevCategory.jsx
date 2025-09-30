@@ -31,10 +31,46 @@ const DevCategory = () => {
     try {
       const response = await axios.get("http://localhost:8080/api/v1/categoria");
       setCategorias(response.data);
+      console.log('Categorias atualizadas:', response.data);
     } catch (error) {
       console.error("Erro ao carregar categorias:", error);
     }
   };
+
+  const confirmarEdicao = async (categoria) => {
+  if (!novoNome.trim() || novoNome === categoria.nome) {
+    cancelarEdicao();
+    return;
+  }
+
+  try {
+    setEnviando(true);
+    console.log('Atualizando categoria:', categoria.id, 'Novo nome:', novoNome); // ✅ DEBUG
+    await onUpdate(categoria.id, novoNome);  // Atualiza no backend
+    cancelarEdicao(); // Fecha modo de edição
+  } catch (error) {
+    alert("Erro ao atualizar.");
+    console.error(error);
+    setEnviando(false);
+  }
+};
+
+
+  const atualizarNomeCategoria = async (id, novoNome) => {
+  try {
+    await axios.put(`http://localhost:8080/api/v1/categoria/${id}`, {
+      nome: novoNome,
+      status_categoria: "1"
+    });
+    alert("Categoria atualizada com sucesso!");
+    carregarCategorias();
+  } catch (error) {
+    console.error("Erro ao atualizar categoria:", error.response?.data || error.message);
+    alert("Houve um erro ao atualizar a categoria, tente novamente.");
+  }
+};
+
+
 
   // Criar categoria
   const criarCategoria = async (postdata) => {
@@ -86,7 +122,8 @@ const DevCategory = () => {
     <div>
       <HeaderSwitcher />
       <div>
-        <AdmCategoryComponent categorias={categorias} onEdit={iniciarEdicao} />
+        <AdmCategoryComponent categorias={categorias} onUpdate={atualizarNomeCategoria}/>
+
         <form onSubmit={handleSubmit(aoEnviar)} className='devc-form'>
           <input
           className={`devc-input ${editarCategorias ? 'devc-input-editando' : ''}`}

@@ -1,26 +1,92 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AdmCategoryComponent.css';
-import { MdDeleteForever , MdModeEditOutline } from "react-icons/md";
+import { MdDeleteForever, MdModeEditOutline, MdCheck, MdClose } from "react-icons/md";
 
-const AdmCategoryComponent = ({ categorias, onEdit }) => {
+const AdmCategoryComponent = ({ categorias, onUpdate }) => {
+  const [editandoId, setEditandoId] = useState(null);
+  const [novoNome, setNovoNome] = useState('');
+  const [enviando, setEnviando] = useState(false);
+
+  const iniciarEdicao = (categoria) => {
+    setEditandoId(categoria.id);
+    setNovoNome(categoria.nome);
+  };
+
+  const cancelarEdicao = () => {
+    setEditandoId(null);
+    setNovoNome('');
+    setEnviando(false);
+  };
+
+  const confirmarEdicao = async (categoria) => {
+    if (!novoNome.trim() || novoNome === categoria.nome) {
+      cancelarEdicao();
+      return;
+    }
+
+    try {
+      setEnviando(true);
+      await onUpdate(categoria.id, novoNome);  // Atualiza no backend
+      cancelarEdicao();                        // Fecha modo de edição
+    } catch (error) {
+      alert("Erro ao atualizar.");
+      console.error(error);
+      setEnviando(false);
+    }
+  };
 
   return (
     <div className='adm-category-body'>
       <table className="adm-category-table">
         <tbody>
-          {categorias.map(fget => (
-            <tr className='adm-category-item' key={fget.id}>
-              <td>{fget.nome}</td>
+          {categorias.map((categoria) => (
+            <tr className='adm-category-item' key={categoria.id}>
+              <td>
+                {editandoId === categoria.id ? (
+                  <input
+                    className='adm-category-edit-input'
+                    type="text"
+                    value={novoNome}
+                    onChange={(e) => setNovoNome(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') confirmarEdicao(categoria);
+                      if (e.key === 'Escape') cancelarEdicao();
+                    }}
+                    autoFocus
+                  />
+                ) : (
+                  categoria.nome
+                )}
+              </td>
+
               <td className='adm-category-actions'>
-                <button
-                  className='adm-category-button'
-                  onClick={() => onEdit(fget)}  // Passa categoria para editar
-                >
-                  <MdModeEditOutline id='adm-category-icon-edit' className='adm-category-icon'/>
-                </button>
-                <button className='adm-category-button'>
-                  <MdDeleteForever id='adm-category-icon-delete' className='adm-category-icon'/>
-                </button>
+                {editandoId === categoria.id ? (
+                  <>
+                    <button
+                      className='adm-category-button'
+                      onClick={() => confirmarEdicao(categoria)}
+                      disabled={enviando}
+                    >
+                      {enviando ? "Enviando..." : <MdCheck className='adm-category-icon' />}
+                    </button>
+                    <button
+                      className='adm-category-button'
+                      onClick={cancelarEdicao}
+                      disabled={enviando}
+                    >
+                      <MdClose className='adm-category-icon' />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className='adm-category-button' onClick={() => iniciarEdicao(categoria)}>
+                      <MdModeEditOutline className='adm-category-icon' />
+                    </button>
+                    <button className='adm-category-button'>
+                      <MdDeleteForever className='adm-category-icon' />
+                    </button>
+                  </>
+                )}
               </td>
             </tr>
           ))}
