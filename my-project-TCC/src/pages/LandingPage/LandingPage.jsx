@@ -71,58 +71,11 @@ export default function LandingPage() {
               </div>
             </section>
 
-            <section>
-            <div className='lp-section3-cards'>
-              <div className="lp-bodyCard">
-              <h1>Pra quem ama comer</h1>
-              <div className='lp-bodyCard-Container'>
-                <p>Para suas festas, ceias e encontros especiais, descubra pratos caseiros preparados com carinho por quem vive a gastronomia.</p>
-                  <Link to="/home-list" className="lp-bodyCard-button">
-                  Sou Cliente
-                </Link>
-              </div>
-              </div>
-
-              <div className="lp-bodyCard">
-              <h1>Pra quem ama cozinhar</h1>
-              <div className='lp-bodyCard-Container'>
-                <p>Divulgue seu serviço, alcance mais pessoas e transforme sua paixão pela cozinha em renda.<br/>­</p>
-                <Link to="/login" className="lp-bodyCard-button">
-                  Sou Cozinheiro
-                </Link>
-
-              </div>
-              </div>
-              </div>
-            </section>
-
             <footer>
               <div className='lp-footer'>
                 <div className = 'lp-footer-section1'>
                   <h1 className='lp-footer-section1-h1'>Divulgaí</h1>
                   <p>Somos uma plataforma que valoriza o trabalho dos pequenos profissionais da culinária, aproximando você de pratos feitos com carinho e autenticidade.</p>
-                </div>
-                <div className='lp-footer-section2'>
-                  <h1>Links úteis</h1>
-                  <ul>
-                    <li>Sobre Nós</li>
-                    <li>Buscar Prestadores</li>
-                    <li>Cadastro</li>
-                    <li>Login</li>
-                  </ul>
-                </div>
-                <div className='lp-footer-section3'>
-                  <h1>Social</h1>
-                  <ul>
-                    <li>Instagram</li>
-                    <Link to ='dev-hub'>
-                    <li>Facebook</li></Link>
-                    <Link to="/create-perfil">
-                    <li>Email</li></Link>
-                    <Link to='apagar'>
-                    <li>Telefone</li>
-                    </Link>
-                  </ul>
                 </div>
                 </div>
             </footer>

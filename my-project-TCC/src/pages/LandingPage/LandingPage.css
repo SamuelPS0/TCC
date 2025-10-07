@@ -254,7 +254,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    max-width: 410px;
+    max-width: 1200px;
 }
 .lp-footer-section1 p{
     color: #FFF;
