@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import para navegar entre rotas
 import "./AccInfo.css"; 
-import SideMenu from "../../Components/SideMenu/SideMenu";
+import SideMenu from "../../../Components/SideMenu/SideMenu";
 import {
   FaEye,
   FaEyeSlash,

@@ -9,8 +9,8 @@ import HomeList from '../pages/HomeList/HomeList';
 import Perfil from '../pages/Profile/Profile';
 import PerfilPrestador from '../pages/Profile/ProfilePrestador';
 import SobreNos from '../pages/SobreNos/SobreNos';
-import AccInfo from '../pages/AccInfo/AccInfo';
-import CreatePerfil from '../pages/CreatePerfil/CreatePerfil';
+import AccInfo from '../pages/PRESTADORremovido/AccInfo/AccInfo';
+import CreatePerfil from '../pages/PRESTADORremovido/CreatePerfil/CreatePerfil'
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import SecurityQuestions from '../pages/SecurityQuestions/SecurityQuestions';
 import ClientAccInfo from '../pages/ClientAccInfo/ClientAccInfo';

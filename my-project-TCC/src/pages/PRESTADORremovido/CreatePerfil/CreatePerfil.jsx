@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from "react-hook-form";
 import './CreatePerfil.css';
 import { useNavigate } from 'react-router-dom';
-import SideMenu from '../../Components/SideMenu/SideMenu';
+import SideMenu from '../../../Components/SideMenu/SideMenu';
 import { FiUpload } from "react-icons/fi";
 import { FaRegImage } from "react-icons/fa6";
 import { FaRegEnvelope, FaCoffee, FaInstagram, FaFacebook, FaWhatsapp   } from "react-icons/fa";
