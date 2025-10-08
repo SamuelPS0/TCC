@@ -112,7 +112,6 @@ export default function Perfil() {
     <HeaderSwitcher />
     <div className='profile-container'>
       <div className="profile-positioning">
-        <Link to="/profileprestador" state={{ perfil }}>PRESTADOR PROFILE</Link>
         <div className='profile-main'>
           <div className="profile-header-container">
 
