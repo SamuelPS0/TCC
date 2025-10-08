@@ -18,7 +18,9 @@ import DevHub from '../pages/DevPages/DevHub/DevHub';
 import DevCategory from '../pages/DevPages/DevCategory/DevCategory';
 import DevStatistics from '../pages/DevPages/DevStatistics/DevStatistics';
 import DevUser from '../pages/DevPages/DevUser/DevUser';
-
+import DevViewClient from '../pages/DevPages/DevViews/DevViewClient/DevViewClient'
+import DevViewPrestador from '../pages/DevPages/DevViews/DevViewPrestador/DevViewPrestador'
+import DevViewADM from '../pages/DevPages/DevViews/DevViewADM/DevViewADM'
 
 const AppRoutes = () => {
   return (
@@ -111,6 +113,33 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
             <DevUser />
+          </ProtectedRoute>
+        }
+      />
+
+                        <Route
+        path="/dev-view-client"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
+            <DevViewClient />
+          </ProtectedRoute>
+        }
+      />
+
+                              <Route
+        path="/dev-view-prestador"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
+            <DevViewPrestador />
+          </ProtectedRoute>
+        }
+      />
+
+                              <Route
+        path="/dev-view-adm"
+        element={
+          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
+            <DevViewADM />
           </ProtectedRoute>
         }
       />

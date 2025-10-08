@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AdmUserComponent.css';
-import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 import { FaEye } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
 
 const AdmUserComponent = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -15,7 +13,7 @@ const AdmUserComponent = () => {
       setUsuarios(resposta.data);
       console.log('Usuarios atualizados:', resposta.data);
     } catch (error) {
-      console.error("Erro ao carregar usuarios:", error);
+      console.error("Erro ao carregar usuários:", error);
     }
   };
 
@@ -23,36 +21,46 @@ const AdmUserComponent = () => {
     carregarUsuarios();
   }, []);
 
+  const navigate = useNavigate();
+
+const handleVisualizar = (usuario) => {
+  navigate('/dev-view', { state: { usuario } });
+};
+
+
   return (
-    <div className='auc-wrapper'>
-      <Table striped="columns">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Senha</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {usuarios.map((usuario, index) => (
-            <tr key={usuario.id || index}>
-              <td>{usuario.id}</td>
-              <td>{usuario.nome}</td>
-              <td>{usuario.email}</td>
-              <td>{usuario.nivelAcesso}</td>
-              <td>{usuario.statusUsuario ? "Ativo" : "Inativo"}</td>
-              <td>
-                <button><FaEye />Visualizar</button>
-                <button><MdEdit />Editar</button>
-                <button><FaTrash />Deletar</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+    <div className="auc-container">
+      <div className="auc-table">
+        <div className="auc-header">
+          <div className="auc-col id">ID</div>
+          <div className="auc-col nome">Nome</div>
+          <div className="auc-col email">Email</div>
+          <div className="auc-col nivel">Nível de acesso</div>
+          <div className="auc-col status">Status</div>
+          <div className="auc-col acoes">Ações</div>
+        </div>
+
+        {usuarios.map((usuario, index) => (
+          <div className="auc-row" key={usuario.id || index}>
+            <div className="auc-col id">{usuario.id}</div>
+            <div className="auc-col nome">{usuario.nome}</div>
+            <div className="auc-col email">{usuario.email}</div>
+            <div className="auc-col nivel">{usuario.nivelAcesso}</div>
+            <div className={`auc-col status ${usuario.statusUsuario ? "ativo" : "inativo"}`}>
+              {usuario.statusUsuario ? "Ativo" : "Inativo"}
+              </div>
+            <div className="auc-col acoes">
+              <button
+                className="btn-visualizar"
+                onClick={() => handleVisualizar(usuario)}
+              >
+                <FaEye /> Visualizar
+              </button>
+
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
