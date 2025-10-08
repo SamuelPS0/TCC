@@ -1,22 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AdmUserComponent.css';
-import { IoPersonCircleOutline } from "react-icons/io5";
-import { FaRegClipboard, FaRegAngry } from "react-icons/fa";
+import Table from 'react-bootstrap/Table';
+import axios from 'axios';
+import { FaEye } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
 
-  const AdmUserComponent = () => {
-    return(
+const AdmUserComponent = () => {
+  const [usuarios, setUsuarios] = useState([]);
+
+  const carregarUsuarios = async () => {
+    try {
+      const resposta = await axios.get(`http://localhost:8080/api/v1/Usuario`);
+      setUsuarios(resposta.data);
+      console.log('Usuarios atualizados:', resposta.data);
+    } catch (error) {
+      console.error("Erro ao carregar usuarios:", error);
+    }
+  };
+
+  useEffect(() => {
+    carregarUsuarios();
+  }, []);
+
+  return (
     <div className='auc-wrapper'>
-      <div className='auc-profilebody'>
-        <IoPersonCircleOutline className='auc-icon'/>
-        <h1 className='auc-h1'>USUARIO</h1>
-      </div>
-      <div className='auc-options'>
-      <h1 className='auc-verify'>PERFIL <br/>VERIFICADO</h1>
-      <h1 className='auc-analize'>PERFIL <br/>VERIFICADO</h1>
-      </div>
+      <Table striped="columns">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Senha</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {usuarios.map((usuario, index) => (
+            <tr key={usuario.id || index}>
+              <td>{usuario.id}</td>
+              <td>{usuario.nome}</td>
+              <td>{usuario.email}</td>
+              <td>{usuario.nivelAcesso}</td>
+              <td>{usuario.statusUsuario ? "Ativo" : "Inativo"}</td>
+              <td>
+                <button><FaEye />Visualizar</button>
+                <button><MdEdit />Editar</button>
+                <button><FaTrash />Deletar</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
-    )
-  }
-
+  );
+};
 
 export default AdmUserComponent;

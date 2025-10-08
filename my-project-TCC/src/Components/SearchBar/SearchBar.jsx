@@ -21,9 +21,9 @@ useEffect(() => {
     try {
       const response = await axios.get('http://localhost:8080/api/v1/categoria');
       setCategorias(response.data);
-      console.log('Categorias carregadas:', response.data);
+      console.log('Categorias da searchbar carregadas:', response.data);
     } catch (error) {
-      console.error('Erro ao carregar categorias:', error);
+      console.error('Erro ao carregar categorias da searchbar:', error);
     }
   };
 
