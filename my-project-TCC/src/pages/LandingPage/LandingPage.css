@@ -240,99 +240,124 @@
   box-shadow: 0 6px 12px rgba(255, 67, 42, 0.4);
   transform: translateY(-2px);
 }
-.lp-footer{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 333px;
-    background: #F05221;
-    width: 100vw;
-    height: 334px;
-    flex-shrink: 0;
-}
-.lp-footer-section1{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    max-width: 1200px;
-}
-.lp-footer-section1 p{
-    color: #FFF;
-    text-align: justify;
-    font-family: Montserrat;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px; /* 100% */
-    letter-spacing: 0.5px;
-}
-.lp-footer-section1-h1{
-    display: flex;
-    align-items: flex-start;
-    color: #FFF;
-    font-family: Montserrat;
-    font-size: 36px;
-    font-style: italic;
-    font-weight: 800;
-    line-height: 24px; /* 66.667% */
-    letter-spacing: 0.5px;
-    margin-bottom: 40px;
-}
-.lp-footer-section2{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-.lp-footer-section2 h1{
-    display: flex;
-    align-items: flex-start;
-    color: #FFF;
-    font-family: Montserrat;
-    font-size: 36px;
-    font-style: italic;
-    font-weight: 800;
-    line-height: 24px; /* 66.667% */
-    letter-spacing: 0.5px;
-    margin-bottom: 30px;
-}
-.lp-footer-section2 li{
-    color: #FFF;
-    text-align: justify;
-    font-family: Montserrat;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px; /* 100% */
-    letter-spacing: 0.5px;
-    margin-bottom: 24px;
+/* Footer.css */
+.footer {
+  background: linear-gradient(90deg, #1b0033 0%, #2b0050 100%);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  padding-top: 2rem;
+  margin-top: 4rem;
 }
 
-.lp-footer-section3{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+/* Topo com redes sociais */
+.footer-top {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 3rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.lp-footer-section3 h1{
-    display: flex;
-    align-items: flex-start;
-    color: #FFF;
-    font-family: Montserrat;
-    font-size: 36px;
-    font-style: italic;
-    font-weight: 800;
-    line-height: 24px; /* 66.667% */
-    letter-spacing: 0.5px;
-    margin-bottom: 30px;
+.footer-social a {
+  color: #fff;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  transition: 0.3s;
 }
-.lp-footer-section3 li{
-    color: #FFF;
-    text-align: justify;
-    font-family: Montserrat;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px; /* 100% */
-    letter-spacing: 0.5px;
-    margin-bottom: 24px;
+
+.footer-social a:hover {
+  color: #ffb347;
 }
+
+/* Corpo principal */
+.footer-main {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem 3rem;
+}
+
+.footer-col {
+  flex: 1;
+  min-width: 220px;
+}
+
+.footer-col h4 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #ffb347;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-col ul li {
+  margin: 0.5rem 0;
+}
+
+.footer-col ul li a {
+  text-decoration: none;
+  color: #ddd;
+  transition: color 0.3s;
+}
+
+.footer-col ul li a:hover {
+  color: #ffb347;
+}
+
+.footer-col p {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+/* Coluna com logo */
+.footer-col.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-logo {
+  width: 160px;
+  margin-bottom: 1rem;
+}
+
+.app-buttons img {
+  width: 140px;
+  margin: 0.3rem 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.app-buttons img:hover {
+  transform: scale(1.05);
+}
+
+/* Parte inferior */
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .footer-main {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-col.brand {
+    align-items: center;
+  }
+
+  .footer-top {
+    justify-content: center;
+  }
+}
+

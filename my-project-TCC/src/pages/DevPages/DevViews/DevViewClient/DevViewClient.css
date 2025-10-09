@@ -1,0 +1,112 @@
+.devclient-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: #F6F6F6;
+}
+
+.devclient-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.devclient-container h1 {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+
+.devclient-container h3 {
+  color: #AFAFAF;
+  font-family: Montserrat;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.devclient-label {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-self: flex-start;
+  margin-left: 10px;
+}
+
+.devclient-input {
+  width: 800px;
+  height: 75px;
+  border-radius: 5px;
+  border: 1px solid #B2ADAD;
+  background: #FFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: #424242;
+  font-size: 16px;
+  font-family: Montserrat;
+  font-weight: 500;
+  padding-left: 15px;
+  margin-bottom: 30px;
+}
+
+.devclient-input:disabled {
+  background: #FFF;
+  color: #424242;
+}
+
+.devclient-feedback {
+  width: 800px;
+  border-radius: 5px;
+  background: #FFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.devclient-feedback h4 {
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.devclient-feedback p {
+  font-family: Montserrat;
+  font-size: 16px;
+  color: #424242;
+  line-height: 1.5;
+}
+
+.devclient-status-btn {
+  width: 800px;
+  height: 75px;
+  border: none;
+  border-radius: 5px;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  cursor: default;
+  margin-top: 20px;
+  box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+}
+
+.devclient-status-btn.inativo {
+  background-color: #E23C27;
+}
+
+.devclient-status-btn.ativo {
+  background-color: #2ECC71;
+}

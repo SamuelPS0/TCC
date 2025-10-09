@@ -119,11 +119,29 @@ height: 17px;
 flex-shrink: 0;
   transform: translateY(-50%);
   color: #000000;
-  pointer-events: none; /* ícone não interfere no clique */
+  pointer-events: none; 
 }
 
 .input-icon-wrapper input {
   width: 100%;
-  padding-left: 35px; /* deixa espaço para o ícone */
+  padding-left: 35px;
   box-sizing: border-box;
 }
+.input-icon-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  cursor: pointer;
+  color: black;
+}
+
+.input-icon-wrapper input {
+  width: 100%;
+  padding-right: 36px; 
+}
+

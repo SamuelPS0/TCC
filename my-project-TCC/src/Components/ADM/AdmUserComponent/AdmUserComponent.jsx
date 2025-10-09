@@ -24,7 +24,13 @@ const AdmUserComponent = () => {
   const navigate = useNavigate();
 
 const handleVisualizar = (usuario) => {
-  navigate('/dev-view', { state: { usuario } });
+  if(usuario.nivelAcesso == "ADMIN"){
+    navigate('/dev-view-adm', { state: { usuario } });
+  }if(usuario.nivelAcesso == "PRESTADOR"){
+    navigate('/dev-view-prestador', {state: { usuario}});
+  }if(usuario.nivelAcesso == "CLIENTE"){
+    navigate('/dev-view-client', {state: {usuario}});
+  }
 };
 
 
@@ -52,11 +58,9 @@ const handleVisualizar = (usuario) => {
             <div className="auc-col acoes">
               <button
                 className="btn-visualizar"
-                onClick={() => handleVisualizar(usuario)}
-              >
+                onClick={() => handleVisualizar(usuario)}>
                 <FaEye /> Visualizar
               </button>
-
             </div>
           </div>
         ))}

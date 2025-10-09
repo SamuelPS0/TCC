@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import HeaderSwitcher from '../../Components/HeaderSwitcher';
 import './Profile.css';
 import { FaInstagram, FaFacebook, FaWhatsapp, FaLink, FaPaperclip, FaRegAngry } from "react-icons/fa";
+import Feedback from '../../Components/Feedback/Feedback'
 
 function FeedbackModal({ isOpen, onClose, titulo, setTitulo, mensagem, setMensagem, onSubmit }) {
   if (!isOpen) return null;
@@ -216,9 +217,10 @@ export default function Perfil() {
         {/* Renderizar todos os cards de feedback */}
         <div className="profile-feedback-card">
           {feedbacks.map((fb, index) => (
-            <ProfileCard key={index} titulo={fb.titulo} mensagem={fb.mensagem} />
+            <ProfileCard key={index} titulo={fb.titulo} mensagem={fb.descricao || fb.mensagem} />
           ))}
         </div>
+
       </div>
     </div>
     </div>
