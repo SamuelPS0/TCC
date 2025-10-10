@@ -18,10 +18,6 @@ const DevHub = () => {
         <h1>GERENCIAR<br/>  CATEGORIAS</h1>
         </Link>
 
-        <Link to='/dev-statistics' className="devhub-card">
-        <h1>GERENCIAR<br/> ESTATÍSTICAS</h1>
-        </Link>
-
       </div>
     </div>
     </div>

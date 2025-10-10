@@ -3,11 +3,17 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
 export default function CreatePerfil() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  // States para armazenar as imagens
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
 
-  // Conversão de arquivos para Base64
+  // Formulário de Cadastro do Prestador
+  const { register: registerPrestador, handleSubmit: handleSubmitPrestador, formState: { errors: errorsPrestador } } = useForm();
+  
+  // Formulário de Perfil do Prestador
+  const { register: registerPerfil, handleSubmit: handleSubmitPerfil, formState: { errors: errorsPerfil } } = useForm();
+
+  // Conversão de arquivos para Base64 para o perfil
   const handleFile1 = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -26,35 +32,50 @@ export default function CreatePerfil() {
     }
   };
 
-  const onSubmit = (data) => {
-    // Monta objeto Prestador com todos os campos esperados pelo backend
-const prestador = {
-  nome: data.nome || "",
-  dataNascimento: data.dataNascimento ? data.dataNascimento + "T00:00:00" : null,
-  cpf: data.cpf || "",
-  genero: data.genero || "",
-  telefone: data.telefone || "",
-  logradouro: data.logradouro || "",
-  numeroResidencial: data.numeroResidencial || "",
-  complemento: data.complemento || "",
-  cep: data.cep || "",
-  bairro: data.bairro || "",
-  cidade: data.cidade || "",
-  uf: data.uf || "",
-  statusPrestador: data.statusPrestador === "true" || true, // envia boolean
-  categoria: data.categoria || "",
-  imagem1: image1 || "",
-  imagem2: image2 || ""
-};
+  // Função para envio do Formulário 1 (Cadastro do Prestador)
+  const onSubmitPrestador = (data) => {
+    const cadastroPrestador = {
+      nome: data.nome || "",
+      telefone: data.telefone || "",
+      cpf: data.cpf || "",
+      email: data.email || "",
+      senha: data.senha || "",
+      datanascimento: data.dataNascimento || "",
+      genero: data.genero || "",
+      estado: data.estado || "",
+    };
 
-
-    axios.post('http://localhost:8080/api/v1/prestador', prestador)
+    axios.post('http://localhost:8080/api/v1/prestador', cadastroPrestador)
       .then(res => {
         console.log("Prestador criado:", res.data);
-        alert("Perfil criado com sucesso!");
+        alert("Prestador criado com sucesso!");
       })
       .catch(err => {
         console.error("Erro ao criar prestador:", err);
+        alert("Erro ao criar prestador");
+      });
+  };
+
+  // Função para envio do Formulário 2 (Perfil do Prestador)
+  const onSubmitPerfil = (dataPerfil) => {
+    const perfilPrestador = {
+      arquivo: image1 || "", // Se o arquivo1 estiver disponível, usa ele
+      nome: dataPerfil.nome || "",
+      descricao: dataPerfil.descricao || "",
+      contato: dataPerfil.contato || "",
+      local: dataPerfil.local || "",
+      regiao: dataPerfil.regiao || "",
+      categoria: dataPerfil.categoria || "",
+      arquivo2: image2 || "", // Se o arquivo2 estiver disponível, usa ele
+    };
+
+    axios.post('http://localhost:8080/api/v1/perfil', perfilPrestador)
+      .then(res => {
+        console.log("Perfil Prestador criado:", res.data);
+        alert("Perfil criado com sucesso!");
+      })
+      .catch(err => {
+        console.error("Erro ao criar perfil:", err);
         alert("Erro ao criar perfil");
       });
   };
@@ -62,26 +83,51 @@ const prestador = {
   return (
     <div>
       <h1>Criar Perfil Completo</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+
+      {/* Formulário 1: Cadastro do Prestador */}
+      <h2>Cadastro do Prestador</h2>
+      <form onSubmit={handleSubmitPrestador(onSubmitPrestador)}>
+        {/* Nome */}
         <div>
           <label>Nome:</label>
-          <input {...register("nome", { required: true })} />
-          {errors.nome && <span>Campo obrigatório</span>}
+          <input {...registerPrestador("nome", { required: "Campo obrigatório" })} />
+          {errorsPrestador.nome && <span>{errorsPrestador.nome.message}</span>}
         </div>
 
+        {/* Telefone */}
         <div>
-          <label>Data de Nascimento:</label>
-          <input type="date" {...register("dataNascimento")} />
+          <label>Telefone:</label>
+          <input {...registerPrestador("telefone")} placeholder="(00) 00000-0000" />
         </div>
 
+        {/* CPF */}
         <div>
           <label>CPF:</label>
-          <input {...register("cpf")} placeholder="000.000.000-00" />
+          <input {...registerPrestador("cpf")} placeholder="000.000.000-00" />
         </div>
 
+        {/* Email */}
+        <div>
+          <label>Email:</label>
+          <input type="email" {...registerPrestador("email")} />
+        </div>
+
+        {/* Senha */}
+        <div>
+          <label>Senha:</label>
+          <input type="password" {...registerPrestador("senha")} />
+        </div>
+
+        {/* Data de Nascimento */}
+        <div>
+          <label>Data de Nascimento:</label>
+          <input type="date" {...registerPrestador("dataNascimento")} />
+        </div>
+
+        {/* Gênero */}
         <div>
           <label>Gênero:</label>
-          <select {...register("genero")}>
+          <select {...registerPrestador("genero")}>
             <option value="">Selecione</option>
             <option value="Masculino">Masculino</option>
             <option value="Feminino">Feminino</option>
@@ -89,57 +135,64 @@ const prestador = {
           </select>
         </div>
 
+        {/* Estado */}
         <div>
-          <label>Telefone:</label>
-          <input {...register("telefone")} placeholder="(00) 00000-0000" />
+          <label>Estado:</label>
+          <input {...registerPrestador("estado")} placeholder="SP" maxLength={2} />
         </div>
 
+        {/* Botão de envio */}
+        <button type="submit">Enviar Cadastro</button>
+      </form>
+
+
+
+
+
+
+
+      {/* Formulário 2: Perfil do Prestador */}
+      <h2>Perfil do Prestador</h2>
+      <form onSubmit={handleSubmitPerfil(onSubmitPerfil)}>
+        
+        {/* Arquivo 1 */}
         <div>
-          <label>Logradouro:</label>
-          <input {...register("logradouro")} />
+          <label>Arquivo 1:</label>
+          <input type="file" accept="image/*" onChange={handleFile1} />
+        </div>
+        
+        <div>
+          <label>Nome:</label>
+          <input {...registerPerfil("nome")} placeholder="Nome" />
+        </div>
+        {/* Descrição */}
+        <div>
+          <label>Descrição:</label>
+          <textarea {...registerPerfil("descricao")} />
         </div>
 
+        {/* Contato */}
         <div>
-          <label>Número Residencial:</label>
-          <input {...register("numeroResidencial")} />
+          <label>Contato:</label>
+          <input {...registerPerfil("contato")} placeholder="(00) 00000-0000" />
         </div>
 
+        {/* Local */}
         <div>
-          <label>Complemento:</label>
-          <input {...register("complemento")} />
+          <label>Local:</label>
+          <input {...registerPerfil("local")} />
         </div>
 
+        {/* Região */}
         <div>
-          <label>CEP:</label>
-          <input {...register("cep")} placeholder="00000-000" />
+          <label>Região:</label>
+          <input {...registerPerfil("regiao")} />
         </div>
 
-        <div>
-          <label>Bairro:</label>
-          <input {...register("bairro")} />
-        </div>
-
-        <div>
-          <label>Cidade:</label>
-          <input {...register("cidade")} />
-        </div>
-
-        <div>
-          <label>UF:</label>
-          <input {...register("uf")} placeholder="SP" maxLength={2} />
-        </div>
-
-        <div>
-          <label>Status:</label>
-          <select {...register("statusPrestador")}>
-            <option value={true}>Ativo</option>
-            <option value={false}>Inativo</option>
-          </select>
-        </div>
-
+        {/* Categoria */}
         <div>
           <label>Categoria:</label>
-          <select {...register("categoria")}>
+          <select {...registerPerfil("categoria")}>
             <option value="">Selecione</option>
             <option value="Comidas Prontas">Comidas Prontas</option>
             <option value="Lanches e Fast Food">Lanches e Fast Food</option>
@@ -152,17 +205,15 @@ const prestador = {
           </select>
         </div>
 
-        <div>
-          <label>Imagem 1:</label>
-          <input type="file" accept="image/*" onChange={handleFile1} />
-        </div>
 
+        {/* Arquivo 2 */}
         <div>
-          <label>Imagem 2:</label>
+          <label>Arquivo 2:</label>
           <input type="file" accept="image/*" onChange={handleFile2} />
         </div>
 
-        <button type="submit">Enviar</button>
+        {/* Botão de envio */}
+        <button type="submit">Enviar Perfil</button>
       </form>
     </div>
   );
