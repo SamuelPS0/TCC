@@ -9,7 +9,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  transition: border 0.050s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: border 0.050s ease, transform 0.4s ease, box-shadow 0.3s ease;
 }
 .card:hover {
   transform: translateY(-5px);
