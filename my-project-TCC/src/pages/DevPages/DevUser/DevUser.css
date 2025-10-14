@@ -1,17 +1,26 @@
-.devuser-body{
-    margin-top: 180px;
+.devuser-body {
+  margin-top: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
 }
-.devuser-APS{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100vw;
+
+/* Centraliza a barra de pesquisa */
+.devuser-APS {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  padding: 10px 0;
 }
-.devuser-auc{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 30px;
+
+.devuser-auc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 30px;
+  width: 100%;
 }

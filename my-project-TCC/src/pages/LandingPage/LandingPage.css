@@ -242,7 +242,7 @@
 }
 /* Footer.css */
 .footer {
-  background: linear-gradient(90deg, #1b0033 0%, #2b0050 100%);
+   background: linear-gradient(to bottom, #FF432A, #a32f12);
   color: #fff;
   font-family: 'Poppins', sans-serif;
   padding-top: 2rem;
@@ -262,10 +262,11 @@
   margin-left: 1rem;
   font-size: 1.2rem;
   transition: 0.3s;
+  
 }
 
 .footer-social a:hover {
-  color: #ffb347;
+  color: #08ebfc;
 }
 
 /* Corpo principal */
@@ -284,8 +285,8 @@
 
 .footer-col h4 {
   margin-bottom: 1rem;
-  font-weight: 600;
-  color: #ffb347;
+  font-weight: 800;
+  color: #fafafa;
 }
 
 .footer-col ul {
@@ -304,7 +305,7 @@
 }
 
 .footer-col ul li a:hover {
-  color: #ffb347;
+  color: #00f7ff;
 }
 
 .footer-col p {
@@ -323,10 +324,13 @@
   width: 160px;
   margin-bottom: 1rem;
 }
+.app-buttons {
+  display: flex;
+  flex-direction: row;
+  margin-top: -50px;
+}
 
 .app-buttons img {
-  width: 140px;
-  margin: 0.3rem 0;
   border-radius: 6px;
   cursor: pointer;
   transition: transform 0.3s;
@@ -342,7 +346,16 @@
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   padding: 1rem;
   font-size: 0.85rem;
-  color: #aaa;
+  color: #ffffff;
+}
+.apple{
+  width: 150px;
+  height: 53px;
+  margin-top: 4px;
+}
+.play{
+  width: 135px;
+  height: 60px;
 }
 
 /* Responsivo */

@@ -9,10 +9,11 @@ import Header0 from '../../Components/Header/levelHeaders/Header0';
 import accessLevels from '../../Components/accessLevels';
 import SearchBar from '../../Components/SearchBar/SearchBar';
 import LogoFundoBranco from '../../img/logoParaFundoBranco.png';
-import LpImage1 from '../LandingPage/landingPageImages/sauteeing-food.jpg';
-import LpImage2 from '../LandingPage/landingPageImages/chef-masculino-cozinhando-na-cozinha.jpg';
-import LpImage3 from '../LandingPage/landingPageImages/woman-working-as-professional-chef.jpg';
-import LpImage4 from '../LandingPage/landingPageImages/peneira-de-mulher-flor-na-tigela-para-fazer-bolo.jpg';
+import LpImage1 from '../LandingPage/landingPageImages/4.png';
+import LpImage2 from '../LandingPage/landingPageImages/2.png';
+import LpImage3 from '../LandingPage/landingPageImages/3.png';
+import LpImage4 from '../LandingPage/landingPageImages/1.png';
+import LpImage5 from '../LandingPage/landingPageImages/fotosemfundo.png';
 import AppStore from '../LandingPage/landingPageImages/appstore.png';
 import GooglePlay from '../LandingPage/landingPageImages/googleplay.png';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter, FaApple, FaGooglePlay  } from 'react-icons/fa';
@@ -32,7 +33,7 @@ export default function LandingPage() {
 
       <main>
         <section className="lp-section">
-          <h1 className="lp-first-section-h1">
+          <h1 className="lp-first-section-h1" id='scrollone'>
             ENCONTRE OS MELHORES PROFISSIONAIS<br />DA <span>GASTRONOMIA</span> NA SUA REGIÃO!
           </h1>
           <h3 className="lp-first-section-h3">
@@ -45,7 +46,7 @@ export default function LandingPage() {
           <div className="lp-article">
             <img src={LogoFundoBranco} alt="Logo DivulgAí" className="lp-logo-img" />
             <div className="lp-article-container">
-              <h1 className="lp-article-h1">Nossa Missão</h1>
+              <h1 className="lp-article-h1" id='scrolltwo'>Nossa Missão</h1>
               <p>
                 Queremos dar visibilidade aos pequenos prestadores da área da culinária, facilitando o acesso dos consumidores a refeições autênticas, feitas com <span>dedicação</span> e <span>sabor</span>.
               </p>
@@ -60,7 +61,7 @@ export default function LandingPage() {
         <section>
           <div className="lp-section2-container">
             <div className="lp-section2-container-text">
-              <h4 className="lp-section2-h4">SUA PRÓXIMA <span>EXPERIÊNCIA</span><br /> COMEÇA AQUI</h4>
+              <h4 className="lp-section2-h4" id='scrollthree'>SUA PRÓXIMA <span>EXPERIÊNCIA</span><br /> COMEÇA AQUI</h4>
               <h2 className="lp-section2-h2">
                 DE MARMITAS A BOLOS ARTESANAIS, ENCONTRE <span className="lp-span-section2-edit">PROFISSIONAIS AUTÔNOMOS</span> QUE COZINHAM COM DEDICAÇÃO NA SUA REGIÃO.
               </h2>
@@ -90,19 +91,19 @@ export default function LandingPage() {
 
       <div className="footer-main">
         <div className="footer-col brand">
-          <img src={LogoFundoBranco} alt="Logo DivulgAí" className="footer-logo" />
+          <img src={LpImage5} alt="Logo DivulgAí" className="footer-logo" />
           <div className="app-buttons">
-            <img src={AppStore} alt="App Store" />
-            <img src={GooglePlay} alt="Google Play" />
+            <img src={GooglePlay} alt="Google Play" className='play'/>
+            <img src={AppStore} alt="App Store" className='apple'/>
           </div>
         </div>
 
         <div className="footer-col">
           <h4>Sobre Nós</h4>
           <ul>
-            <li><Link to="/sobre">Quem somos</Link></li>
-            <li><Link to="/register">Nossa Missão</Link></li>
-            <li><Link to="/faq">FAQ</Link></li>
+            <li><a href='#scrollone'>Quem somos</a></li>
+            <li><a href="#scrolltwo">Nossa Missão</a></li>
+            <li><a href="#scrollthree">FAQ</a></li>
           </ul>
         </div>
 

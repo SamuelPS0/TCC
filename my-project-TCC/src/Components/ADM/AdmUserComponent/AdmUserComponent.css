@@ -6,7 +6,132 @@
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   overflow: hidden;
+  margin-bottom: 90px;
 }
+.auc-dropdown button{
+  background-color: #F05221;
+  border: none;
+  border-radius: 50px;
+  width: 180px;
+  height: 80px;
+  flex-shrink: 0;
+  color: #FFF;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: normal;
+}
+.auc-dropdown button:hover{
+  background-color: #ff7c55;
+  transition: 0.1s ease-in-out;
+  cursor: pointer;
+}
+.auc-ordem{
+  margin-right: 200px
+}
+.auc-status{
+  margin-left: 200px;
+}
+
+/* Barra de dropdowns */
+.auc-dropdown-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 5;
+}
+
+/* Botões principais */
+.auc-btn {
+  background: #F05221;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.auc-btn:hover {
+  background: #ff6a3c;
+  transform: translateY(-1px);
+}
+
+/* Dropdown individual */
+.auc-dropdown {
+  position: relative;
+}
+
+/* Menu suspenso */
+.auc-menu {
+  position: absolute;
+  top: 115%;
+  left: 0;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  overflow: hidden;
+  animation: fadeIn 0.2s ease;
+  min-width: 160px;
+  color: #000;
+font-family: Montserrat;
+font-size: 20px;
+font-style: italic;
+font-weight: 900;
+line-height: normal;
+}
+
+.auc-menu div {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 14.5px;
+}
+
+.auc-menu div:hover {
+  background: #ffe5dc;
+  color: #F05221;
+}
+
+/* Botão de limpar */
+.auc-clear {
+  background: transparent;
+  border: 2px solid #F05221;
+  color: #F05221;
+  border-radius: 25px;
+  padding: 6px 16px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-top: -50px;
+}
+
+.auc-clear:hover {
+  background: #F05221;
+  color: #fff;
+}
+
+/* Animação suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 .auc-table {
   display: flex;

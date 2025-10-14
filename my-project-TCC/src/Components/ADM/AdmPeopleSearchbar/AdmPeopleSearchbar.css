@@ -1,128 +1,150 @@
-/* Estilos originais permanecem iguais */
-
-.APS-label{
-    color: #F05221;
-    font-family: Poppins;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    position: relative;
-    top: 30px;
-    left: 32px
+.APS {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-.APS-inputcontainer{
-    width: 1056px;
-    height: 65px;
-    flex-shrink: 0;
-    border-radius: 90px;
-    border: 3px solid #000;
-    background: #FFF;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-    padding-left: 30px;
-
-    color: #000000;
-    font-family: Roboto;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: var(--Static-Body-Large-Line-Height, 24px);
-    letter-spacing: var(--Static-Body-Large-Tracking, 0.5px);
+.APS form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 90px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 10px 10px 10px 25px;
+  gap: 10px;
 }
 
-.APS-inputcontainer::placeholder{
-    color: #BFBFBF;
-    font-family: Roboto;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: var(--Static-Body-Large-Line-Height, 24px);
-    letter-spacing: var(--Static-Body-Large-Tracking, 0.5px);
+.APS-label {
+  color: #F05221;
+  font-family: Poppins, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: inherit;
+  top: 0;
 }
 
-.APS-button{
-    width: 192px;
-    height: 51px;
-    flex-shrink: 0;
-    border-radius: 90px;
-    background: #F05221;
-    border: none;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-    transition: 0.2s ease-in-out;
-    position: relative;
-    top: 2px;
-    right: 203px;
-
-    color: #FFF;
-    font-family: Poppins;
-    font-size: 23px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 24px; /* 104.348% */
-    letter-spacing: 0.5px;
+.APS-inputcontainer {
+  width: 80%;
+  padding: 18px 12px 6px; /* espaço para o label em cima */
+  font-family: Roboto, sans-serif;
+  font-size: 17px;
+  color: #000;
+  border: none;
+  outline: none;
+  border-radius: 90px;
 }
 
-.APS-button:hover{
-    outline: 2px solid #FF432A;
-    outline-offset: 4px;
-    cursor: pointer;
+.APS-inputcontainer::placeholder {
+  color: #BFBFBF;
+  font-size: 17px;
+}
+.APS-field {
+  position: relative;
+  flex: 1;
 }
 
-/* ================= Responsividade ================= */
-
-@media (max-width: 1200px) {
-    .APS-inputcontainer {
-        width: 90%;
-    }
-    .APS-button {
-        right: 10%;
-    }
+.APS-label {
+  position: absolute;
+  top: 6px; /* label na parte superior */
+  left: 12px;
+  font-family: Poppins, sans-serif;
+  font-size: 13px;
+  color: #F05221;
+  font-weight: 700;
+  pointer-events: none; /* não atrapalha o input */
 }
 
+.APS-label {
+  top: -10px;
+  font-size: 20px;
+  color: #F05221;
+}
+
+.APS-button {
+  flex-shrink: 0;
+  background: #F05221;
+  border: none;
+  border-radius: 90px;
+  padding: 10px 30px;
+  font-family: Poppins, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.APS-button:hover {
+  outline: 2px solid #FF432A;
+  outline-offset: 3px;
+}
+
+/* === RESPONSIVIDADE === */
+
+/* Tablets (≤ 992px) */
+@media (max-width: 992px) {
+  form {
+    padding: 8px 10px 8px 18px;
+  }
+
+  .APS-label {
+    font-size: 16px;
+  }
+
+  .APS-inputcontainer {
+    font-size: 16px;
+  }
+
+  .APS-button {
+    font-size: 17px;
+    padding: 8px 24px;
+  }
+}
+
+/* Celulares médios (≤ 768px) */
 @media (max-width: 768px) {
-    .APS-h2 {
-        font-size: 13px;
-        top: 20px;
-        left: 20px;
-    }
-    .APS-inputcontainer {
-        height: 55px;
-        font-size: 16px;
-        padding-left: 20px;
-    }
-    .APS-inputcontainer::placeholder {
-        font-size: 16px;
-    }
-    .APS-button {
-        width: 160px;
-        height: 45px;
-        font-size: 20px;
-        right: 0;
-        top: 0;
-    }
+  form {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 30px;
+    padding: 15px 20px;
+    gap: 10px;
+  }
+
+  .APS-button {
+    width: 100%;
+    max-width: 300px;
+    align-self: center;
+  }
+
+  .APS-label {
+    font-size: 15px;
+  }
+
+  .APS-inputcontainer {
+    width: 100%;
+    font-size: 15px;
+  }
 }
 
+/* Celulares pequenos (≤ 480px) */
 @media (max-width: 480px) {
-    .APS-h2 {
-        font-size: 12px;
-        top: 15px;
-        left: 15px;
-    }
-    .APS-inputcontainer {
-        width: 100%;
-        height: 50px;
-        font-size: 14px;
-        padding-left: 15px;
-    }
-    .APS-inputcontainer::placeholder {
-        font-size: 14px;
-    }
-    .APS-button {
-        width: 140px;
-        height: 40px;
-        font-size: 18px;
-        right: 0;
-        top: 0;
-    }
+  .APS-button {
+    font-size: 15px;
+    padding: 8px 20px;
+  }
+
+  .APS-label {
+    font-size: 14px;
+  }
+
+  .APS-inputcontainer {
+    font-size: 14px;
+  }
 }
