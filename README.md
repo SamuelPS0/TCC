@@ -1,4 +1,4 @@
-# 🌐 Sistema de Busca e Cadastro de Prestadores de Serviço
+# 🌐 DivulgAí
 
 Este projeto é uma **aplicação web** desenvolvida para conectar usuários a **prestadores de serviços**, oferecendo uma experiência simples, segura e intuitiva de **cadastro, login, busca, feedback e gerenciamento de conta**.
 
@@ -84,10 +84,10 @@ Opção para **logout** e retorno à tela de login.
 
 ```bash
 # 1️⃣ Clone o repositório
-git clone https://github.com/SEU_USUARIO/NOME_DO_PROJETO.git
+git clone https://github.com/SEU_USUARIO/NOME_DO_PROJETO.git](https://github.com/SamuelPS0/TCC.git)
 
 # 2️⃣ Acesse a pasta
-cd NOME_DO_PROJETO
+cd my-project-TCC
 
 # 3️⃣ Instale as dependências
 npm install
