@@ -1,6 +1,6 @@
 # 🌐 DivulgAí
 
-Este projeto é uma **aplicação web** desenvolvida para conectar usuários a **prestadores de serviços**, oferecendo uma experiência simples, segura e intuitiva de **cadastro, login, busca, feedback e gerenciamento de conta**.
+Este projeto é uma **aplicação web** desenvolvida para conectar usuários a **prestadores de serviços do ramo alimenticio**, oferecendo uma experiência simples, segura e intuitiva de **cadastro, login, busca, feedback e gerenciamento de conta**.
 
 ---
 
@@ -18,7 +18,7 @@ Este projeto é uma **aplicação web** desenvolvida para conectar usuários a *
 
 ## 🧭 Navegação do Sistema
 
-- **Cabeçalho fixo** com acesso rápido a “Buscar Prestadores”, “Cadastro” e “Login”.  
+- **Cabeçalho fixo** com acesso rápido a “Buscar Prestadores”, coração da aplicação.  
 - **Ícones interativos** presentes em todas as páginas principais.  
 - **Interface responsiva e intuitiva**, com foco na experiência do usuário.
 
@@ -28,12 +28,12 @@ Este projeto é uma **aplicação web** desenvolvida para conectar usuários a *
 
 | Categoria | Tecnologia |
 |------------|-------------|
-| Linguagem principal | JavaScript / TypeScript |
+| Linguagem principal | JavaScript |
 | Framework web | React + Vite |
 | Estilização | CSS / Bootstrap |
-| Backend (opcional) | Node.js / Express |
-| Banco de Dados (opcional) | MySQL ou MongoDB |
-| Hospedagem | GitHub Pages / Vercel / Render |
+| Backend  | Java SpringBoot |
+| Banco de Dados  | SSMS |
+| Hospedagem | Nula ( no momento ) |
 | IDE recomendada | Visual Studio Code |
 
 ---
@@ -97,15 +97,6 @@ npm run dev
 ```
 
 Abra o navegador e acesse **http://localhost:5173** para visualizar o sistema.
-
----
-
-## 👥 Equipe de Desenvolvimento
-
-| Nome | Função |
-|------|---------|
-| Samuel Pereira Silva | Desenvolvedor Front-End |
-| (adicione outros nomes) | (descrição das funções) |
 
 ---
 
