@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { FaRegEnvelope } from "react-icons/fa";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa6";
 import { IoPersonOutline } from "react-icons/io5";  
+import {toast } from 'sonner'
 
 export default function Register() {
   const navigate = useNavigate();

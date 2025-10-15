@@ -3,6 +3,7 @@ import AdmCategoryComponent from '../../../Components/ADM/AdmCategoryComponent/A
 import HeaderSwitcher from '../../../Components/HeaderSwitcher';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import {toast} from 'sonner'
 import './DevCategory.css';
 
 const DevCategory = () => {
@@ -40,11 +41,11 @@ const DevCategory = () => {
       nome: novoNome,
       status_categoria: "ATIVO"
     });
-    alert("Categoria atualizada com sucesso!");
+    toast.success("Categoria atualizada com sucesso!");
     carregarCategorias();
   } catch (error) {
     console.error("Erro ao atualizar categoria:", error.response?.data || error.message);
-    alert("Houve um erro ao atualizar a categoria, tente novamente.");
+    toast.error("Houve um erro ao atualizar a categoria, tente novamente.");
   }
 };
 
@@ -61,7 +62,7 @@ const DevCategory = () => {
     await onUpdate(categoria.id, novoNome);  // Atualiza no backend
     cancelarEdicao(); // Fecha modo de edição
   } catch (error) {
-    alert("Erro ao atualizar.");
+    toast.error("Erro ao atualizar.");
     console.error(error);
     setEnviando(false);
   }
@@ -74,12 +75,12 @@ const DevCategory = () => {
         nome: postdata.name,
         status_categoria: "ATIVO"
       });
-      alert(`A categoria ${postdata.name} foi criada com sucesso!`);
+      toast.success(`A categoria ${postdata.name} foi criada com sucesso!`);
       reset();
       carregarCategorias();
     } catch (error) {
       console.error("Erro ao cadastrar:", error.response?.data || error.message);
-      alert("Houve um erro ao registrar a categoria, tente novamente.");
+      toast.errror("Houve um erro ao registrar a categoria, tente novamente.");
     }
   };
 
@@ -90,13 +91,13 @@ const DevCategory = () => {
         nome: postdata.name,
         status_categoria: "ATIVO"
       });
-      alert(`Categoria atualizada com sucesso!`);
+      toast.success(`Categoria atualizada com sucesso!`);
       reset();
       carregarCategorias();
       setEditarCategorias(null);
     } catch (error) {
       console.error("Erro ao atualizar categoria:", error.response?.data || error.message);
-      alert("Houve um erro ao atualizar a categoria, tente novamente.");
+      toast.error("Houve um erro ao atualizar a categoria, tente novamente.");
     }
   };
 
@@ -113,12 +114,12 @@ const deleteCategoria = async (id) => {
   try {
     if (window.confirm("Deseja realmente excluir esta categoria?")) {
       await axios.delete(`http://localhost:8080/api/v1/categoria/${id}`);
-      alert("Categoria deletada com sucesso!");
+      toast.error("Categoria deletada com sucesso!");
       carregarCategorias(); // Atualiza a lista
     }
   } catch (error) {
     console.error("Erro ao deletar categoria:", error.response?.data || error.message);
-    alert("Erro ao deletar categoria, tente novamente.");
+    toast.error("Erro ao deletar categoria, tente novamente.");
   }
 };
   

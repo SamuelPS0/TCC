@@ -4,6 +4,7 @@ import HeaderSwitcher from '../../../../Components/HeaderSwitcher';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { toast } from 'sonner';
 import axios from 'axios';
 import './DevViewClient.css';
 
@@ -26,6 +27,7 @@ const DevViewClient = () => {
   }, [usuario]);
 
 const editarNivel = async (id, novoNivel) => {
+   const toastId = toast.loading('Atualizando nível de acesso...');
   try {
     const response = await axios.put(`http://localhost:8080/api/v1/Usuario/${id}`, {
       nome: usuario.nome,           // manter o nome atual
@@ -35,13 +37,16 @@ const editarNivel = async (id, novoNivel) => {
 
     });
     setNivel(novoNivel);
-    console.log('Nível atualizado com sucesso!', response.data);
+    console.log('Nível de acesso atualizado com sucesso!', response.data);
+    toast.success('Nível de acesso atualizado com sucesso!', { id: toastId});
   } catch (error) {
+    toast.warning('Ocorreu um erro... Cheque o console');
     console.error('Erro ao editar nível:', error);
   }
 };
 
 const editarStatus = async (id, novoStatus) => {
+  const toastId = toast.loading('Atualizando status do usuario..');
   try {
     const response = await axios.put(`http://localhost:8080/api/v1/Usuario/${id}`, {
       nome: usuario.nome,
@@ -51,12 +56,16 @@ const editarStatus = async (id, novoStatus) => {
       statusUsuario: novoStatus   // novo status
     });
     setUsuarioStatus(response.data.statusUsuario);
+    toast.success('Status atualizado com sucesso!', { id: toastId });
     console.log('Status atualizado com sucesso!', novoStatus);
     console.log('Situação atual: ', response.data.statusUsuario)
   } catch (error) {
     console.error('Erro ao editar status:', error);
   }
 };
+
+const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
 
   return (
@@ -73,20 +82,33 @@ const editarStatus = async (id, novoStatus) => {
         <input className="devclient-input" type="email" value={usuario.email} disabled />
 
         <p className="devclient-label">Nível de acesso</p>
-        <DropdownButton
-          className='devclient-dropdown'
-          title={<>{nivel} <MdOutlineKeyboardArrowDown className='devclient-icon' /></>}
+
+
+<div className="devclient-dropdown">
+  <button
+    className="btn"
+    onClick={() => setDropdownOpen(!dropdownOpen)}
+  >
+    {nivel} <MdOutlineKeyboardArrowDown className="devclient-icon" />
+  </button>
+
+  {dropdownOpen && (
+    <div className="devclient-dropdown-menu">
+      {['ADMIN', 'PRESTADOR', 'CLIENTE'].map((option) => (
+        <div
+          key={option}
+          className="devclient-dropdown-item"
+          onClick={() => {
+            editarNivel(usuario.id, option);
+            setDropdownOpen(false); // fecha o dropdown
+          }}
         >
-          {['ADMIN', 'PRESTADOR', 'CLIENTE'].map((option) => (
-            <Dropdown.Item
-              key={option}
-              className='devclient-dropdown-item'
-              onClick={() => editarNivel(usuario.id, option)}
-            >
-              {option}
-            </Dropdown.Item>
-          ))}
-        </DropdownButton>
+          {option}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
           <button
             className={`devclient-status-btn ${usuarioStatus ? 'ativo' : 'inativo'}`}

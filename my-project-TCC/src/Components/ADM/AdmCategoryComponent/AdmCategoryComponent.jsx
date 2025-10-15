@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AdmCategoryComponent.css';
+import { toast } from 'sonner'
 import { MdDeleteForever, MdModeEditOutline, MdCheck, MdClose } from "react-icons/md";
 
 const AdmCategoryComponent = ({ categorias, onUpdate, onDelete }) => {
@@ -29,7 +30,7 @@ const AdmCategoryComponent = ({ categorias, onUpdate, onDelete }) => {
       await onUpdate(categoria.id, novoNome);
       cancelarEdicao();                      
     } catch (error) {
-      alert("Erro ao atualizar.");
+      toast.error("Erro ao atualizar, cheque o console.");
       console.error(error);
       setEnviando(false);
     }

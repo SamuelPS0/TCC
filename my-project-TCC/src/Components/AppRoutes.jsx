@@ -18,9 +18,10 @@ import DevHub from '../pages/DevPages/DevHub/DevHub';
 import DevCategory from '../pages/DevPages/DevCategory/DevCategory';
 import DevStatistics from '../pages/DevPages/DevStatistics/DevStatistics';
 import DevUser from '../pages/DevPages/DevUser/DevUser';
-import DevViewClient from '../pages/DevPages/DevViews/DevViewClient/DevViewClient'
-import DevViewPrestador from '../pages/DevPages/DevViews/DevViewPrestador/DevViewPrestador'
-import DevViewADM from '../pages/DevPages/DevViews/DevViewADM/DevViewADM'
+import DevViewClient from '../pages/DevPages/DevViews/DevViewClient/DevViewClient';
+import DevViewPrestador from '../pages/DevPages/DevViews/DevViewPrestador/DevViewPrestador';
+import DevViewADM from '../pages/DevPages/DevViews/DevViewADM/DevViewADM';
+import Privacity from '../pages/Privacity/Privacity'
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const AppRoutes = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/home-list" element={<HomeList />} />
       <Route path="/client-accinfo" element={<ClientAccInfo />} />
+      <Route path="/privacity" element={<Privacity />} />
       <Route path="/unauthorized" element={<h1>Você não tem permissão para acessar esta página.</h1>} />
 
       {/* Rotas protegidas por nível de acesso */}

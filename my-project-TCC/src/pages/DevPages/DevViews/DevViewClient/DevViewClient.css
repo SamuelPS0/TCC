@@ -105,13 +105,24 @@
   box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
   margin-bottom: 60px;
 }
+.devclient-status-btn:hover{
+  cursor: pointer;
+}
 
 .devclient-status-btn.inativo {
   background-color: #E23C27;
 }
+.devclient-status-btn.inativo:hover {
+  background-color: #fc4e37;
+  transition: 0.1s ease-in-out;
+}
 
 .devclient-status-btn.ativo {
   background-color: #2ECC71;
+}
+.devclient-status-btn.ativo:hover {
+  background-color: #37e07e;
+  transition: 0.1s ease-in-out;
 }
 .devclient-dropdown .btn{
   width: 800px;
@@ -164,3 +175,4 @@
   height: 45px;
   margin-right: 10px;
 }
+

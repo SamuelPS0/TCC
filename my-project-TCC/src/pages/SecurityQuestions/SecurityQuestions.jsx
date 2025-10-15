@@ -2,11 +2,13 @@ import React from 'react';
 import './SecurityQuestions.css';
 import { useNavigate } from 'react-router-dom';
 import AccountSecurity from '../../Components/AccountSecurity/AccountSecurity';
+import {toast} from 'sonner'
 
 const SecurityQuestions = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
+    toast.success('Usuario criado com sucesso!')
     navigate('/');
   };
 

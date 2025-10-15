@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import LogoLogin from '../../img/DivulgAÍ-removebg-preview.png';
 import './Login.css';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FaRegEnvelope } from 'react-icons/fa';
@@ -39,7 +40,12 @@ export default function Login({ buttonText = "Entrar" }) {
 
 
       if (!usuarioEncontrado) {
-        alert('Email ou senha incorretos.');
+        toast.error('Email ou senha incorretos.');
+        return;
+      }
+
+      if (usuarioEncontrado.statusUsuario === false){
+        toast.error('O usuario está inativo em nosso site, tente novamente mais tarde.');
         return;
       }
 
@@ -47,15 +53,17 @@ export default function Login({ buttonText = "Entrar" }) {
 
       login({ email: usuarioEncontrado.email, accessLevel: level });
       localStorage.setItem('userLevel', level);
+      toast.success("Login realizado com sucesso!")
 
       navigate('/');
     } catch (error) {
       console.error('Erro ao autenticar:', error.response?.data || error.message);
-      alert('Erro ao conectar com o servidor.');
+      toast.error('Erro ao conectar com o servidor.');
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="login-wrapper">

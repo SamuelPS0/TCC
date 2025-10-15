@@ -111,8 +111,8 @@ export default function LandingPage() {
           <h4>Links</h4>
           <ul>
             <li><Link to="/">Início</Link></li>
-            <li><Link to="/contato">Contato</Link></li>
-            <li><Link to="/politica">Política de Privacidade</Link></li>
+            <li><Link to="/privacity">Termos de uso</Link></li>
+            <li><Link to="/privacity">Políticas de Privacidade</Link></li>
           </ul>
         </div>
 
