@@ -84,7 +84,7 @@ Opção para **logout** e retorno à tela de login.
 
 ```bash
 # 1️⃣ Clone o repositório
-git clone https://github.com/SEU_USUARIO/NOME_DO_PROJETO.git](https://github.com/SamuelPS0/TCC.git)
+git clone https://github.com/SamuelPS0/TCC.git
 
 # 2️⃣ Acesse a pasta
 cd my-project-TCC
