@@ -1,16 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@500;600&display=swap');
 
 .container-searchbar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative; /* para o dropdown posicionar corretamente */
-  left: 0;
+  position: relative;
   width: 100%;
-  padding-top: 25px;
-  z-index: 998; /* logo abaixo do header */
+  padding: 20px;
+  z-index: 998;
   background-color: transparent;
-  color: black;
 }
 
 .search-wrapper {
@@ -19,46 +17,46 @@
   justify-content: center;
 }
 
-.input-group.horizontal {
+.input-group {
   display: flex;
   align-items: center;
-  background: #ffffff;
-  border-radius: 40px;
+  max-width: 750px;
   width: 750px;
-  height: 56px;
-  padding: 5px 15px;
-  gap: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  overflow: hidden;
+  background: #fff;
+  border-radius: 50px;
+  padding: 8px 16px;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.input-group:focus-within {
+  box-shadow: 0 6px 16px rgba(240, 82, 33, 0.25);
 }
 
 .input-wrapper {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 5px;
-}
-
-.input-wrapper-right {
-  margin-left: 40px;
 }
 
 .input-label {
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #F05221;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .input-field {
+  width: 100%;
   border: none;
   outline: none;
   background: transparent;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
-  color: #000000;
-  padding: 5px 0;
-  cursor: pointer;
+  color: #000;
+  padding: 6px 0;
 }
 
 .input-field::placeholder {
@@ -67,46 +65,129 @@
 
 .search-button {
   background-color: #F05221;
-  color: white;
-  font-weight: bold;
+  color: #fff;
+  font-weight: 600;
   border: none;
   border-radius: 30px;
-  padding: 10px 25px;
+  padding: 10px 24px;
   cursor: pointer;
   font-size: 1rem;
-  margin-left: auto;
+  transition: all 0.2s ease;
 }
 
-/* Dropdown das sugestões */
+.search-button:hover {
+  background-color: #d84417;
+  transform: scale(1.05);
+}
+
 .suggestions-list {
   position: absolute;
-  top: 70px; /* abaixo da barra */
-  left: calc(50% + 40px);
+  top: 60px;
+  left: 50%;
   transform: translateX(-50%);
-  width: 280px;
-  background-color: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  border-radius: 8px;
-  padding: 0;
-  margin: 0;
+  width: 90%;
+  max-width: 750px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
   list-style: none;
+  margin: 0;
+  padding: 0;
   z-index: 999;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
+  animation: fadeIn 0.2s ease;
 }
 
 .suggestion-item {
-  padding: 10px 15px;
+  padding: 12px 16px;
   cursor: pointer;
   border-bottom: 1px solid #eee;
+  transition: background 0.2s ease, padding-left 0.2s ease;
 }
 
 .suggestion-item:hover {
-  background-color: #f0f0f0;
+  background: #f9f9f9;
+  padding-left: 20px;
 }
 
-@media (min-width: 1000px) and (max-width: 1180px){
-  .input-group.horizontal {
-    width: 600px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestions-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+  background-color: #F05221;
+  border-radius: 6px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+@media (max-width: 1024px) {
+  .input-group {
+    max-width: 600px;
+    gap: 12px;
+    padding: 6px 12px;
+  }
+
+  .search-button {
+    padding: 8px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .input-wrapper {
+    width: 100%;
+  }
+
+  .search-button {
+    width: 100%;
+    font-size: 0.9rem;
+    border-radius: 25px;
+  }
+
+  .suggestions-list {
+    top: 120px;
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-label {
+    font-size: 12px;
+  }
+
+  .input-field {
+    font-size: 14px;
+  }
+
+  .search-button {
+    font-size: 0.85rem;
+    padding: 8px 15px;
+  }
+
+  .suggestions-list {
+    top: 130px;
   }
 }

@@ -26,7 +26,7 @@ const DevViewClient = () => {
     console.log('informações recebidas: ', usuario)
   }, [usuario]);
 
-const editarNivel = async (id, novoNivel) => {
+const editarNivel = async (id, novoNivel, novoStatus) => {
    const toastId = toast.loading('Atualizando nível de acesso...');
   try {
     const response = await axios.put(`http://localhost:8080/api/v1/Usuario/${id}`, {
@@ -34,7 +34,7 @@ const editarNivel = async (id, novoNivel) => {
       email: usuario.email,         // manter email atual
       senha: usuario.senha,         // manter senha atual
       nivelAcesso: novoNivel,       // novo nível
-
+      statusUsuario: usuarioStatus
     });
     setNivel(novoNivel);
     console.log('Nível de acesso atualizado com sucesso!', response.data);

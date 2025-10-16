@@ -3,11 +3,12 @@
     justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 100vh;
+    height: auto;
     background: #F6F6F6;
 }
 .clientinfo-sidemenu{
     margin-top: 200px;
+    margin-left: 75px;
 }
 
 .clientinfo-container h1{
@@ -68,7 +69,7 @@
     font-weight: 500; 
 }
 .clientinfo-save-button {
-    width: 800px;          
+    width: 820px;          
     height: 75px;            
     border-radius: 5px;       
     border: 1px solid #B2ADAD;

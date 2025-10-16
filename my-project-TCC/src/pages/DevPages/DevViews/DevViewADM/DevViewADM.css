@@ -6,60 +6,61 @@
   height: auto;
   background: #F6F6F6;
 }
-.devadm-h1{
-  margin-top: 230px;
-}
+
 .devadm-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 850px;
+}
+
+.devadm-h1 {
+  margin-top: 200px;
 }
 
 .devadm-container h1 {
   color: #000;
-  font-family: Montserrat;
-  font-size: 50px;
-  font-style: normal;
+  font-family: Montserrat, sans-serif;
+  font-size: 3rem;
   font-weight: 600;
-  line-height: normal;
+  text-align: center;
   margin-bottom: 10px;
 }
 
 .devadm-container h3 {
   color: #AFAFAF;
-  font-family: Montserrat;
-  font-size: 25px;
-  font-style: normal;
+  font-family: Montserrat, sans-serif;
+  font-size: 1.5rem;
   font-weight: 300;
-  line-height: normal;
-  margin-bottom: 60px;
   text-align: center;
+  margin-bottom: 40px;
 }
 
 .devadm-label {
   color: #000;
-  font-family: Montserrat;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-family: Montserrat, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
   align-self: flex-start;
-  margin-left: 10px;
+  margin-left: 26px;
+  margin-bottom: 5px;
 }
 
 .devadm-input {
-  width: 780px;
+  width: 100%;
+  max-width: 780px;
   height: 70px;
   border-radius: 5px;
   border: 1px solid #B2ADAD;
   background: #FFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   color: #424242;
-  font-size: 16px;
-  font-family: Montserrat;
+  font-size: 1rem;
+  font-family: Montserrat, sans-serif;
   font-weight: 500;
   padding-left: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .devadm-input:disabled {
@@ -67,100 +68,169 @@
   color: #424242;
 }
 
-.devadm-feedback {
-  width: 800px;
-  border-radius: 5px;
-  background: #FFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.devadm-feedback h4 {
-  font-family: Montserrat;
-  font-size: 20px;
-  font-weight: 600;
-  color: #000;
-  margin-bottom: 10px;
-}
-
-.devadm-feedback p {
-  font-family: Montserrat;
-  font-size: 16px;
-  color: #424242;
-  line-height: 1.5;
-}
-
 .devadm-status-btn {
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   height: 75px;
   border: none;
   border-radius: 5px;
-  font-family: Montserrat;
-  font-size: 20px;
+  font-family: Montserrat, sans-serif;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #fff;
-  cursor: default;
-  margin-top: 20px;
+  cursor: pointer;
   box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
-  margin-bottom: 60px;
+  margin: 20px 0 150px;
+  transition: 0.2s ease-in-out;
 }
 
 .devadm-status-btn.inativo {
   background-color: #E23C27;
 }
+.devadm-status-btn.inativo:hover {
+  background-color: #fc4e37;
+}
 
 .devadm-status-btn.ativo {
   background-color: #2ECC71;
 }
-.devadm-dropdown .btn{
-  width: 800px;
+.devadm-status-btn.ativo:hover {
+  background-color: #37e07e;
+}
+
+.devadm-dropdown {
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+}
+
+.devadm-dropdown .btn {
+  width: 100%;
   height: 75px;
   border-radius: 5px;
   border: 1px solid #B2ADAD;
   background: #FFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   color: #424242;
-  font-size: 16px;
-  font-family: Montserrat;
+  font-size: 1rem;
+  font-family: Montserrat, sans-serif;
   font-weight: 500;
-  padding-left: 15px;
+  padding: 0 15px;
   margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background-color 0.15s ease-in-out;
 }
-.devadm-dropdown .btn:hover{
+
+.devadm-dropdown .btn:hover {
   background-color: #eeeded;
-  transition: 0.1s ease-in-out;
   cursor: pointer;
 }
 
-.devadm-dropdown-item{
+
+.devadm-dropdown-menu {
+  position: absolute;
+  top: 72%;
+  left: 0;
+  width: 100%;
+  max-width: 784px;
+  z-index: 10;
+  background: transparent;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  width: 780px;
-  height: 70px;
+}
+
+/* Itens do menu */
+.devadm-dropdown-item {
+  width: 100%;
+  height: 75px;
   border-radius: 5px;
   border: 1px solid #B2ADAD;
   background: #FFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
   color: #424242;
-  font-size: 16px;
-  font-family: Montserrat;
+  font-size: 1rem;
+  font-family: Montserrat, sans-serif;
   font-weight: 500;
   padding-left: 15px;
-  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.15s ease-in-out;
 }
-.devadm-dropdown-item:hover{
+
+.devadm-dropdown-item:hover {
   background-color: #eeeded;
-  transition: 0.1s ease-in-out;
   cursor: pointer;
 }
-.devadm-icon{
-  width: 45px;
-  height: 45px;
+
+.devadm-icon {
+  width: 35px;
+  height: 35px;
   margin-right: 10px;
+}
+
+.devadm-icon {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+
+@media (max-width: 1024px) {
+  .devadm-container h1 {
+    font-size: 2.5rem;
+  }
+  .devadm-container h3 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .devadm-container {
+    padding: 0 20px;
+  }
+
+  .devadm-container h1 {
+    font-size: 2rem;
+  }
+
+  .devadm-container h3 {
+    font-size: 1.1rem;
+  }
+
+  .devadm-input,
+  .devadm-dropdown .btn,
+  .devadm-status-btn,
+  .devadm-dropdown-item {
+    height: 60px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .devadm-container h1 {
+    font-size: 1.8rem;
+  }
+
+  .devadm-container h3 {
+    font-size: 1rem;
+  }
+
+  .devadm-input,
+  .devadm-dropdown .btn,
+  .devadm-status-btn,
+  .devadm-dropdown-item {
+    height: 55px;
+    font-size: 0.9rem;
+  }
+
+  .devadm-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .devadm-status-btn {
+    margin-bottom: 40px;
+  }
 }

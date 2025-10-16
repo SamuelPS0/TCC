@@ -56,7 +56,7 @@ const response = await axios.post('http://localhost:8080/api/v1/Usuario', {
       navigate('/security-questions');
     } catch (error) {
       console.error('Erro ao cadastrar:', error.response?.data || error.message);
-      alert('Erro ao cadastrar usuário. Verifique os dados.');
+      toast.error('Erro ao cadastrar usuário. Verifique os dados.');
     }
   };
 

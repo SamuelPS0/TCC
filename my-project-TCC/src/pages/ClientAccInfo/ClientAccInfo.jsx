@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SideMenuCLIENT from '../../Components/SideMenu/SideMenuCLIENT/SideMenuCLIENT';
 import { useAuth } from '../../Components/AuthContext';
+import {toast} from 'sonner'
 import axios from 'axios';
 import './ClientAccInfo.css';
 
@@ -36,7 +37,7 @@ function ClientAccInfo() {
         })
         .catch((error) => {
           console.error('Erro ao buscar dados do usuário:', error);
-          alert('Não foi possível carregar suas informações.');
+          toast.error('Não foi possível carregar suas informações.');
         });
     }
   }, [user]);
@@ -52,7 +53,7 @@ function ClientAccInfo() {
       formData.email === originalData.email &&
       formData.senha === originalData.senha
     ) {
-      alert('Nenhuma alteração detectada.');
+      toast.warning('Nenhuma alteração detectada.');
       return;
     }
 
@@ -65,7 +66,7 @@ function ClientAccInfo() {
       const usuarioLogado = usuarios.find(u => u.email === user.email);
 
       if (!usuarioLogado) {
-        alert('Usuário não encontrado.');
+        toast.error('Usuário não encontrado.');
         return;
       }
 
@@ -77,11 +78,11 @@ function ClientAccInfo() {
         senha: formData.senha
       });
 
-      alert('Informações atualizadas com sucesso!');
+      toast.success('Informações alteradas com sucesso!')
       setOriginalData(formData); // Atualiza referência
     } catch (error) {
       console.error('Erro ao atualizar usuário:', error);
-      alert('Erro ao salvar alterações.');
+      toast.error('Erro ao salvar alterações.');
     } finally {
       setLoading(false);
     }

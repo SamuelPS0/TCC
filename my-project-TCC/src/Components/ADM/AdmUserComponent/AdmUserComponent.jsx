@@ -87,7 +87,7 @@ const AdmUserComponent = ({termoBusca }) => {
       <div className="auc-dropdown-bar">
         {/* ORDEM */}
         <div className="auc-dropdown">
-          <button onClick={() => toggleDropdown('ordem')} className="auc-btn">ORDEM</button>
+          <button onClick={() => toggleDropdown('ordem')} className="auc-ordem">ORDEM</button>
           {openDropdown === 'ordem' && (
             <div className="auc-menu">
               <div onClick={() => aplicarFiltro('ordem', 'A-Z')}>A - Z</div>
@@ -98,7 +98,7 @@ const AdmUserComponent = ({termoBusca }) => {
 
         {/* NÍVEL DE ACESSO */}
         <div className="auc-dropdown">
-          <button onClick={() => toggleDropdown('nivel')} className="auc-btn">NÍVEL DE ACESSO</button>
+          <button onClick={() => toggleDropdown('nivel')} className="auc-status">NÍVEL DE ACESSO</button>
           {openDropdown === 'nivel' && (
             <div className="auc-menu">
               <div onClick={() => aplicarFiltro('nivel', 'ADMIN')}>ADMIN</div>
