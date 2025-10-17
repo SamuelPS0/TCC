@@ -22,6 +22,7 @@ import DevViewClient from '../pages/DevPages/DevViews/DevViewClient/DevViewClien
 import DevViewPrestador from '../pages/DevPages/DevViews/DevViewPrestador/DevViewPrestador';
 import DevViewADM from '../pages/DevPages/DevViews/DevViewADM/DevViewADM';
 import Privacity from '../pages/Privacity/Privacity'
+import Cards from '../Components/Cards/Cards'//temporario
 
 const AppRoutes = () => {
   return (
@@ -36,6 +37,8 @@ const AppRoutes = () => {
       <Route path="/client-accinfo" element={<ClientAccInfo />} />
       <Route path="/privacity" element={<Privacity />} />
       <Route path="/unauthorized" element={<h1>Você não tem permissão para acessar esta página.</h1>} />
+
+      <Route path='/cards' element={<Cards />} />
 
       {/* Rotas protegidas por nível de acesso */}
       <Route

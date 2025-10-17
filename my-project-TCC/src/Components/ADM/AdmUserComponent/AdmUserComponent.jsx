@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdmUserComponent.css';
 import axios from 'axios';
+import {toast} from 'sonner'
 import { FaEye } from "react-icons/fa";
 
 const AdmUserComponent = ({termoBusca }) => {
@@ -18,7 +19,8 @@ const AdmUserComponent = ({termoBusca }) => {
       setUsuarios(resposta.data);
       setUsuariosFiltrados(resposta.data);
     } catch (error) {
-      console.error("Erro ao carregar usuários:", error);
+      toast.warning('Falha ao carregar usuários');
+      console.log("Erro ao carregar usuários:", error);
     }
   };
 
