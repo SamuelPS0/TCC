@@ -1,228 +1,58 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import HeaderSwitcher from '../../Components/HeaderSwitcher';
-import './Profile.css';
-import { FaInstagram, FaFacebook, FaWhatsapp, FaLink, FaPaperclip, FaRegAngry } from "react-icons/fa";
-import Feedback from '../../Components/Feedback/Feedback'
+// src/pages/Profile/Profile.jsx
+import React from "react";
+import { useLocation } from "react-router-dom";
+import ProfileImg from "../../img/image.png";
+import { FaInstagram, FaFacebook, FaWhatsapp, FaLink } from "react-icons/fa";
+import "./Profile.css";
 
-function FeedbackModal({ isOpen, onClose, titulo, setTitulo, mensagem, setMensagem, onSubmit }) {
-  if (!isOpen) return null;
-
-  return (
-    <div className="profile-modal" onClick={onClose}>
-      <div className='profile-modal-wrapper'>
-        <div className='profile-modal-feedback' onClick={(e) => e.stopPropagation()}>
-          <h1>Registrar feedback</h1>
-          <p>Sua opinião faz a diferença! Compartilhe sua experiência e ajude outras pessoas a descobrirem talentos da culinária.</p>
-          <input
-            type="text"
-            className="profile-modal-input"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-          />
-          <textarea
-            className="profile-modal-textarea"
-            value={mensagem}
-            onChange={(e) => setMensagem(e.target.value)}
-            style={{ resize: 'none' }}
-          />
-          <button type="button" className='profile-modal-button' onClick={onSubmit}>ENVIAR</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function DenunciaModal({ isOpen, onClose, titulo, setTitulo, mensagem, setMensagem }) {
-  if (!isOpen) return null;
-
-  return (
-    <div className="profile-modal" onClick={onClose}>
-      <div className='profile-modal-wrapper'>
-        <div className='profile-modal-denuncia' onClick={(e) => e.stopPropagation()}>
-          <h1>Registrar denúncia</h1>
-          <p>Registre aqui a sua denúncia e nossa equipe o ajudará assim que possível!</p>
-          <input
-            type="text"
-            className="profile-modal-input"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-          />
-          <textarea
-            className="profile-modal-textarea"
-            value={mensagem}
-            onChange={(e) => setMensagem(e.target.value)}
-            style={{ resize: 'none' }}
-          />
-          <button type="submit" className='profile-modal-button'>ENVIAR</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ProfileCard({ titulo, mensagem }) {
-  const maxTitulo = 30;
-  const displayTitulo = titulo.length > maxTitulo ? titulo.slice(0, maxTitulo) + "..." : titulo;
-  const maxMensagem = 500;
-  const displayMensagem = mensagem.length > maxMensagem ? titulo.slice (0, maxMensagem) + '...' : mensagem;
-
-  return (
-    <div className="feedback-card">
-      <h2>{displayTitulo}</h2>
-      <p>{displayMensagem}</p>
-    </div>
-  );
-}
-
-export default function Perfil() {
+const Profile = () => {
   const location = useLocation();
-  const perfil = location.state?.perfil;
+  const dados = location.state?.perfil;
 
-  const [OpenModal, setOpenModal] = useState(false);
-  const [ProfileTitulo, setProfileTitulo] = useState('');
-  const [ProfileMensagem, setProfileMensagem] = useState('');
+  if (!dados) return <p>Carregando perfil...</p>;
 
-  const [OpenDenunciaModal, setOpenDenunciaModal] = useState(false);
-  const [DenunciaTitulo, setDenunciaTitulo] = useState('');
-  const [DenunciaMensagem, setDenunciaMensagem] = useState('');
-
-  // Estado para armazenar múltiplos feedbacks
-  const [feedbacks, setFeedbacks] = useState([]);
-
-  if (!perfil) {
-    return <p>Perfil não encontrado.</p>;
-  }
-
-  function enviarFeedback() {
-    if (!ProfileTitulo.trim() || !ProfileMensagem.trim()) {
-      alert("Preencha todos os campos");
-      return;
-    }
-
-    setFeedbacks(prev => [...prev, { titulo: ProfileTitulo, mensagem: ProfileMensagem }]);
-
-    setOpenModal(false);
-    setProfileTitulo('');
-    setProfileMensagem('');
-  }
+  const tipoContato = dados.contatoTipo?.toLowerCase() || "outro";
+  const cor =
+    tipoContato === "instagram"
+      ? "#E4405F"
+      : tipoContato === "facebook"
+      ? "#1877F2"
+      : tipoContato === "whatsapp"
+      ? "#25D366"
+      : "#555";
 
   return (
-    <div>
-    <HeaderSwitcher />
-    <div className='profile-container'>
-      <div className="profile-positioning">
-        <div className='profile-main'>
-          <div className="profile-header-container">
-
-            {/* PRIMEIRA imagem */}
-            {perfil.imagem2 && (
-              <div className="profile-images">
-                <img
-                  src={perfil.imagem2}
-                  alt="Imagem 1"
-                  className="profile-image"
-                />
-              </div>
-            )}
-
-            {/* RESTANTE DOS CAMPOS */}
-            <h1 className='profile-h1'>{perfil.name}</h1>
-            <h3 className='profile-h3'>{perfil.description}</h3>
-
-            <div className="profile-main-container-footer">
-              <p className='profile-meiocontato'>Meios de contato</p>
-            </div>
-            <div className="profile-main-container-footer-p2">
-              {perfil.contacts && perfil.contacts.map((c, i) => {
-                let Icon;
-                let color = "#333";
-                
-                switch (c.label.toLowerCase()) {
-                  case "instagram":
-                    Icon = FaInstagram;
-                    color = "#E4405F";
-                    break;
-                    case "facebook":
-                      Icon = FaFacebook;
-                    color = "#1877F2";
-                    break;
-                    case "whatsapp":
-                      Icon = FaWhatsapp;
-                      color = "#25D366";
-                      break;
-                      default:
-                        Icon = FaLink;
-                        color = "#555";
-                      }
-                      
-                      return (
-                        <a
-                        key={i}
-                        href={c.value}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="contact-link"
-                        style={{ color }}
-                        >
-                    <Icon style={{ fontSize: "40px", marginRight: "8px" }} />
-                    {c.label}
-                  </a>
-                );
-              })}
-            </div>
-
+    <div className="profile-container">
+      <div className="profile-main">
+        <div className="profile-header-container">
+          <div className="profile-images">
+            <img src={ProfileImg} alt="Imagem do serviço" className="profile-image"/>
           </div>
-        </div>
 
-        {/* SEGUNDA imagem + local */}
-        <div className="profile-input-container">
-          {perfil.imagem1 && (
-            <img
-            src={perfil.imagem1}
-            alt="Imagem 2"
-            className="profile-image-2"
-            />
+          <h1 className="profile-h1">{dados.servicoNome}</h1>
+          <h3 className="profile-h3">{dados.servicoDescricao}</h3>
+
+          {dados.contatoLink && (
+            <a href={dados.contatoLink} target="_blank" rel="noopener noreferrer" style={{ color: cor }}>
+              {tipoContato === "instagram" && <FaInstagram />}
+              {tipoContato === "facebook" && <FaFacebook />}
+              {tipoContato === "whatsapp" && <FaWhatsapp />}
+              {tipoContato === "outro" && <FaLink />}
+              {" "}{tipoContato.charAt(0).toUpperCase() + tipoContato.slice(1)}
+            </a>
           )}
+
+          <div className="profile-feedback-card">
+            <h2>{dados.feedbackTitulo}</h2>
+            <p>{dados.feedbackDescricao}</p>
+          </div>
+
+          <p><strong>Categoria:</strong> {dados.categoria}</p>
+          <p><strong>Localização:</strong> {dados.cidade} - {dados.uf}</p>
         </div>
-        <div className='profile-buttons'>
-          <button onClick={() => setOpenModal(true)} className='profile-feedback'>
-            <FaPaperclip className='profile-feedback-icon' />ENVIAR FEEDBACK
-          </button>
-          <button onClick={() => setOpenDenunciaModal(true)} className='profile-denuncia'>
-            <FaRegAngry className='profile-denuncia-icon' />ENVIAR DENÚNCIA
-          </button>
-
-          <FeedbackModal
-            isOpen={OpenModal}
-            onClose={() => setOpenModal(false)}
-            titulo={ProfileTitulo}
-            setTitulo={setProfileTitulo}
-            mensagem={ProfileMensagem}
-            setMensagem={setProfileMensagem}
-            onSubmit={enviarFeedback}
-          />
-
-          <DenunciaModal
-            isOpen={OpenDenunciaModal}
-            onClose={() => setOpenDenunciaModal(false)}
-            titulo={DenunciaTitulo}
-            setTitulo={setDenunciaTitulo}
-            mensagem={DenunciaMensagem}
-            setMensagem={setDenunciaMensagem}
-          />
-        </div>
-
-        {/* Renderizar todos os cards de feedback */}
-        <div className="profile-feedback-card">
-          {feedbacks.map((fb, index) => (
-            <ProfileCard key={index} titulo={fb.titulo} mensagem={fb.descricao || fb.mensagem} />
-          ))}
-        </div>
-
       </div>
     </div>
-    </div>
   );
-}
+};
+
+export default Profile;

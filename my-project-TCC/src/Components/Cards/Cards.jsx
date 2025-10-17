@@ -1,168 +1,88 @@
-import {React, useState, useEffect} from 'react'
-import {toast} from 'sonner'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const Cards = () => {  
-    //Tabela serviço
-    const [servicoFoto, setServicoFoto] = useState(''); //Foto do produto
-    const [servicoNome, setServicoNome] = useState('');
-    const [servicoDescricao, setServicoDescricao] = useState('');
+const Cards = () => {
+  const [cards, setCards] = useState([]);
 
-const CarregarServico = async () => {
-  try {
-    const { data } = await axios.get('http://localhost:8080/api/v1/servico');
-    const servico = data[0];
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        // Busca todos os dados do backend
+        const [
+          servicosRes,
+          prestadoresRes,
+          categoriasRes,
+          regioesRes,
+          contatosRes,
+          feedbacksRes
+        ] = await Promise.all([
+          axios.get("http://localhost:8080/api/v1/servico"),
+          axios.get("http://localhost:8080/api/v1/prestador"),
+          axios.get("http://localhost:8080/api/v1/categoria"),
+          axios.get("http://localhost:8080/api/v1/regiao"),
+          axios.get("http://localhost:8080/api/v1/contato"),
+          axios.get("http://localhost:8080/api/v1/feedback"),
+        ]);
 
-    console.log("Serviço:", {
-      nome: servico.nome,
-      descricao: servico.descricao,
-      foto: servico.foto
-    });
+        const servicos = servicosRes.data;
+        const prestadores = prestadoresRes.data;
+        const categorias = categoriasRes.data;
+        const regioes = regioesRes.data;
+        const contatos = contatosRes.data;
+        const feedbacks = feedbacksRes.data;
 
-    setServicoFoto(servico.foto);
-    setServicoNome(servico.nome);
-    setServicoDescricao(servico.descricao);
-  } catch (error) {
-    console.log("Erro ao carregar serviço:", error);
-  }
-};
+        // Monta os cards usando os primeiros itens disponíveis
+        const cardsArray = servicos.map((servico, index) => {
+          const prestador = prestadores[0] || {};
+          const categoria = categorias[0] || {};
+          const regiao = regioes[0] || {};
+          const contato = contatos[0] || {};
+          const feedback = feedbacks[0] || {};
 
+          return {
+            servicoNome: servico.nome,
+            servicoDescricao: servico.descricao || "Descrição não disponível",
+            categoria: categoria.nome || "Categoria não disponível",
+            cidade: prestador.cidade || regiao.cidade || "Cidade não disponível",
+            uf: prestador.uf || regiao.uf || "UF não disponível",
+            prestadorNome: prestador.nome || "Prestador não disponível",
+            contatoInstagram: contato.link || null,
+            feedbackTitulo: feedback.descricao || null
+          };
+        });
 
-    //Tabela contato
-    const [contatoTipo, setContatoTipo] = useState('');
-    const [contatoLink, setContatoLink] = useState('');
-
-const CarregarContato = async () => {
-  try {
-    const { data } = await axios.get('http://localhost:8080/api/v1/contato');
-    const contato = data[0];
-
-    console.log("Contato:", {
-      tipo: contato.tipo,
-      link: contato.link
-    });
-
-    setContatoTipo(contato.tipo);
-    setContatoLink(contato.link);
-  } catch (error) {
-    console.log("Erro ao carregar contato:", error);
-  }
-};
-
-
-    //Tabela usuario
-    const [usuarioFoto, setUsuarioFoto] = useState('');
-
-const CarregarUsuario = async () => {
-  try {
-    const { data } = await axios.get('http://localhost:8080/api/v1/Usuario');
-    const usuario = data[0];
-
-    console.log("Usuário:", {
-      id: usuario.id,
-      foto: usuario.foto
-    });
-
-    setUsuarioFoto(usuario.foto);
-  } catch (error) {
-    console.log("Erro ao carregar usuário:", error);
-  }
-};
-
-
-
-    //Tabela feedback -> Resgatar Itens - GET
-    const [feedbackTitulo, setFeedbackTitulo] = useState('');
-    const [feedbackDescricao, setFeedbackDescricao] = useState('');
-    const [feedbackTipo, setFeedbackTipo] = useState('');
-
-const CarregarFeedback = async () => {
-  try {
-    const { data } = await axios.get('http://localhost:8080/api/v1/feedback');
-    const feedback = data[0];
-
-    console.log("Feedback:", {
-      titulo: feedback.titulo,
-      descricao: feedback.descricao,
-      tipo: feedback.tipo
-    });
-
-    setFeedbackTitulo(feedback.titulo);
-    setFeedbackDescricao(feedback.descricao);
-    setFeedbackTipo(feedback.tipo);
-  } catch (error) {
-    console.log("Erro ao carregar feedback:", error);
-  }
-};
-
-    //Tabela categoria
-    const [categoria, setCategoria] = useState('');
-
-    const CarregarCategoria = async () => {
-  try {
-    const { data } = await axios.get('http://localhost:8080/api/v1/categoria');
-    const categoria = data[0];
-
-    console.log("categoria:", {
-      nome: categoria.nome,
-    });
-
-    setCategoria(categoria.nome);
-  } catch (error) {
-    console.log("Erro ao carregar categoria:", error);
-  }
-};
-
-    //Tabela Regiao
-    const [cidade, setCidade] = useState ('');
-    const [uf, setUf] = useState ('');
-    const CarregarRegiao = async () => {
-        try{
-            const {data} = await axios.get('http://localhost:8080/api/v1/regiao');
-            const regiao = data[0];
-
-            console.log('Regiao: ',{
-                cidade: regiao.cidade,
-                uf: regiao.uf
-            });
-            setCidade(regiao.cidade);
-            setUf(regiao.uf);
-        }catch(error){
-            console.log("Erro ao carregar regiao:",error)
-        }
+        setCards(cardsArray);
+        console.log("Cards montados:", cardsArray);
+      } catch (error) {
+        console.error("Erro ao buscar dados dos cards:", error);
+      }
     };
 
+    fetchCards();
+  }, []);
 
-useEffect(() => {
-  CarregarServico();
-  CarregarContato();
-  CarregarUsuario();
-  CarregarFeedback();
-  CarregarCategoria();
-  CarregarRegiao();
-}, []);
+  return (
+    <div>
+      {cards.length === 0 ? (
+        <p>Nenhum card para mostrar</p>
+      ) : (
+        cards.map((card, index) => (
+          <div key={index} style={{ border: "1px solid red", margin: "10px", padding: "10px" }}>
+            <h2>{card.servicoNome}</h2>
+            <p>{card.categoria} - {card.cidade}/{card.uf}</p>
+            <p>{card.servicoDescricao}</p>
+            <p>Prestador: {card.prestadorNome}</p>
+            {card.contatoInstagram && (
+              <a href={card.contatoInstagram} target="_blank" rel="noreferrer">
+                Instagram
+              </a>
+            )}
+            {card.feedbackTitulo && <p>Feedback: {card.feedbackTitulo}</p>}
+          </div>
+        ))
+      )}
+    </div>
+  );
+};
 
-
-        //Tabela feedback -> Postar Itens - POST
-    const [feedbackTituloPost, setFeedbackTituloPost] = useState('');
-    const [feedbackDescricaoPost, setFeedbackDescricaoPost] = useState('');
-    const [feedbackTipoPost, setFeedbackTipoPost] = useState('');
-
-return (
-  <div className="p-4">
-    <h2 className="text-xl font-bold mb-4">Serviço</h2>
-    <p><strong>Nome:</strong> {servicoNome}</p>
-    <p><strong>Descrição:</strong> {servicoDescricao}</p>
-    <p><strong>Categoria:</strong> {categoria}</p>
-    <p><strong>regiao:</strong> `{cidade} - {uf}`</p>
-
-    <h2 className="text-xl font-bold mt-6 mb-2">Feedback</h2>
-    <p><strong>Título:</strong> {feedbackTitulo}</p>
-    <p><strong>Descrição:</strong> {feedbackDescricao}</p>
-    <p><strong>Tipo:</strong> {feedbackTipo}</p>
-  </div>
-);
-
-}
-
-export default Cards
+export default Cards;
