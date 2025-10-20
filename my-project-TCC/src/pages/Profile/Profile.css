@@ -261,83 +261,98 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 680px;
-  max-height: 90vh;
+  width: 70%;             /* Largura menor */
+  max-width: 420px;       /* Limite de largura menor */
+  max-height: 75vh;       /* Altura um pouco menor que antes */
   overflow-y: auto;
-  padding: 40px;
-  flex-shrink: 0;
+  padding: 35px;          
   border-radius: 15px;
-  border: 2px solid #939393;
+  border: 2px solid #B0B0B0;
   background: #FFF;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-  
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
 }
-
 
 .profile-modal-input{
-  width: 684px;
-  height: 74px;
-  flex-shrink: 0;
-  border-radius: 15px;
+  width: 100%;
+  height: 55px;
+  font-size: 20px;
+  border-radius: 12px;
   border: 1px solid #C4C4C4;
-  background: #F8F8F8;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-  margin-bottom: 40px;
+  background: #F7F7F7;
+  margin-bottom: 25px;
+  padding: 10px;
   font-family: Montserrat;
-  font-weight: bold;
-  padding-left: 7px;
-  font-size: 25px;
+  font-weight: 500;
+  color: #333;
 }
+
 .profile-modal-textarea{
-  width: 684px;
-  height: 459px;
-  flex-shrink: 0;
-  border-radius: 15px;
+  width: 100%;
+  height: 220px;
+  font-size: 18px;
+  border-radius: 12px;
   border: 1px solid #C4C4C4;
-  background: #F8F8F8;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-  margin-bottom: 20px;
+  background: #F7F7F7;
+  padding: 10px;
+  margin-bottom: 25px;
   font-family: Montserrat;
   font-weight: 400;
-  padding-left: 7px;
-  font-size: 35px;
+  color: #333;
+  resize: none;
 }
-.profile-modal-feedback {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.profile-modal-feedback h1{
+
+.profile-modal-feedback h1,
+.profile-modal-denuncia h1{
+  font-size: 30px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
   color: #00B746;
-  font-family: Poppins;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: normal;
-}
-.profile-modal-feedback p{
-  color: #A1A1A1;
   text-align: center;
-  font-family: Montserrat;
-  font-size: 23px;
-  font-style: normal;
+}
+
+.profile-modal-feedback p,
+.profile-modal-denuncia p{
+  font-size: 18px;
+  font-family: Montserrat, sans-serif;
   font-weight: 400;
-  line-height: normal;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  max-width: 700px;
+  color: #555;
+  text-align: center;
+  margin: 15px 0 25px 0;
+  line-height: 1.5;
 }
-.profile-modal-feedback button{
-  width: 716.997px;
-  height: 80.112px;
-  flex-shrink: 0;
-  border-radius: 4px;
-  background: #F05221;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.30);
+
+.profile-modal-button{
+  width: 100%;
+  height: 55px;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #FFF;
+  background-color: #FF5D2B;
+  border-radius: 10px;
   border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
+
+.profile-modal-button:hover{
+  background-color: #FF432A;
+  box-shadow: 0 6px 12px rgba(255, 67, 42, 0.4);
+  transform: translateY(-2px);
+}
+
+.profile-modal-denuncia h1{
+  color: #D30202;
+}
+
+.profile-modal-denuncia button{
+  background-color: #D30202;
+}
+
+.profile-modal-denuncia p{
+  color: #777;
+}
+
 
 .profile-modal-denuncia {
   display: flex;
@@ -375,27 +390,33 @@
   border: none;
 } 
 
-.profile-modal-button{
-  margin-top: 50px;
+/* Botão de envio unificado para feedback e denúncia */
+.profile-modal-button,
+.profile-modal-denuncia button {
+  width: 100%;
+  max-width: 420px;       /* Limite de largura consistente */
+  height: 60px;           /* Altura uniforme */
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
   color: #FFF;
-  text-align: center;
-  font-family: Poppins;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 900;
-  line-height: 20px; /* 62.5% */
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-}
-.profile-modal-button:hover{
-    background-color: #FF432A;
-  color: white;
-  outline: 3px solid #FF432A;
-  outline-offset: 4px;
+  background-color: #FF5D2B;  /* Cor principal */
+  border-radius: 12px;
+  border: none;
   cursor: pointer;
+  transition: all 0.3s ease;
+  scrollbar-width: thin;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.profile-modal-button:hover,
+.profile-modal-denuncia button:hover {
+  background-color: #FF432A;  /* Hover mais vibrante */
   box-shadow: 0 6px 12px rgba(255, 67, 42, 0.4);
   transform: translateY(-2px);
 }
+
 
 .profile-feedback-card {
   display: flex;
@@ -445,6 +466,7 @@
   font-weight: 500;
   padding-bottom: 50px;
 }
+
 
 
 @media (max-width: 1024px) {

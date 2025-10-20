@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { MdStars } from "react-icons/md";
+import { FaSearchLocation } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import './Cards.css'
 
 const Cards = () => {
   const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        // Busca todos os dados do backend
         const [
           servicosRes,
           prestadoresRes,
@@ -17,7 +19,7 @@ const Cards = () => {
           regioesRes,
           contatosRes,
           feedbacksRes
-        ] = await Promise.all([ //usei promisse all pra ficar mais facil
+        ] = await Promise.all([
           axios.get("http://localhost:8080/api/v1/servico"),
           axios.get("http://localhost:8080/api/v1/prestador"),
           axios.get("http://localhost:8080/api/v1/categoria"),
@@ -33,7 +35,6 @@ const Cards = () => {
         const contatos = contatosRes.data;
         const feedbacks = feedbacksRes.data;
 
-        // Monta os cards usando os primeiros itens disponíveis por enaquanto
         const cardsArray = servicos.map((servico, index) => {
           const prestador = prestadores[0] || {};
           const categoria = categorias[0] || {};
@@ -55,28 +56,46 @@ const Cards = () => {
         });
 
         setCards(cardsArray);
-        console.log("Cards montados:", cardsArray);
+        setLoading(false);
       } catch (error) {
         console.error("Erro ao buscar dados dos cards:", error);
+        setLoading(false);
       }
     };
 
     fetchCards();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="cards-container">
+        {[...Array(1)].map((_, index) => (
+          <div className="card-skeleton" key={index}>
+            <div className="skeleton title"></div>
+            <div className="skeleton subtitle"></div>
+            <div className="skeleton text"></div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div className="cards-container">
       {cards.length === 0 ? (
         <p>Nenhum card para mostrar</p>
       ) : (
         cards.map((card, index) => (
-          <Link to={"/profile"} state={{ perfil: card } } key={index} >
-          <div className="cards">
-            <h2>{card.servicoNome}</h2>
-            <p>{card.categoria} - {card.cidade}/{card.uf}</p>
-            <p>{card.servicoDescricao}</p>
-          </div>
-      </Link>
+          <Link to={"/profile"} state={{ perfil: card }} key={index}>
+            <div className="cards">
+              <h2>{card.servicoNome}</h2>
+              <p className="cards-items">
+                <MdStars className='edit-icon'/> {card.categoria}
+                <FaSearchLocation  className='edit-icon-2'/> {card.cidade}/{card.uf}
+              </p>
+              <p className="cards-description">{card.servicoDescricao}</p>
+            </div>
+          </Link>
         ))
       )}
     </div>
