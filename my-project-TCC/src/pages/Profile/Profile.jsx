@@ -107,6 +107,8 @@ const Profile = () => {
     setOpenDenuncia(false);
   };
 console.log('Dados recebidos:',dados)
+console.log('Titulo do feedback:',dados.feedbackTitulo)
+console.log('Descricao do feedback:',dados.feedbackDescricao)
   return (
     <>
       <HeaderSwitcher />
@@ -155,6 +157,7 @@ console.log('Dados recebidos:',dados)
 
           <div className="profile-feedback-card">
             <div className="feedback-card">
+          
               <h2>{dados.feedbackTitulo}</h2>
               <p>{dados.feedbackDescricao}</p>
             </div>

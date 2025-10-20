@@ -20,15 +20,19 @@ const DevCategory = () => {
 
 
   // FUNÇÃO GET (Read)
-  const carregarCategorias = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/v1/categoria");
-      setCategorias(response.data);
-      console.log('Categorias atualizadas:', response.data);
-    } catch (error) {
-      console.error("Erro ao carregar categorias:", error);
-    }
-  };
+const carregarCategorias = async () => {
+  const toastId = toast.loading('Carregando categorias');
+  try {
+    const response = await axios.get("http://localhost:8080/api/v1/categoria");
+    setCategorias(response.data);
+    console.log('Categorias carregadas:', response.data);
+    toast.success('Categorias carregadas com sucesso!', { id: toastId });
+  } catch (error) {
+    toast.error("Erro ao carregar categorias:", error, { id: toastId });
+    console.error("Erro ao carregar categorias:", error);
+  }
+};
+
 
     useEffect(() => {
     carregarCategorias();

@@ -14,6 +14,7 @@ const AdmUserComponent = ({termoBusca }) => {
 
   // Carrega usuários da API
   const carregarUsuarios = async () => {
+    toast.success('Usuários carregados')
     try {
       const resposta = await axios.get(`http://localhost:8080/api/v1/Usuario`);
       setUsuarios(resposta.data);

@@ -49,7 +49,8 @@ const Cards = () => {
             uf: prestador.uf || regiao.uf || "UF não disponível",
             prestadorNome: prestador.nome || "Prestador não disponível",
             contatoMidia: contato.link || null,
-            feedbackTitulo: feedback.descricao || null
+            feedbackTitulo: feedback.titulo || null,
+            feedbackDescricao: feedback.descricao || null
           };
         });
 
