@@ -11,6 +11,10 @@
     max-width: 100vw
 }
 
+.devhub-container-card a{
+    text-decoration: none;
+}
+
 .devhub-card{
     display: flex;
     align-items: center;
@@ -42,4 +46,5 @@ font-size: 48px;
 font-style: normal;
 font-weight: 700;
 line-height: normal;
+
 }

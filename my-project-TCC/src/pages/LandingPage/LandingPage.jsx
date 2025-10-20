@@ -36,7 +36,6 @@ export default function LandingPage() {
           <h1 className="lp-first-section-h1" id='scrollone'>
             ENCONTRE OS MELHORES PROFISSIONAIS<br />DA <span>GASTRONOMIA</span> NA SUA REGIÃO!
           </h1>
-          <Link to='/cards'>Cards</Link>
           <h3 className="lp-first-section-h3">
             Com a <span>DivulgAí</span>, os melhores sabores da sua região<br /> estão a apenas um clique. Experimente agora!
           </h3>

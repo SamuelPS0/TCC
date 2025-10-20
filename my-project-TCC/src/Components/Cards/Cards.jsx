@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
+import './Cards.css'
 
 const Cards = () => {
   const [cards, setCards] = useState([]);
@@ -15,7 +17,7 @@ const Cards = () => {
           regioesRes,
           contatosRes,
           feedbacksRes
-        ] = await Promise.all([
+        ] = await Promise.all([ //usei promisse all pra ficar mais facil
           axios.get("http://localhost:8080/api/v1/servico"),
           axios.get("http://localhost:8080/api/v1/prestador"),
           axios.get("http://localhost:8080/api/v1/categoria"),
@@ -31,7 +33,7 @@ const Cards = () => {
         const contatos = contatosRes.data;
         const feedbacks = feedbacksRes.data;
 
-        // Monta os cards usando os primeiros itens disponíveis
+        // Monta os cards usando os primeiros itens disponíveis por enaquanto
         const cardsArray = servicos.map((servico, index) => {
           const prestador = prestadores[0] || {};
           const categoria = categorias[0] || {};
@@ -46,7 +48,7 @@ const Cards = () => {
             cidade: prestador.cidade || regiao.cidade || "Cidade não disponível",
             uf: prestador.uf || regiao.uf || "UF não disponível",
             prestadorNome: prestador.nome || "Prestador não disponível",
-            contatoInstagram: contato.link || null,
+            contatoMidia: contato.link || null,
             feedbackTitulo: feedback.descricao || null
           };
         });
@@ -67,18 +69,13 @@ const Cards = () => {
         <p>Nenhum card para mostrar</p>
       ) : (
         cards.map((card, index) => (
-          <div key={index} style={{ border: "1px solid red", margin: "10px", padding: "10px" }}>
+          <Link to={"/profile"} state={{ perfil: card } } key={index} >
+          <div className="cards">
             <h2>{card.servicoNome}</h2>
             <p>{card.categoria} - {card.cidade}/{card.uf}</p>
             <p>{card.servicoDescricao}</p>
-            <p>Prestador: {card.prestadorNome}</p>
-            {card.contatoInstagram && (
-              <a href={card.contatoInstagram} target="_blank" rel="noreferrer">
-                Instagram
-              </a>
-            )}
-            {card.feedbackTitulo && <p>Feedback: {card.feedbackTitulo}</p>}
           </div>
+      </Link>
         ))
       )}
     </div>

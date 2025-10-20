@@ -1,13 +1,16 @@
 import React from 'react';
 import HeaderSwitcher from '../../Components/HeaderSwitcher';
 import Cards from '../../Components/Cards/Cards'
+import './HomeList.css'
 
 const HomeList = () => {
   console.log("HomeList renderizou");
   return (
-    <div className='background-color-homepage'>
-    
-      <Cards /> {/* Renderiza todos os cards */}
+    <div>
+      <HeaderSwitcher />
+      <div className='homelist-cards'>
+      <Cards />
+      </div>
     </div>
   );
 };
