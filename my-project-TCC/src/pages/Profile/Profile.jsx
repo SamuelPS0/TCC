@@ -1,87 +1,25 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { FaInstagram, FaFacebook, FaWhatsapp, FaLink, FaPaperclip, FaRegAngry } from "react-icons/fa";
 import ProfileImg from "../../img/Ellipse.png";
+import { useAuth } from "../../Components/AuthContext";
 import InputImg from "../../img/crosant.png";
-import HeaderSwitcher from '../../Components/HeaderSwitcher';
+import HeaderSwitcher from "../../Components/HeaderSwitcher";
 import "./Profile.css";
-
-// Modal de Feedback
-
-const FeedbackModal = ({ isOpen, onClose, titulo, setTitulo, mensagem, setMensagem, onSubmit }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="profile-modal" onClick={onClose}>
-      <div className="profile-modal-wrapper" onClick={(e) => e.stopPropagation()}>
-        <div className="profile-modal-feedback">
-          <h1>Registrar feedback</h1>
-          <p>Sua opinião faz a diferença! Compartilhe sua experiência e ajude outras pessoas a descobrirem talentos da culinária.</p>
-          <input
-            type="text"
-            className="profile-modal-input"
-            placeholder="Título do feedback"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-          />
-          <textarea
-            className="profile-modal-textarea"
-            placeholder="Escreva seu feedback"
-            value={mensagem}
-            onChange={(e) => setMensagem(e.target.value)}
-            style={{ resize: 'none' }}
-          />
-          <button type="button" className="profile-modal-button" onClick={onSubmit}>ENVIAR</button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Modal de Denúncia
-const DenunciaModal = ({ isOpen, onClose, titulo, setTitulo, mensagem, setMensagem, onSubmit }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="profile-modal" onClick={onClose}>
-      <div className="profile-modal-wrapper" onClick={(e) => e.stopPropagation()}>
-        <div className="profile-modal-denuncia">
-          <h1>Registrar denúncia</h1>
-          <p>Registre aqui a sua denúncia e nossa equipe o ajudará assim que possível!</p>
-          <input
-            type="text"
-            className="profile-modal-input"
-            placeholder="Título da denúncia"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-          />
-          <textarea
-            className="profile-modal-textarea"
-            placeholder="Descreva a denúncia"
-            value={mensagem}
-            onChange={(e) => setMensagem(e.target.value)}
-            style={{ resize: 'none' }}
-          />
-          <button type="button" className="profile-modal-button" onClick={onSubmit}>ENVIAR</button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Profile = () => {
   const location = useLocation();
   const dados = location.state?.perfil;
+  const { user } = useAuth();
 
-  // Estados dos modais
   const [openFeedback, setOpenFeedback] = useState(false);
   const [openDenuncia, setOpenDenuncia] = useState(false);
 
-  // Estados dos inputs
-  const [feedbackTitulo, setFeedbackTitulo] = useState('');
-  const [feedbackMensagem, setFeedbackMensagem] = useState('');
-  const [denunciaTitulo, setDenunciaTitulo] = useState('');
-  const [denunciaMensagem, setDenunciaMensagem] = useState('');
+  const [feedbackTitulo, setFeedbackTitulo] = useState("");
+  const [feedbackMensagem, setFeedbackMensagem] = useState("");
+  const [denunciaTitulo, setDenunciaTitulo] = useState("");
+  const [denunciaMensagem, setDenunciaMensagem] = useState("");
 
   if (!dados) return <p>Carregando perfil...</p>;
 
@@ -93,22 +31,108 @@ const Profile = () => {
     return <FaLink />;
   };
 
+  const enviarFeedbackOuDenuncia = async (tipo, titulo, descricao) => {
+    if (!titulo || !descricao) {
+      alert("Preencha todos os campos antes de enviar!");
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:8080/api/v1/feedback", payload);
+      console.log(`${tipo} enviado com sucesso!`);
+      alert(`${tipo === "FEEDBACK" ? "Feedback" : "Denúncia"} enviada com sucesso!`);
+    } catch (error) {
+      console.error(`Erro ao enviar ${tipo.toLowerCase()}:`, error);
+      alert(`Erro ao enviar ${tipo.toLowerCase()}!`);
+    }
+  };
+
   const enviarFeedback = () => {
     console.log("Feedback enviado:", feedbackTitulo, feedbackMensagem);
-    setFeedbackTitulo('');
-    setFeedbackMensagem('');
+    enviarFeedbackOuDenuncia("FEEDBACK", feedbackTitulo, feedbackMensagem);
+    setFeedbackTitulo("");
+    setFeedbackMensagem("");
     setOpenFeedback(false);
   };
 
   const enviarDenuncia = () => {
     console.log("Denúncia enviada:", denunciaTitulo, denunciaMensagem);
-    setDenunciaTitulo('');
-    setDenunciaMensagem('');
+    enviarFeedbackOuDenuncia("DENUNCIA", denunciaTitulo, denunciaMensagem);
+    setDenunciaTitulo("");
+    setDenunciaMensagem("");
     setOpenDenuncia(false);
   };
-console.log('Dados recebidos:',dados)
-console.log('Titulo do feedback:',dados.feedbackTitulo)
-console.log('Descricao do feedback:',dados.feedbackDescricao)
+
+  console.log("Usuario carregado", user);
+  console.log("Dados recebidos:", dados);
+  console.log("Titulo do feedback:", dados.feedbackTitulo);
+  console.log("Descricao do feedback:", dados.feedbackDescricao);
+  console.log("Tipo do feedback:", dados.feedbackTipo);
+
+  const FeedbackModal = ({ isOpen, onClose, titulo, setTitulo, mensagem, setMensagem, onSubmit }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="profile-modal" onClick={onClose}>
+        <div className="profile-modal-wrapper" onClick={(e) => e.stopPropagation()}>
+          <div className="profile-modal-feedback">
+            <h1>Registrar feedback</h1>
+            <p>Sua opinião faz a diferença! Compartilhe sua experiência e ajude outras pessoas a descobrirem talentos da culinária.</p>
+            <input
+              type="text"
+              className="profile-modal-input"
+              placeholder="Título do feedback"
+              value={titulo}
+              onChange={(e) => setTitulo(e.target.value)}
+            />
+            <textarea
+              className="profile-modal-textarea"
+              placeholder="Escreva seu feedback"
+              value={mensagem}
+              onChange={(e) => setMensagem(e.target.value)}
+              style={{ resize: "none" }}
+            />
+            <button type="button" className="profile-modal-button" onClick={onSubmit}>
+              ENVIAR
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const DenunciaModal = ({ isOpen, onClose, titulo, setTitulo, mensagem, setMensagem, onSubmit }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="profile-modal" onClick={onClose}>
+        <div className="profile-modal-wrapper" onClick={(e) => e.stopPropagation()}>
+          <div className="profile-modal-denuncia">
+            <h1>Registrar denúncia</h1>
+            <p>Registre aqui a sua denúncia e nossa equipe o ajudará assim que possível!</p>
+            <input
+              type="text"
+              className="profile-modal-input"
+              placeholder="Título da denúncia"
+              value={titulo}
+              onChange={(e) => setTitulo(e.target.value)}
+            />
+            <textarea
+              className="profile-modal-textarea"
+              placeholder="Descreva a denúncia"
+              value={mensagem}
+              onChange={(e) => setMensagem(e.target.value)}
+              style={{ resize: "none" }}
+            />
+            <button type="button" className="profile-modal-button" onClick={onSubmit}>
+              ENVIAR
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <HeaderSwitcher />
@@ -157,13 +181,11 @@ console.log('Descricao do feedback:',dados.feedbackDescricao)
 
           <div className="profile-feedback-card">
             <div className="feedback-card">
-          
               <h2>{dados.feedbackTitulo}</h2>
               <p>{dados.feedbackDescricao}</p>
             </div>
           </div>
 
-          {/* Modais */}
           <FeedbackModal
             isOpen={openFeedback}
             onClose={() => setOpenFeedback(false)}

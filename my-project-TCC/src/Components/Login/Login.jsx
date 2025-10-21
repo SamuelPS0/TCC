@@ -51,9 +51,19 @@ export default function Login({ buttonText = "Entrar" }) {
 
       const level = usuarioEncontrado.nivelAcesso || accessLevels.CLIENTE;
 
-      login({ email: usuarioEncontrado.email, accessLevel: level });
-      localStorage.setItem('userLevel', level);
-      toast.success("Login realizado com sucesso!")
+   login({
+  id: usuarioEncontrado.id, // ← agora o id é salvo
+  email: usuarioEncontrado.email,
+  accessLevel: level
+});
+
+localStorage.setItem('userLevel', level);
+console.log("Usuário logado com sucesso:", {
+  id: usuarioEncontrado.id,
+  email: usuarioEncontrado.email,
+  accessLevel: level
+});
+
 
       navigate('/');
     } catch (error) {

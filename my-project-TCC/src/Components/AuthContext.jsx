@@ -3,8 +3,8 @@ import accessLevels from './accessLevels';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({ email: null, accessLevel: accessLevels.GUEST });
+export const AuthProvider = ({ children }) => {const [user, setUser] = useState({ id: null, email: null, accessLevel: accessLevels.GUEST });
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -19,7 +19,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setUser({ email: null, accessLevel: accessLevels.GUEST });
+    setUser({
+      id: null,
+      email: null,
+      accessLevel: accessLevels.GUEST,
+    });
     localStorage.removeItem('user');
   };
 

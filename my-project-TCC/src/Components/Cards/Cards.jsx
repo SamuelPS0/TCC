@@ -49,9 +49,11 @@ const Cards = () => {
             cidade: prestador.cidade || regiao.cidade || "Cidade não disponível",
             uf: prestador.uf || regiao.uf || "UF não disponível",
             prestadorNome: prestador.nome || "Prestador não disponível",
+            prestadorId: prestador.id || "O prestador não existe",
             contatoMidia: contato.link || null,
             feedbackTitulo: feedback.titulo || null,
-            feedbackDescricao: feedback.descricao || null
+            feedbackDescricao: feedback.descricao || null,
+            feedbackTipo: feedback.tipoFeedback || null,
           };
         });
 
@@ -83,7 +85,7 @@ const Cards = () => {
   return (
     <div className="cards-container">
       {cards.length === 0 ? (
-        <p>Nenhum card para mostrar</p>
+        <p>Erro em carregar cards</p>
       ) : (
         cards.map((card, index) => (
           <Link to={"/profile"} state={{ perfil: card }} key={index}>
