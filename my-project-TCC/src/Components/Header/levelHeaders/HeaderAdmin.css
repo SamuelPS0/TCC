@@ -84,7 +84,7 @@
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
-  line-height: 24px; /* 120% */
+  line-height: 24px;
   letter-spacing: 0.5px;
 }
 
@@ -92,17 +92,19 @@
   text-decoration: underline;
   font-weight: 800;
 }
-.headeradmin-dropdown{
-    position: absolute;
-    top: 4rem;
-    right: 1rem;
-    width: 194.112px;
-    height: 229px;
-    flex-shrink: 0;
-    border-radius: 5px;
-    border: 2px solid #F05221;
-    background: #FFF;
+
+.headeradmin-dropdown {
+  position: absolute;
+  top: 4rem;
+  right: 1rem;
+  width: 194.112px;
+  height: 229px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 2px solid #F05221;
+  background: #FFF;
 }
+
 .headeradmin-dropdown-toggle {
   background: none;
   border: none;
@@ -127,7 +129,6 @@
   cursor: pointer;
 }
 
-
 .headeradmin-list {
   display: flex;
   flex-direction: column;
@@ -137,10 +138,10 @@
 }
 
 .headeradmin-list li {
-  display: flex;   
+  display: flex;
   padding: 12px 0 7px 5px;
-  align-items: center; 
-  gap: 5px;           
+  align-items: center;
+  gap: 5px;
   color: #000;
   text-align: center;
   font-family: Montserrat, sans-serif;
@@ -149,55 +150,174 @@
   font-weight: 500;
   line-height: normal;
   transition: 0.2s ease-in-out;
-        width: 84%;
-    margin-left: 10px;
-    border-bottom: 2px solid #D7D7D7
+  width: 84%;
+  margin-left: 10px;
+  border-bottom: 2px solid #D7D7D7;
 }
+
 .headeradmin-list li:last-child {
   border-bottom: none;
 }
-.headeradmin-list li:hover{
-    cursor: pointer;
-    width: 99%;
-    border-radius: 5px;
-    background-color: #FF432A;
-    color: white;
-    font-weight: 700;
-    border-color: #FF432A;
-    margin-left: -1.8px;
-    box-shadow: 0 0 10px rgba(255, 67, 42, 0.5);
+
+.headeradmin-list li:hover {
+  cursor: pointer;
+  width: 99%;
+  border-radius: 5px;
+  background-color: #FF432A;
+  color: white;
+  font-weight: 700;
+  border-color: #FF432A;
+  margin-left: -1.8px;
+  box-shadow: 0 0 10px rgba(255, 67, 42, 0.5);
 }
+
 .headeradmin-list-icon {
   width: 25px;
   height: 25px;
   flex-shrink: 0;
 }
+
 .headeradmin-link {
-  display: flex;       
+  display: flex;
   align-items: center;
   gap: 5px;
-  width: 100%;     
-  height: 100%;    
-  color: inherit;        
+  width: 100%;
+  height: 100%;
+  color: inherit;
   text-decoration: none;
-  font-family: inherit; 
-  font-size: inherit;      
-  font-weight: inherit; 
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
   margin: 0;
   padding: 0;
-  line-height: normal;   
+  line-height: normal;
 }
-.headeradmin-exit{
+
+.headeradmin-exit {
   position: fixed;
   top: 28px;
   right: 50px;
   width: 40px;
   height: 40px;
 }
+
 .headeradmin-link:hover {
-  color: inherit;       
-  text-decoration: none;   
-  cursor: pointer;      
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
+/* ===================== RESPONSIVIDADE ===================== */
 
+@media (max-width: 1024px) {
+  .headeradmin-header {
+    height: 130px;
+    padding-top: 20px;
+  }
+
+  .headeradmin-logo {
+    width: 120px;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .headeradmin-nav-left {
+    margin-left: 5rem;
+  }
+
+  .headeradmin-nav-right {
+    padding-right: 4rem;
+    gap: 25px;
+  }
+
+  .headeradmin-nav a {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .headeradmin-header {
+    height: 120px;
+    padding-top: 15px;
+  }
+
+  .headeradmin-logo {
+    width: 100px;
+    padding: 0 2rem;
+  }
+
+  .headeradmin-nav {
+    gap: 15px;
+  }
+
+  .headeradmin-nav-left {
+    margin-left: 2rem;
+    padding-top: 1rem;
+  }
+
+  .headeradmin-nav-right {
+    padding-right: 2rem;
+    gap: 20px;
+  }
+
+  .headeradmin-nav a {
+    font-size: 0.85rem;
+  }
+
+  .headeradmin-container-login {
+    padding: 2px 8px;
+  }
+
+  .headeradmin-exit {
+    right: 25px;
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headeradmin-header {
+    height: 100px;
+    padding-top: 10px;
+  }
+
+  .headeradmin-logo {
+    width: 80px;
+    padding: 0 1rem;
+  }
+
+  .headeradmin-nav {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .headeradmin-nav-left {
+    margin-left: 1rem;
+  }
+
+  .headeradmin-nav-right {
+    padding-right: 1rem;
+    gap: 10px;
+  }
+
+  .headeradmin-nav a {
+    font-size: 0.75rem;
+  }
+
+  .headeradmin-container-login {
+    padding: 2px 6px;
+    border-radius: 12px;
+  }
+
+  .headeradmin-container-register {
+    padding-right: 10px;
+  }
+
+  .headeradmin-exit {
+    top: 22px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+  }
+}

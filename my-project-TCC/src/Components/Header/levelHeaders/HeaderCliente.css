@@ -5,25 +5,24 @@
   padding: 0;
 }
 
-.headerclient-nav button{
+.headerclient-nav button {
   color: white;
-    background: none;
+  background: none;
   border: none;
   padding: 0;
   margin: 0;
   font: inherit;
   cursor: pointer;
   font-style: inherit;
-    font-weight: 700;
-    font-size: 1rem;
-    text-decoration: none;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 24px;
-    letter-spacing: 0.5px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
 }
 
 .headerclient-header {
@@ -91,7 +90,7 @@
 .headerclient-container-login {
   border-radius: 20px;
   border: 1px solid #FFF;
-  padding: 2px 10px 2px 10px;
+  padding: 2px 10px;
 }
 
 .headerclient-nav a {
@@ -104,11 +103,108 @@
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
-  line-height: 24px; /* 120% */
-  letter-spacing: 0.5px;
+  line-height: 24px;
 }
 
 .headerclient-nav a:hover {
   text-decoration: underline;
   font-weight: 800;
+}
+
+/* ==================== RESPONSIVIDADE ==================== */
+@media (max-width: 1024px) {
+  .headerclient-header {
+    height: 130px;
+    padding-top: 20px;
+  }
+
+  .headerclient-logo {
+    width: 120px;
+    padding-right: 5rem;
+  }
+
+  .headerclient-nav-left {
+    margin-right: 4rem;
+    gap: 30px;
+  }
+
+  .headerclient-nav-right {
+    margin-right: 3rem;
+    gap: 30px;
+  }
+
+  .headerclient-nav a {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerclient-header {
+    height: 120px;
+    padding-top: 15px;
+  }
+
+  .headerclient-logo {
+    width: 100px;
+    padding-right: 3rem;
+  }
+
+  .headerclient-nav-left {
+    margin-right: 2rem;
+    gap: 25px;
+  }
+
+  .headerclient-nav-right {
+    margin-right: 2rem;
+    gap: 25px;
+  }
+
+  .headerclient-nav a {
+    font-size: 0.85rem;
+  }
+
+  .headerclient-container-login {
+    padding: 2px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerclient-header {
+    height: 100px;
+    padding-top: 10px;
+  }
+
+  .headerclient-logo {
+    width: 80px;
+    padding-right: 1rem;
+  }
+
+  .headerclient-nav {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .headerclient-nav-left {
+    margin-right: 1rem;
+    gap: 15px;
+  }
+
+  .headerclient-nav-right {
+    margin-right: 1rem;
+    gap: 15px;
+  }
+
+  .headerclient-nav a {
+    font-size: 0.75rem;
+  }
+
+  .headerclient-container-login {
+    padding: 2px 6px;
+    border-radius: 12px;
+  }
+
+  .headerclient-container-register {
+    padding-right: 10px;
+  }
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 import { MdStars } from "react-icons/md";
 import { FaSearchLocation } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-import './Cards.css'
+import './Cards.css';
 
 const Cards = () => {
   const [cards, setCards] = useState([]);
@@ -11,50 +11,43 @@ const Cards = () => {
 
   useEffect(() => {
     const fetchCards = async () => {
+      console.log("🔄 Iniciando busca de dados...");
+
       try {
-        const [
-          servicosRes,
-          prestadoresRes,
-          categoriasRes,
-          regioesRes,
-          contatosRes,
-          feedbacksRes
-        ] = await Promise.all([
+        const [servicosRes, contatosRes, feedbacksRes] = await Promise.all([
           axios.get("http://localhost:8080/api/v1/servico"),
-          axios.get("http://localhost:8080/api/v1/prestador"),
-          axios.get("http://localhost:8080/api/v1/categoria"),
-          axios.get("http://localhost:8080/api/v1/regiao"),
           axios.get("http://localhost:8080/api/v1/contato"),
           axios.get("http://localhost:8080/api/v1/feedback"),
         ]);
 
         const servicos = servicosRes.data;
-        const prestadores = prestadoresRes.data;
-        const categorias = categoriasRes.data;
-        const regioes = regioesRes.data;
         const contatos = contatosRes.data;
         const feedbacks = feedbacksRes.data;
 
-        const cardsArray = servicos.map((servico, index) => {
-          const prestador = prestadores[0] || {};
-          const categoria = categorias[0] || {};
-          const regiao = regioes[0] || {};
-          const contato = contatos[0] || {};
-          const feedback = feedbacks[0] || {};
+        console.log("✅ Dados recebidos da API:", { servicos, contatos, feedbacks });
 
-          return {
+        const cardsArray = servicos.map(servico => {
+          const prestador = servico.prestador || {};
+          const categoria = servico.categoria || {};
+          const contato = contatos.find(
+            c => Number(c.prestadorId) === Number(prestador.id) && c.statusContato === "ATIVO"
+          ) || {};
+          const feedbacksPrestador = feedbacks.filter(f => Number(f.prestador_id) === Number(prestador.id));
+
+          const card = {
             servicoNome: servico.nome,
             servicoDescricao: servico.descricao || "Descrição não disponível",
             categoria: categoria.nome || "Categoria não disponível",
-            cidade: prestador.cidade || regiao.cidade || "Cidade não disponível",
-            uf: prestador.uf || regiao.uf || "UF não disponível",
+            cidade: prestador.cidade || "Cidade não disponível",
+            uf: prestador.uf || "UF não disponível",
             prestadorNome: prestador.nome || "Prestador não disponível",
-            prestadorId: prestador.id || "O prestador não existe",
+            prestadorId: prestador.id || null,
             contatoMidia: contato.link || null,
-            feedbackTitulo: feedback.titulo || null,
-            feedbackDescricao: feedback.descricao || null,
-            feedbackTipo: feedback.tipoFeedback || null,
+            feedbacks: feedbacksPrestador,
           };
+
+          console.log("🧩 Card montado:", card);
+          return card;
         });
 
         setCards(cardsArray);
@@ -92,8 +85,8 @@ const Cards = () => {
             <div className="cards">
               <h2>{card.servicoNome}</h2>
               <p className="cards-items">
-                <MdStars className='edit-icon'/> {card.categoria}
-                <FaSearchLocation  className='edit-icon-2'/> {card.cidade}/{card.uf}
+                <MdStars className='edit-icon' /> {card.categoria}
+                <FaSearchLocation className='edit-icon-2' /> {card.cidade} - {card.uf}
               </p>
               <p className="cards-description">{card.servicoDescricao}</p>
             </div>
