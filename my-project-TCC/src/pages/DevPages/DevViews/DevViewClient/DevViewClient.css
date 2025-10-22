@@ -176,6 +176,79 @@
   margin-right: 10px;
 }
 
+.devclient-feedbacks {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.feedback-card {
+  width: 100%;
+  max-width: 800px;
+  height: 230px;
+  padding: 24px;
+  border-radius: 5px;
+  background: #FFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.feedback-card:hover {
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px); 
+}
+
+.feedback-card h2 {
+  color: #000;
+  font-family: Montserrat, sans-serif;
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.feedback-card p {
+  color: #000;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 35px;
+}
+
+/* Diferenciação */
+.feedback-card.feedback {
+  border: 2px solid #78ff91;
+  background-color: #eafff3;
+}
+
+.feedback-card.denuncia {
+  border: 2px solid #ff5151;
+  background-color: #faefef;
+}
+
+
+.devclient-status-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.devclient-status-btn.ativo {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.devclient-status-btn.inativo {
+  background-color: #f44336;
+  color: white;
+}
+
+
 
 @media (max-width: 1024px) {
   .devclient-container h1 {
