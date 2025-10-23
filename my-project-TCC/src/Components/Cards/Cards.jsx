@@ -24,17 +24,17 @@ const Cards = () => {
         const contatos = contatosRes.data;
         const feedbacks = feedbacksRes.data;
 
-        console.log("✅ Dados recebidos da API:", { servicos, contatos, feedbacks });
-
         const cardsArray = servicos.map(servico => {
           const prestador = servico.prestador || {};
           const categoria = servico.categoria || {};
           const contato = contatos.find(
             c => Number(c.prestadorId) === Number(prestador.id) && c.statusContato === "ATIVO"
           ) || {};
-          const feedbacksPrestador = feedbacks.filter(f => Number(f.prestador_id) === Number(prestador.id));
+          const feedbacksPrestador = feedbacks.filter(
+            f => Number(f.prestadorId) === Number(prestador.id)
+          );
 
-          const card = {
+          return {
             servicoNome: servico.nome,
             servicoDescricao: servico.descricao || "Descrição não disponível",
             categoria: categoria.nome || "Categoria não disponível",
@@ -45,9 +45,6 @@ const Cards = () => {
             contatoMidia: contato.link || null,
             feedbacks: feedbacksPrestador,
           };
-
-          console.log("🧩 Card montado:", card);
-          return card;
         });
 
         setCards(cardsArray);
@@ -64,13 +61,11 @@ const Cards = () => {
   if (loading) {
     return (
       <div className="cards-container">
-        {[...Array(1)].map((_, index) => (
-          <div className="card-skeleton" key={index}>
-            <div className="skeleton title"></div>
-            <div className="skeleton subtitle"></div>
-            <div className="skeleton text"></div>
-          </div>
-        ))}
+        <div className="card-skeleton">
+          <div className="skeleton title"></div>
+          <div className="skeleton subtitle"></div>
+          <div className="skeleton text"></div>
+        </div>
       </div>
     );
   }
@@ -81,7 +76,7 @@ const Cards = () => {
         <p>Erro em carregar cards</p>
       ) : (
         cards.map((card, index) => (
-          <Link to={"/profile"} state={{ perfil: card }} key={index}>
+          <Link to="/profile" state={{ perfil: card }} key={index}>
             <div className="cards">
               <h2>{card.servicoNome}</h2>
               <p className="cards-items">

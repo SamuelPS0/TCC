@@ -33,17 +33,12 @@ const Profile = () => {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/v1/feedback`);
+        const res = await axios.get("http://localhost:8080/api/v1/feedback");
         const feedbacksPrestador = res.data.filter(
-          (f) => f.prestadorId === dados.prestadorId && f.tipoFeedback === "FEEDBACK"
+          (f) => Number(f.prestadorId) === Number(dados.prestadorId) && f.tipoFeedback === "FEEDBACK"
         );
         setFeedbacks(feedbacksPrestador);
-
-        if (feedbacksPrestador.length === 0) {
-          console.log("🔹 Nenhum feedback encontrado para este prestador.");
-        } else {
-          console.log("🔹 Feedbacks encontrados:", feedbacksPrestador);
-        }
+        console.log("🔹 Feedbacks encontrados:", feedbacksPrestador);
       } catch (error) {
         console.error("Erro ao buscar feedbacks:", error);
       }
@@ -52,7 +47,7 @@ const Profile = () => {
     fetchFeedbacks();
   }, [dados.prestadorId]);
 
-  const FeedbackDenunciaModal = ({ isOpen, onClose, tipo, usuarioId, prestadorId }) => {
+  const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
     const [titulo, setTitulo] = useState("");
     const [mensagem, setMensagem] = useState("");
 
@@ -66,16 +61,21 @@ const Profile = () => {
         titulo,
         descricao: mensagem,
         tipoFeedback: tipo,
-        usuarioId,
-        prestadorId,
+        usuarioId: user?.id,
+        prestadorId: dados.prestadorId,
+        dataCadastro: new Date().toISOString(),
+        statusFeedback: "ATIVO",
       };
 
       try {
+        console.log("Payload enviado:", payload);
         await axios.post("http://localhost:8080/api/v1/feedback", payload);
         alert(`${tipo === "FEEDBACK" ? "Feedback" : "Denúncia"} enviado com sucesso!`);
         setTitulo("");
         setMensagem("");
         onClose();
+        // Atualizar lista de feedbacks
+        setFeedbacks(prev => [...prev, payload]);
       } catch (error) {
         console.error(error);
         alert("Erro ao enviar!");
@@ -132,8 +132,6 @@ const Profile = () => {
       <HeaderSwitcher />
       <div className="profile-container">
         <div className="profile-positioning">
-
-          {/* HEADER E REDES SOCIAIS */}
           <div className="profile-main">
             <div className="profile-header-container">
               <div className="profile-images">
@@ -148,40 +146,38 @@ const Profile = () => {
             </div>
 
             <div className="profile-main-container-footer-p2">
-                {dados.contatoMidia && (
-                  <a
-                    href={dados.contatoMidia}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`contact-link ${
-                      dados.contatoMidia.includes("instagram.com")
-                        ? "instagram"
-                        : dados.contatoMidia.includes("facebook.com")
-                        ? "facebook"
-                        : dados.contatoMidia.includes("wa.me") || dados.contatoMidia.includes("whatsapp.com")
-                        ? "whatsapp"
-                        : ""
-                    }`}
-                  >
-                    {getContatoIcon(dados.contatoMidia)}{" "}
-                    {dados.contatoMidia.includes("instagram.com")
-                      ? "Instagram"
+              {dados.contatoMidia && (
+                <a
+                  href={dados.contatoMidia}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`contact-link ${
+                    dados.contatoMidia.includes("instagram.com")
+                      ? "instagram"
                       : dados.contatoMidia.includes("facebook.com")
-                      ? "Facebook"
+                      ? "facebook"
                       : dados.contatoMidia.includes("wa.me") || dados.contatoMidia.includes("whatsapp.com")
-                      ? "WhatsApp"
-                      : "Link"}
-                  </a>
-                )}
-              </div>
-              </div>
+                      ? "whatsapp"
+                      : ""
+                  }`}
+                >
+                  {getContatoIcon(dados.contatoMidia)}{" "}
+                  {dados.contatoMidia.includes("instagram.com")
+                    ? "Instagram"
+                    : dados.contatoMidia.includes("facebook.com")
+                    ? "Facebook"
+                    : dados.contatoMidia.includes("wa.me") || dados.contatoMidia.includes("whatsapp.com")
+                    ? "WhatsApp"
+                    : "Link"}
+                </a>
+              )}
+            </div>
+          </div>
 
-          {/* INPUT E IMAGEM */}
           <div className="profile-input-container">
             <img src={InputImg} alt="Imagem do serviço" className="profile-image-2" />
           </div>
 
-          {/* BOTÕES */}
           <div className="profile-buttons">
             <button onClick={() => setOpenFeedback(true)} className="profile-feedback">
               <FaPaperclip className="profile-feedback-icon" /> ENVIAR FEEDBACK
@@ -191,8 +187,7 @@ const Profile = () => {
             </button>
           </div>
 
-          {/* FEEDBACKS - **ABAIXO DOS BOTÕES** */}
-          {feedbacks.length > 0 && (
+          {feedbacks.length > 0 ? (
             <div className="profile-feedback-card">
               {feedbacks.map((fb, index) => (
                 <div className="feedback-card-lenght" key={index}>
@@ -201,26 +196,12 @@ const Profile = () => {
                 </div>
               ))}
             </div>
+          ) : (
+            <p style={{ marginTop: "20px" }}>Sem feedbacks ainda.</p>
           )}
 
-          {feedbacks.length === 0 && <p style={{ marginTop: "20px" }}>Sem feedbacks ainda.</p>}
-
-          {/* MODAIS */}
-          <FeedbackDenunciaModal
-            isOpen={openFeedback}
-            onClose={() => setOpenFeedback(false)}
-            tipo="FEEDBACK"
-            usuarioId={user?.id}
-            prestadorId={dados.prestadorId}
-          />
-          <FeedbackDenunciaModal
-            isOpen={openDenuncia}
-            onClose={() => setOpenDenuncia(false)}
-            tipo="DENUNCIA"
-            usuarioId={user?.id}
-            prestadorId={dados.prestadorId}
-          />
-
+          <FeedbackDenunciaModal isOpen={openFeedback} onClose={() => setOpenFeedback(false)} tipo="FEEDBACK" />
+          <FeedbackDenunciaModal isOpen={openDenuncia} onClose={() => setOpenDenuncia(false)} tipo="DENUNCIA" />
         </div>
       </div>
     </>

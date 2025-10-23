@@ -123,7 +123,7 @@ useEffect(() => {
           <h2 className="feedback-title">Feedbacks</h2>
           <div className="prestview-feedbacks">
             {feedbacks.length === 0 ? (
-              <p>Nenhum feedback disponível.</p>
+              <p>Nenhum feedback carregado.</p>
             ) : (
               feedbacks.map((fb) => (
                 <div 
@@ -143,8 +143,8 @@ useEffect(() => {
 
         {/* Botões */}
         <div className="prestview-buttons">
-          <button className="btn-edit">Editar</button>
-          <button className="btn-delete">Excluir</button>
+          <button className="btn-edit">Inativar conta</button>
+          <button className="btn-delete">Ativar conta</button>
         </div>
       </div>
     </div>

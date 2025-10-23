@@ -140,11 +140,11 @@ textarea.prestview-input {
     cursor: pointer;
 }
 
-.btn-edit { background-color: #f05221; color: #fff; }
-.btn-edit:hover { background-color: #d74117; }
+.btn-edit { background-color: #f3280e; color: #fff; }
+.btn-edit:hover { background-color: #d40000; }
 
-.btn-delete { background-color: #e74c3c; color: #fff; }
-.btn-delete:hover { background-color: #c0392b; }
+.btn-delete { background-color: #00be49; color: #fff; }
+.btn-delete:hover { background-color: #008f00; }
 
 /* Responsividade */
 @media (max-width: 768px) {
