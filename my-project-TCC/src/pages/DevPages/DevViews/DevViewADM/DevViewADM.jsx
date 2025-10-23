@@ -34,7 +34,7 @@ const DevViewADM = () => {
 
       console.log('🔹 Buscando feedbacks e denúncias do usuário:', usuario.id);
       try {
-        const response = await axios.get(`http://localhost:8080/api/v1/Feedback`);
+        const response = await axios.get(`http://localhost:8080/api/v1/feedback`);
 
         // Filtra apenas os feedbacks/denúncias desse usuário
         const feedbacksUsuario = response.data.filter(
@@ -131,23 +131,23 @@ const DevViewADM = () => {
         </div>
 
         {/* ====== Feedbacks e Denúncias ====== */}
-        <div className="devadm-feedbacks">
-          {feedbacks.length > 0 ? (
-            feedbacks.map((fb) => (
-              <div
-                key={fb.id}
-                className={`feedback-card ${fb.tipoFeedback === 'FEEDBACK' ? 'feedback' : 'denuncia'}`}
-              >
-                <h2>{fb.titulo}</h2>
-                <p>{fb.descricao}</p>
-              </div>
-            ))
-          ) : (
-            <p style={{ textAlign: "center", marginTop: "20px", color: "#555" }}>
-              Nenhum feedback ou denúncia registrado ainda.
-            </p>
+ <div className="devadm-feedbacks">
+          {feedbacks.length > 0 && (
+            <div className="devadm-feedbacks">
+              {feedbacks.map((fb) => (
+                <div
+                  key={fb.id}
+                  className={`feedback-card ${fb.tipoFeedback === 'FEEDBACK' ? 'feedback' : 'denuncia'}`}
+                >
+                  <h2>{fb.titulo}</h2>
+                  <p>{fb.descricao}</p>
+                  
+                </div>
+              ))}
+            </div>
           )}
         </div>
+              
 
         <button
           className={`devadm-status-btn ${usuarioStatus ? 'ativo' : 'inativo'}`}

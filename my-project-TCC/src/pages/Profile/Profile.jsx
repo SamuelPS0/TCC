@@ -195,7 +195,7 @@ const Profile = () => {
           {feedbacks.length > 0 && (
             <div className="profile-feedback-card">
               {feedbacks.map((fb, index) => (
-                <div className="feedback-card" key={index}>
+                <div className="feedback-card-lenght" key={index}>
                   <h2>{fb.titulo}</h2>
                   <p>{fb.descricao}</p>
                 </div>

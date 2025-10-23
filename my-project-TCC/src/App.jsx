@@ -10,10 +10,11 @@ function App() {
     <Router>
       <AuthProvider>
           <Toaster position="bottom-right" />
-        <AppRoutes />
+          <AppRoutes />
       </AuthProvider>
     </Router>
   );
 }
+
 
 export default App;
