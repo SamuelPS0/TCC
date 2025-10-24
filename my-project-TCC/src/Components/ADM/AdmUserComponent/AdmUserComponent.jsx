@@ -67,7 +67,7 @@ const AdmUserComponent = ({termoBusca }) => {
     if (usuario.nivelAcesso === "ADMIN") {
       navigate('/dev-view-adm', { state: { usuario } });
     } else if (usuario.nivelAcesso === "PRESTADOR") {
-      navigate('/dev-view-prestador', { state: { usuario } });
+      navigate(`/dev-view-prestador/${usuario.id}`);
     } else if (usuario.nivelAcesso === "CLIENTE") {
       navigate('/dev-view-client', { state: { usuario } });
     }

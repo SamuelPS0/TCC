@@ -11,10 +11,7 @@ const HomeList = () => {
   return (
     <div>
       <HeaderSwitcher />
-      <div className='homelist-cards'>
       <Cards />
-
-      </div>
     </div>
   );
 };

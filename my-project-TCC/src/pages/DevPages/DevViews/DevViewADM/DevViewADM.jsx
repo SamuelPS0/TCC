@@ -114,7 +114,7 @@ const DevViewADM = () => {
 
           {dropdownOpen && (
             <div className="devadm-dropdown-menu">
-              {['ADMIN', 'PRESTADOR', 'CLIENTE'].map((option) => (
+              {['ADMIN', 'CLIENTE'].map((option) => (
                 <div
                   key={option}
                   className="devadm-dropdown-item"

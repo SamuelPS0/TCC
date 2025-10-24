@@ -109,7 +109,7 @@ useEffect(() => {
           </button>
           {dropdownOpen && (
             <div className="devclient-dropdown-menu">
-              {['ADMIN', 'PRESTADOR', 'CLIENTE'].map((option) => (
+              {['ADMIN', 'CLIENTE'].map((option) => (
                 <div
                   key={option}
                   className="devclient-dropdown-item"

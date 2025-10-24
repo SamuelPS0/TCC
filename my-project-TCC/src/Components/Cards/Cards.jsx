@@ -48,9 +48,9 @@ const Cards = () => {
         });
 
         setCards(cardsArray);
-        setLoading(false);
       } catch (error) {
         console.error("Erro ao buscar dados dos cards:", error);
+      } finally {
         setLoading(false);
       }
     };
@@ -59,13 +59,16 @@ const Cards = () => {
   }, []);
 
   if (loading) {
+    const skeletonCount = 3; // número de placeholders
     return (
       <div className="cards-container">
-        <div className="card-skeleton">
-          <div className="skeleton title"></div>
-          <div className="skeleton subtitle"></div>
-          <div className="skeleton text"></div>
-        </div>
+        {Array.from({ length: skeletonCount }).map((_, index) => (
+          <div className="card-skeleton" key={index}>
+            <div className="skeleton title"></div>
+            <div className="skeleton subtitle"></div>
+            <div className="skeleton text"></div>
+          </div>
+        ))}
       </div>
     );
   }

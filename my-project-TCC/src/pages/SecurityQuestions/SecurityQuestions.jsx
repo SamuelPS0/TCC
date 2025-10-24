@@ -9,7 +9,7 @@ const SecurityQuestions = () => {
 
   const handleClick = () => {
     toast.success('Usuario criado com sucesso!')
-    navigate('/');
+    navigate('/login');
   };
 
   return (

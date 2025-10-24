@@ -89,8 +89,9 @@ textarea.prestview-input {
     transform: translateY(-2px);
     cursor: pointer;
 }
-
-/* Feedbacks */
+.feedback-title{
+    margin-top: 50px;
+}
 .prestview-feedbacks {
     display: flex;
     flex-direction: column;
@@ -110,7 +111,16 @@ textarea.prestview-input {
 
 .prestview-feedback-card.denuncia {
     border-left-color: #e74c3c;
+    transition: all 0.3s ease; /* animação suave para transform e sombra */
 }
+
+.prestview-feedback-card.denuncia:hover {
+    transform: translateY(-5px); /* levanta o card */
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5); /* sombra vermelha ao redor */
+    cursor: pointer; /* opcional, indica que é interativo */
+}
+
+
 
 .prestview-feedback-card h4 {
     margin: 0 0 5px 0;
@@ -127,7 +137,15 @@ textarea.prestview-input {
 .prestview-feedback-card.feedback {
   border: 2px solid #78ff91;
   background-color: #eafff3;
+  transition: all 0.3s ease;
 }
+
+.prestview-feedback-card.feedback:hover {
+  transform: translateY(-5px); /* levanta o card */
+  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5); /* sombra verde ao redor */
+  cursor: pointer;
+}
+
 
 .prestview-feedback-card.denuncia {
   border: 2px solid #ff5151;
@@ -140,6 +158,8 @@ textarea.prestview-input {
     gap: 15px;
     width: 100%;
     max-width: 920px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .prestview-buttons button {
@@ -150,13 +170,35 @@ textarea.prestview-input {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+    height: 60px;
 }
 
-.btn-edit { background-color: #f3280e; color: #fff; }
-.btn-edit:hover { background-color: #d40000; }
+.btn-edit{
+    background-color: #fc2727;
+    color: white;
+    transition: all 0.3s ease;
+}
+.btn-delete{
+    background-color: #16b116;
+    color: white;
+    transition: all 0.3s ease;
+}
 
-.btn-delete { background-color: #00be49; color: #fff; }
-.btn-delete:hover { background-color: #008f00; }
+.btn-edit:hover {
+  background-color: #d40000;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(243, 40, 14, 0.5);
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background-color: #008f00;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 190, 73, 0.5);
+  cursor: pointer;
+}
+
 
 /* Responsividade */
 @media (max-width: 768px) {
