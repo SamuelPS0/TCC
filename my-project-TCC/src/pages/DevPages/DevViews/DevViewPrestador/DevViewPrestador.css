@@ -99,27 +99,39 @@ textarea.prestview-input {
     max-width: 920px;
 }
 
-.feedback-card {
+.prestview-feedback-card {
+    max-width: 953px;
     padding: 15px;
+    height: auto;
     border-radius: 8px;
     background-color: #f2f2f2;
     border-left: 5px solid #f05221;
 }
 
-.feedback-card.denuncia {
+.prestview-feedback-card.denuncia {
     border-left-color: #e74c3c;
 }
 
-.feedback-card h4 {
+.prestview-feedback-card h4 {
     margin: 0 0 5px 0;
     font-size: 16px;
     color: #333;
 }
 
-.feedback-card p {
+.prestview-feedback-card p {
     margin: 2px 0;
     font-size: 14px;
     color: #555;
+}
+
+.prestview-feedback-card.feedback {
+  border: 2px solid #78ff91;
+  background-color: #eafff3;
+}
+
+.prestview-feedback-card.denuncia {
+  border: 2px solid #ff5151;
+  background-color: #faefef;
 }
 
 /* Botões */

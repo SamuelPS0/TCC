@@ -20,6 +20,7 @@ const Profile = () => {
   if (!dados) return <p>Carregando perfil...</p>;
 
   console.log("🔹 Dados recebidos no Profile:", dados);
+  console.log('usuario: ',user)
 
   const getContatoIcon = (link) => {
     if (!link) return <FaLink />;
@@ -67,6 +68,7 @@ const Profile = () => {
         statusFeedback: "ATIVO",
       };
 
+      
       try {
         console.log("Payload enviado:", payload);
         await axios.post("http://localhost:8080/api/v1/feedback", payload);
