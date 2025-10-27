@@ -6,8 +6,10 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { IoMdImage, IoIosCall } from "react-icons/io";
 import { FaMapMarkerAlt, FaList } from "react-icons/fa";
 import { toast } from "sonner";
-import ProfileImg from "../../../../img/Ellipse.png";
-import InputImg from "../../../../img/crosant.png";
+import ProfileImg from "../../../../img/Ellipse.png"; //foto de perfil 1
+import ProfileImg2 from "../../../../img/pererinha.png"; //foto de perfil 2
+import InputImg from "../../../../img/crosant.png"; // foto de produto 1
+import InputImg2 from "../../../../img/bebidas.jpg"; // foto de produto 2
 import "./DevViewPrestador.css";
 
 const DevViewPrestador = () => {
@@ -18,16 +20,10 @@ const DevViewPrestador = () => {
   const [prestador, setPrestador] = useState(null);
   const [statusPrestador, setStatusPrestador] = useState(false);
 
-
-
-
-
-
-
 useEffect(() => {
   const fetchPrestador = async () => {
     try {
-      // 1. Busca o prestador diretamente pelo ID
+      // 1. Busca o prestador pelo ID
       const prestadorRes = await axios.get(`http://localhost:8080/api/v1/prestador/${prestadorId}`);
       const prestadorData = prestadorRes.data;
 
@@ -37,54 +33,47 @@ useEffect(() => {
         return;
       }
 
-      // 2. Busca usuário vinculado pelo usuario_id do prestador
-      const usuariosRes = await axios.get("http://localhost:8080/api/v1/Usuario");
-      const usuarioVinculado = usuariosRes.data.find(
-        (u) => Number(u.id) === Number(prestadorData.usuario_id)
-      );
-
-      console.log("DEBUG: Prestador ID:", prestadorData.id);
-      console.log("DEBUG: Usuário vinculado ID:", usuarioVinculado?.id || "Não encontrado");
-
-      // 3. Busca serviço(s) do prestador
+      // 2. Busca serviço do prestador (já vem com categoria)
       const servicosRes = await axios.get("http://localhost:8080/api/v1/servico");
-      const servico = servicosRes.data.find(
-        (s) => Number(s.prestador_id) === Number(prestadorData.id)
-      );
-      const categoria = servico?.categoria || {};
+      const servico = servicosRes.data.find(s => s.prestador.id === prestadorData.id);
 
-      // 4. Busca contatos ativos
+      // 3. Busca contatos ativos
       const contatosRes = await axios.get("http://localhost:8080/api/v1/contato");
       const contatosAtivos = contatosRes.data.filter(
-        (c) =>
-          Number(c.prestadorId) === Number(prestadorData.id) &&
-          c.statusContato === "ATIVO"
+        c => c.prestadorId === prestadorData.id && c.statusContato === "ATIVO"
       );
 
-      // 5. Busca feedbacks ativos
+      // 4. Busca feedbacks ativos
       const feedbacksRes = await axios.get("http://localhost:8080/api/v1/feedback");
       const feedbacksPrestador = feedbacksRes.data.filter(
-        (f) =>
-          Number(f.prestadorId) === Number(prestadorData.id) &&
-          f.statusFeedback === "ATIVO"
+        f => f.prestadorId === prestadorData.id && f.statusFeedback === "ATIVO"
       );
 
-      // 6. Monta dados do card
+      // Função que retorna fotos conforme o ID do prestador
+      const getFotosPrestador = (id) => {
+        if (id === 1) return { perfil: ProfileImg, servico: InputImg };
+        if (id === 2) return { perfil: ProfileImg2, servico: InputImg2 };
+        return { perfil: ProfileImg, servico: InputImg }; // padrão
+      };
+      const fotos = getFotosPrestador(prestadorData.id);
+
+      // 5. Monta dados do card
       const cardData = {
         prestadorNome: prestadorData.nome || "",
         servicoDescricao: servico?.descricao || "",
-        categoria: categoria.nome || "",
+        categoria: servico?.categoria?.nome || "",
         cidade: prestadorData.cidade || "",
         uf: prestadorData.uf || "",
         contatos: {
-          whatsapp: contatosAtivos.find((c) => c.link?.includes("wa.me"))?.link || "",
-          instagram: contatosAtivos.find((c) => c.link?.includes("instagram.com"))?.link || "",
-          facebook: contatosAtivos.find((c) => c.link?.includes("facebook.com"))?.link || "",
+          whatsapp: contatosAtivos.find(c => c.tipoContato === "WhatsApp")?.link || "",
+          instagram: contatosAtivos.find(c => c.tipoContato === "Instagram")?.link || "",
+          facebook: contatosAtivos.find(c => c.tipoContato === "Facebook")?.link || "",
         },
-        foto: prestadorData.foto || ProfileImg,
+        foto: fotos.perfil,
+        fotoServico: fotos.servico,
       };
 
-      // 7. Atualiza estados
+      // 6. Atualiza estados
       setPrestador(prestadorData);
       setStatusPrestador(prestadorData.statusPrestador === "ATIVO");
       setCard(cardData);
@@ -105,29 +94,33 @@ useEffect(() => {
 
 
 
+
+
+
+
+
+
+const editarStatusPrestador = async (id, novoStatus) => {
+  const statusString = novoStatus ? "ATIVO" : "INATIVO";
+  const toastId = toast.loading("Atualizando status...");
   
-
-  const editarStatusPrestador = async (id, novoStatus) => {
-    const statusString = novoStatus ? "ATIVO" : "INATIVO";
-    const toastId = toast.loading("Atualizando status...");
-
-    try {
+  try {
       const prestadorRes = await axios.get(`http://localhost:8080/api/v1/prestador/${id}`);
       const prestadorData = prestadorRes.data;
-
+      
       // Busca usuário vinculado pelo nome
       const usuariosRes = await axios.get("http://localhost:8080/api/v1/Usuario");
       const usuarioVinculado = usuariosRes.data.find(
         (u) => Number(u.id) === Number(prestadorData.usuario_id)
       );
-
-
+      
+      
       // Atualiza prestador
       await axios.put(`http://localhost:8080/api/v1/prestador/${id}`, {
         ...prestadorData,
         statusPrestador: statusString,
       });
-
+      
       // Atualiza usuário vinculado, se existir
       if (usuarioVinculado) {
         await axios.put(`http://localhost:8080/api/v1/Usuario/${usuarioVinculado.id}`, {
@@ -135,7 +128,7 @@ useEffect(() => {
           statusUsuario: novoStatus,
         });
       }
-
+      
       setStatusPrestador(novoStatus);
       toast.success(`Prestador ${statusString.toLowerCase()} com sucesso!`, { id: toastId });
     } catch (error) {
@@ -143,9 +136,10 @@ useEffect(() => {
       toast.error("Erro ao atualizar prestador e/ou usuário!", { id: toastId });
     }
   };
-
+  
   if (loading) return <p>Carregando dados do prestador...</p>;
   if (!card) return <p>Prestador não encontrado.</p>;
+  console.log('Dados carregados do prestador: ', card)
 
   return (
     <div className="prestview-page">
@@ -196,7 +190,7 @@ useEffect(() => {
           <label className="prestview-label">
             <IoMdImage className="icon" /> Foto serviço
           </label>
-          <img src={InputImg} alt="Imagem do serviço" className="prestview-image-2" />
+          <img src={card.fotoServico} alt="Imagem do serviço" className="prestview-image-2" />
         </div>
 
         <h2 className="feedback-title">Feedbacks & Ocorrências</h2>

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { FaInstagram, FaFacebook, FaWhatsapp, FaLink, FaPaperclip, FaRegAngry } from "react-icons/fa";
-import ProfileImg from "../../img/Ellipse.png";
-import InputImg from "../../img/crosant.png";
+import ProfileImg from "../../img/Ellipse.png";       // foto perfil 1
+import ProfileImg2 from "../../img/pererinha.png";    // foto perfil 2
+import InputImg from "../../img/crosant.png";         // foto produto 1
+import InputImg2 from "../../img/bebidas.jpg";        // foto produto 2
 import HeaderSwitcher from "../../Components/HeaderSwitcher";
 import { useAuth } from "../../Components/AuthContext";
 import "./Profile.css";
@@ -20,7 +22,7 @@ const Profile = () => {
   if (!dados) return <p>Carregando perfil...</p>;
 
   console.log("🔹 Dados recebidos no Profile:", dados);
-  console.log('usuario: ',user)
+  console.log("usuario: ", user);
 
   const getContatoIcon = (link) => {
     if (!link) return <FaLink />;
@@ -29,6 +31,14 @@ const Profile = () => {
     if (link.includes("wa.me") || link.includes("whatsapp.com")) return <FaWhatsapp />;
     return <FaLink />;
   };
+
+  // Função para definir fotos com base no prestadorId
+  const getFotosPrestador = (id) => {
+    if (id === 1) return { perfil: ProfileImg, servico: InputImg };
+    if (id === 2) return { perfil: ProfileImg2, servico: InputImg2 };
+    return { perfil: ProfileImg, servico: InputImg }; // fallback padrão
+  };
+  const fotos = getFotosPrestador(dados.prestadorId);
 
   // Busca feedbacks ativos do prestador
   useEffect(() => {
@@ -68,7 +78,6 @@ const Profile = () => {
         statusFeedback: "ATIVO",
       };
 
-      
       try {
         console.log("Payload enviado:", payload);
         await axios.post("http://localhost:8080/api/v1/feedback", payload);
@@ -76,7 +85,6 @@ const Profile = () => {
         setTitulo("");
         setMensagem("");
         onClose();
-        // Atualizar lista de feedbacks
         setFeedbacks(prev => [...prev, payload]);
       } catch (error) {
         console.error(error);
@@ -137,7 +145,7 @@ const Profile = () => {
           <div className="profile-main">
             <div className="profile-header-container">
               <div className="profile-images">
-                <img src={ProfileImg} alt="Imagem do serviço" className="profile-image" />
+                <img src={fotos.perfil} alt="Imagem do prestador" className="profile-image" />
               </div>
               <h1 className="profile-h1">{dados.servicoNome}</h1>
               <h3 className="profile-h3">{dados.servicoDescricao}</h3>
@@ -177,7 +185,7 @@ const Profile = () => {
           </div>
 
           <div className="profile-input-container">
-            <img src={InputImg} alt="Imagem do serviço" className="profile-image-2" />
+            <img src={fotos.servico} alt="Imagem do serviço" className="profile-image-2" />
           </div>
 
           <div className="profile-buttons">

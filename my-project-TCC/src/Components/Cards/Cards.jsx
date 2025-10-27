@@ -59,7 +59,7 @@ const Cards = () => {
   }, []);
 
   if (loading) {
-    const skeletonCount = 3; // número de placeholders
+    const skeletonCount = 2; // número de placeholders
     return (
       <div className="cards-container">
         {Array.from({ length: skeletonCount }).map((_, index) => (

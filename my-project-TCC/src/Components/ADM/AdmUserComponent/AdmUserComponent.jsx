@@ -63,15 +63,32 @@ const AdmUserComponent = ({termoBusca }) => {
   };
 
   // Redirecionamento
-  const handleVisualizar = (usuario) => {
-    if (usuario.nivelAcesso === "ADMIN") {
-      navigate('/dev-view-adm', { state: { usuario } });
-    } else if (usuario.nivelAcesso === "PRESTADOR") {
-      navigate(`/dev-view-prestador/${usuario.id}`);
-    } else if (usuario.nivelAcesso === "CLIENTE") {
-      navigate('/dev-view-client', { state: { usuario } });
+const handleVisualizar = async (usuario) => {
+  if (usuario.nivelAcesso === "ADMIN") {
+    navigate('/dev-view-adm', { state: { usuario } });
+  } else if (usuario.nivelAcesso === "PRESTADOR") {
+    try {
+      // Busca todos os prestadores e encontra o vinculado ao usuário
+      const res = await axios.get("http://localhost:8080/api/v1/prestador");
+      const prestador = res.data.find(
+        (p) => p.usuario && Number(p.usuario.id) === Number(usuario.id)
+      );
+
+      if (prestador) {
+        navigate(`/dev-view-prestador/${prestador.id}`);
+      } else {
+        toast.warning("Prestador vinculado não encontrado para este usuário.");
+      }
+    } catch (err) {
+      toast.error("Erro ao buscar prestador vinculado.");
+      console.error(err);
     }
-  };
+  } else if (usuario.nivelAcesso === "CLIENTE") {
+    navigate('/dev-view-client', { state: { usuario } });
+  }
+};
+
+
 
     useEffect(() => {
     if (termoBusca.trim() === "") {
