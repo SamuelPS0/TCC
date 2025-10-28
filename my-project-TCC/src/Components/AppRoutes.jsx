@@ -16,7 +16,6 @@ import SecurityQuestions from '../pages/SecurityQuestions/SecurityQuestions';
 import ClientAccInfo from '../pages/ClientAccInfo/ClientAccInfo';
 import DevHub from '../pages/DevPages/DevHub/DevHub';
 import DevCategory from '../pages/DevPages/DevCategory/DevCategory';
-import DevStatistics from '../pages/DevPages/DevStatistics/DevStatistics';
 import DevUser from '../pages/DevPages/DevUser/DevUser';
 import DevViewClient from '../pages/DevPages/DevViews/DevViewClient/DevViewClient';
 import DevViewPrestador from '../pages/DevPages/DevViews/DevViewPrestador/DevViewPrestador';
@@ -104,14 +103,6 @@ const AppRoutes = () => {
         }
       />
 
-                  <Route
-        path="/dev-statistics"
-        element={
-          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
-            <DevStatistics />
-          </ProtectedRoute>
-        }
-      />
 
                   <Route
         path="/dev-user"

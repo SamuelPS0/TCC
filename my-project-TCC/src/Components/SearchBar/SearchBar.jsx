@@ -9,86 +9,68 @@ export default function SearchBar({
   initialCategory = '',
   initialLocation = ''
 }) {
-  const [categorias, setCategorias] = useState([]); // Estado das categorias
-  const [category, setCategory] = useState(initialCategory); // Categoria selecionada
-  const [location, setLocation] = useState(initialLocation); // Localização digitada
-  const [suggestions, setSuggestions] = useState([]); // Sugestões de cidades
+  const [categorias, setCategorias] = useState([]);
+  const [category, setCategory] = useState(initialCategory);
+  const [location, setLocation] = useState(initialLocation);
+  const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
 
-  // Carrega categorias da API ao montar o componente
-useEffect(() => {
-  const fetchCategorias = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/api/v1/categoria');
-      setCategorias(response.data);
-      console.log('Categorias da searchbar carregadas:', response.data);
-    } catch (error) {
-      console.error('Erro ao carregar categorias da searchbar:', error);
-    }
-  };
-
-  fetchCategorias(); // chama a função dentro do mesmo useEffect
-}, []); // [] garante que rode apenas ao montar o componente
-
-
-  // Atualiza categoria se a prop mudar
+  // Carrega categorias
   useEffect(() => {
-    setCategory(initialCategory);
-  }, [initialCategory]);
+    const fetchCategorias = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/categoria');
+        setCategorias(response.data);
+      } catch (error) {
+        console.error('Erro ao carregar categorias:', error);
+      }
+    };
+    fetchCategorias();
+  }, []);
 
-  // Atualiza localização se a prop mudar
-  useEffect(() => {
-    setLocation(initialLocation);
-  }, [initialLocation]);
+  // Atualiza categoria/localização se props mudarem
+  useEffect(() => setCategory(initialCategory), [initialCategory]);
+  useEffect(() => setLocation(initialLocation), [initialLocation]);
 
-  // Busca sugestões de cidades conforme digitação
+  // Sugestões de cidades
   useEffect(() => {
     if (location.length < 3) {
       setSuggestions([]);
       return;
     }
 
-    const fetchCities = async () => {
+    const debounce = setTimeout(async () => {
       try {
         const res = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/municipios');
         const data = await res.json();
-
         const filtered = data
           .filter(city => city.nome.toLowerCase().includes(location.toLowerCase()))
           .slice(0, 5)
           .map(city => ({
             display: `${city.nome} - ${city.microrregiao.mesorregiao.UF.sigla}`
           }));
-
         setSuggestions(filtered);
       } catch {
         setSuggestions([]);
       }
-    };
+    }, 300);
 
-    const debounce = setTimeout(() => fetchCities(), 300);
     return () => clearTimeout(debounce);
   }, [location]);
 
-  // Seleciona uma sugestão de cidade
   const handleSelectSuggestion = (cidade) => {
-    setLocation(cidade.display);
+    setLocation(cidade.display); // mantém "Cidade - UF"
     setSuggestions([]);
   };
 
-  // Envia formulário
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (onSearch) {
-      onSearch({ category, location });
-    }
+    if (onSearch) onSearch({ category, location });
 
     if (shouldNavigate) {
       const params = new URLSearchParams();
       if (category) params.append('category', category);
       if (location) params.append('location', location);
-
       navigate('/home-list?' + params.toString());
     }
   };

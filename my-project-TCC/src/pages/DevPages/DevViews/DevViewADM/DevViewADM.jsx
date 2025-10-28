@@ -4,27 +4,32 @@ import HeaderSwitcher from '../../../../Components/HeaderSwitcher';
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from 'sonner';
 import axios from 'axios';
+import Loading from '../../../../Components/Loading/Loading';
 import './DevViewADM.css';
 
 const DevViewADM = () => {
   const location = useLocation();
   const { usuario } = location.state || {};
 
-  if (!usuario) {
-    return <div>Nenhum usuário encontrado.</div>;
-  }
-
-  const [nivel, setNivel] = useState(usuario.nivelAcesso || '');
-  const [usuarioStatus, setUsuarioStatus] = useState(usuario.statusUsuario || false);
+  const [nivel, setNivel] = useState(usuario?.nivelAcesso || '');
+  const [usuarioStatus, setUsuarioStatus] = useState(usuario?.statusUsuario || false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
   const [feedbacks, setFeedbacks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Carregamento inicial de 2 segundos (mesmo padrão do DevViewClient)
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Atualiza informações do usuário ao carregar
   useEffect(() => {
-    setNivel(usuario.nivelAcesso);
-    setUsuarioStatus(usuario.statusUsuario);
-    console.log('informações recebidas: ', usuario)
+    if (usuario) {
+      setNivel(usuario.nivelAcesso);
+      setUsuarioStatus(usuario.statusUsuario);
+      console.log('Informações recebidas: ', usuario);
+    }
   }, [usuario]);
 
   // Busca feedbacks e denúncias do usuário
@@ -35,13 +40,8 @@ const DevViewADM = () => {
       console.log('🔹 Buscando feedbacks e denúncias do usuário:', usuario.id);
       try {
         const response = await axios.get(`http://localhost:8080/api/v1/feedback`);
-
-        // Filtra apenas os feedbacks/denúncias desse usuário
-        const feedbacksUsuario = response.data.filter(
-          (fb) => fb.usuarioId === usuario.id
-        );
-
-        console.log('🔹 Feedbacks filtrados para este usuário:', feedbacksUsuario);
+        const feedbacksUsuario = response.data.filter((fb) => fb.usuarioId === usuario.id);
+        console.log('🔹 Feedbacks filtrados:', feedbacksUsuario);
         setFeedbacks(feedbacksUsuario);
       } catch (error) {
         console.error('Erro ao buscar feedbacks:', error);
@@ -60,7 +60,7 @@ const DevViewADM = () => {
         email: usuario.email,
         senha: usuario.senha,
         nivelAcesso: novoNivel,
-        statusUsuario: usuarioStatus
+        statusUsuario: usuarioStatus,
       });
       setNivel(novoNivel);
       toast.success('Nível de acesso atualizado com sucesso!', { id: toastId });
@@ -80,7 +80,7 @@ const DevViewADM = () => {
         email: usuario.email,
         senha: usuario.senha,
         nivelAcesso: nivel,
-        statusUsuario: novoStatus
+        statusUsuario: novoStatus,
       });
       setUsuarioStatus(response.data.statusUsuario);
       toast.success('Status atualizado com sucesso!', { id: toastId });
@@ -90,11 +90,15 @@ const DevViewADM = () => {
     }
   };
 
+  if (!usuario) return <div>Nenhum usuário encontrado.</div>;
+  if (loading) return <Loading />; // mesmo comportamento do DevViewClient
+
   return (
     <div className="devadm-page">
       <HeaderSwitcher />
+
       <div className="devadm-container">
-        <h1 className='devadm-h1'>INFORMAÇÕES DO USUÁRIO</h1>
+        <h1 className="devadm-h1">INFORMAÇÕES DO USUÁRIO</h1>
         <h3>Apenas administradores podem visualizar estas informações.</h3>
 
         <p className="devadm-label">NOME</p>
@@ -105,10 +109,7 @@ const DevViewADM = () => {
 
         <p className="devadm-label">Nível de acesso</p>
         <div className="devadm-dropdown">
-          <button
-            className="btn"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
+          <button className="btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
             {nivel} <MdOutlineKeyboardArrowDown className="devadm-icon" />
           </button>
 
@@ -131,23 +132,23 @@ const DevViewADM = () => {
         </div>
 
         {/* ====== Feedbacks e Denúncias ====== */}
- <div className="devadm-feedbacks">
-          {feedbacks.length > 0 && (
-            <div className="devadm-feedbacks">
-              {feedbacks.map((fb) => (
-                <div
-                  key={fb.id}
-                  className={`feedback-card ${fb.tipoFeedback === 'FEEDBACK' ? 'feedback' : 'denuncia'}`}
-                >
-                  <h2>{fb.titulo}</h2>
-                  <p>{fb.descricao}</p>
-                  
-                </div>
-              ))}
-            </div>
+        <div className="devadm-feedbacks">
+          {feedbacks.length > 0 ? (
+            feedbacks.map((fb) => (
+              <div
+                key={fb.id}
+                className={`feedback-card ${
+                  fb.tipoFeedback === 'FEEDBACK' ? 'feedback' : 'denuncia'
+                }`}
+              >
+                <h2>{fb.titulo}</h2>
+                <p>{fb.descricao}</p>
+              </div>
+            ))
+          ) : (
+            <p className="devadm-sem-feedbacks">Nenhum feedback encontrado.</p>
           )}
         </div>
-              
 
         <button
           className={`devadm-status-btn ${usuarioStatus ? 'ativo' : 'inativo'}`}

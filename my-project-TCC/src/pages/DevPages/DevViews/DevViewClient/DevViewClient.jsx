@@ -5,6 +5,7 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { toast } from 'sonner';
 import axios from 'axios';
+import Loading from '../../../../Components/Loading/Loading'; // 👈 Import do loader
 import './DevViewClient.css';
 
 const DevViewClient = () => {
@@ -15,41 +16,35 @@ const DevViewClient = () => {
   const [usuarioStatus, setUsuarioStatus] = useState(usuario?.statusUsuario || false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [loading, setLoading] = useState(true); // 👈 Estado do loader
 
-  if (!usuario) {
-    return <div>Nenhum usuário encontrado.</div>;
-  }
+  // Simula carregamento (2s com animação constante)
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
-useEffect(() => {
-  if (!usuario?.id) return;
+  // Busca feedbacks
+  useEffect(() => {
+    if (!usuario?.id) return;
 
-  console.log("🔹 Buscando feedbacks e denúncias do usuário:", usuario.id);
+    console.log("🔹 Buscando feedbacks e denúncias do usuário:", usuario.id);
 
-  const fetchFeedbacks = async () => {
-    try {
-      const res = await axios.get("http://localhost:8080/api/v1/feedback");
+    const fetchFeedbacks = async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/api/v1/feedback");
+        const feedbacksUsuario = res.data.filter((f) => f.usuarioId === usuario.id);
+        console.log("🔹 Feedbacks filtrados para este usuário:", feedbacksUsuario);
+        setFeedbacks(feedbacksUsuario);
+      } catch (error) {
+        console.error("Erro ao buscar feedbacks:", error);
+      }
+    };
 
-      console.log("🔹 Resposta completa do backend:", res.data);
+    fetchFeedbacks();
+  }, [usuario]);
 
-      // Filtra somente os feedbacks relacionados ao usuário
-      const feedbacksUsuario = res.data.filter(
-        (f) => f.usuarioId === usuario.id
-      );
-
-      console.log("🔹 Feedbacks filtrados para este usuário:", feedbacksUsuario);
-
-      setFeedbacks(feedbacksUsuario);
-    } catch (error) {
-      console.error("Erro ao buscar feedbacks:", error);
-    }
-  };
-
-  fetchFeedbacks();
-}, [usuario]);
-
-
-
-  // Funções de edição
+  // Edição de nível
   const editarNivel = async (id, novoNivel) => {
     const toastId = toast.loading('Atualizando nível de acesso...');
     try {
@@ -68,6 +63,7 @@ useEffect(() => {
     }
   };
 
+  // Edição de status
   const editarStatus = async (id, novoStatus) => {
     const toastId = toast.loading('Atualizando status do usuário...');
     try {
@@ -86,11 +82,16 @@ useEffect(() => {
     }
   };
 
+  // Exibição do loader
+  if (!usuario) return <div>Nenhum usuário encontrado.</div>;
+  if (loading) return <Loading />; // 👈 Mostra o componente Loading até carregar
+
+  // Exibição principal
   return (
     <div className="devclient-page">
       <HeaderSwitcher />
       <div className="devclient-container">
-        <h1 className='devclient-h1'>INFORMAÇÕES DO CLIENTE</h1>
+        <h1 className="devclient-h1">INFORMAÇÕES DO CLIENTE</h1>
         <h3>Apenas administradores podem visualizar estas informações.</h3>
 
         <p className="devclient-label">NOME</p>
@@ -101,10 +102,7 @@ useEffect(() => {
 
         <p className="devclient-label">Nível de acesso</p>
         <div className="devclient-dropdown">
-          <button
-            className="btn"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
+          <button className="btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
             {nivel} <MdOutlineKeyboardArrowDown className="devclient-icon" />
           </button>
           {dropdownOpen && (
@@ -125,21 +123,22 @@ useEffect(() => {
           )}
         </div>
 
-        {/* ====== Feedbacks e Denúncias ====== */}
+        {/* ====== Feedbacks ====== */}
         <div className="devclient-feedbacks">
-          {feedbacks.length > 0 && (
-            <div className="devclient-feedbacks">
-              {feedbacks.map((fb) => (
-                <div
-                  key={fb.id}
-                  className={`feedback-card ${fb.tipoFeedback === 'FEEDBACK' ? 'feedback' : 'denuncia'}`}
-                >
-                  <h2>{fb.titulo}</h2>
-                  <p>{fb.descricao}</p>
-                  
-                </div>
-              ))}
-            </div>
+          {feedbacks.length > 0 ? (
+            feedbacks.map((fb) => (
+              <div
+                key={fb.id}
+                className={`feedback-card ${
+                  fb.tipoFeedback === 'FEEDBACK' ? 'feedback' : 'denuncia'
+                }`}
+              >
+                <h2>{fb.titulo}</h2>
+                <p>{fb.descricao}</p>
+              </div>
+            ))
+          ) : (
+            <p className="devclient-sem-feedbacks">Nenhum feedback encontrado.</p>
           )}
         </div>
 

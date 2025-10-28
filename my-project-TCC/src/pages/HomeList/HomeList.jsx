@@ -1,17 +1,26 @@
-import {React, useEffect,} from 'react';
-import HeaderSwitcher from '../../Components/HeaderSwitcher';
-import Cards from '../../Components/Cards/Cards'
-import { useAuth } from '../../Components/AuthContext';
-import './HomeList.css'
+import React from "react";
+import { useLocation } from "react-router-dom";
+import HeaderSwitcher from "../../Components/HeaderSwitcher";
+import Cards from "../../Components/Cards/Cards";
+import SearchBar from "../../Components/SearchBar/SearchBar";
+import './HomeList.css';
 
 const HomeList = () => {
-  console.log("HomeList renderizou");
-  const { user } = useAuth();
-  console.log("Usuario carregado", user)
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+
+  const category = params.get("category") || "";
+  const city = params.get("location") || "";
+
   return (
-    <div>
+    <div className="homelist-container">
       <HeaderSwitcher />
-      <Cards />
+      <SearchBar 
+        initialCategory={category} 
+        initialLocation={city} 
+        shouldNavigate={true} 
+      />
+      <Cards filter={{ category, city }} />
     </div>
   );
 };
