@@ -3,6 +3,7 @@ import axios from "axios";
 import { MdStars } from "react-icons/md";
 import { FaSearchLocation } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { TfiFaceSad } from "react-icons/tfi";
 import './Cards.css';
 
 const SkeletonCard = () => (
@@ -104,7 +105,11 @@ const Cards = ({ filter = {} }) => {
           <SkeletonCard />
         </>
       ) : filteredCards.length === 0 ? (
-        <p>Nenhum card para mostrar</p>
+        <div className="cards-error">
+          <TfiFaceSad className="cards-icon-error"/>
+        <h1>Erro ao carregar os cards.</h1>
+        <p>Ops! Pode ter ocorrido uma falha na conexão ou um problema temporário no servidor. Se o erro persistir, volte em alguns minutos.</p>
+        </div>
       ) : (
         filteredCards.map((card, index) => (
           <Link to={"/profile"} state={{ perfil: card }} key={index}>
