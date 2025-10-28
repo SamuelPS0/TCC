@@ -14,6 +14,9 @@ import "./Profile.css";
 const Profile = () => {
   const location = useLocation();
   const dados = location.state?.perfil;
+  useEffect(() => {
+  console.log("🔎 Dados recebidos do card:", dados);
+}, [dados]);
   const { user } = useAuth();
 
   // hooks
@@ -57,13 +60,25 @@ const Profile = () => {
     return <FaLink />;
   };
 
-  const getFotosPrestador = (id) => {
-    if (id === 1) return { perfil: ProfileImg, servico: InputImg };
-    if (id === 2) return { perfil: ProfileImg2, servico: InputImg2 };
-    return { perfil: ProfileImg, servico: InputImg };
-  };
+const getFotosPrestador = (dados) => {
+  if (!dados) return { perfil: "", servico: "" };
 
-  const fotos = dados ? getFotosPrestador(dados.prestadorId) : { perfil: "", servico: "" };
+  const servicoNome = (dados.servicoNome || "").toLowerCase();
+
+  // Se o nome do serviço contém "pererinha", usa as imagens 2
+  if (servicoNome.includes("pererinha")) {
+    return { perfil: ProfileImg2, servico: InputImg2 };
+  }
+
+  // Fallback padrão
+  return { perfil: ProfileImg, servico: InputImg };
+};
+
+
+
+
+
+const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
 
   const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
     const [titulo, setTitulo] = useState("");

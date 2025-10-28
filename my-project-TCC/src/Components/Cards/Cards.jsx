@@ -52,6 +52,7 @@ const Cards = ({ filter = {} }) => {
           const feedback = feedbacks[index] || {};
 
           return {
+            prestadorId: prestador.id,
             servicoNome: servico.nome,
             servicoDescricao: servico.descricao || "Descrição não disponível",
             categoria: categoriaItem.nome || "Categoria não disponível",
