@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './Components/AppRoutes'; 
 import { AuthProvider } from './Components/AuthContext'; 
 import { Toaster } from 'sonner'; 
-import Loading from './Components/Loading/Loading'; // importe seu Loading
+import Loading from './Components/Loading/Loading';
 import './App.css';
 
 function App() {
