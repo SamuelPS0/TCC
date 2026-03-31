@@ -21,6 +21,7 @@ import DevViewClient from '../pages/DevPages/DevViews/DevViewClient/DevViewClien
 import DevViewPrestador from '../pages/DevPages/DevViews/DevViewPrestador/DevViewPrestador';
 import DevViewADM from '../pages/DevPages/DevViews/DevViewADM/DevViewADM';
 import Privacity from '../pages/Privacity/Privacity'
+import DevRoutesList from '../pages/DevPages/DevRoutesList';
 import Cards from '../Components/Cards/Cards'//temporario
 
 const AppRoutes = () => {
@@ -38,6 +39,9 @@ const AppRoutes = () => {
       <Route path="/unauthorized" element={<h1>Você não tem permissão para acessar esta página.</h1>} />
 
       <Route path='/cards' element={<Cards />} />
+
+      {/*vou apagar daqui a pouco*/}
+      <Route path="/dev-routes" element={<DevRoutesList />} />
 
       {/* Rotas protegidas por nível de acesso */}
       <Route

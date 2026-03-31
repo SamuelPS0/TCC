@@ -36,6 +36,19 @@ export default function LandingPage() {
           <h1 className="lp-first-section-h1" id='scrollone'>
             ENCONTRE OS MELHORES PROFISSIONAIS<br />DA <span>GASTRONOMIA</span> NA SUA REGIÃO!
           </h1>
+          <div style={{ position: 'fixed', top: 10, right: 10, zIndex: 9999 }}>
+  <Link to="/dev-routes">
+    <button style={{
+      padding: '10px',
+      background: 'red',
+      color: '#fff',
+      border: 'none',
+      cursor: 'pointer'
+    }}>
+      DEV
+    </button>
+  </Link>
+</div>
           <h3 className="lp-first-section-h3">
             Com a <span>DivulgAí</span>, os melhores sabores da sua região<br /> estão a apenas um clique. Experimente agora!
           </h3>

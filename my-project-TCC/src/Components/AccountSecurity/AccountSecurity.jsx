@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import '../AccountSecurity/AccountSecurity.css'
 
-export default function AccountSecurity() {
+export default function AccountSecurity({ onChange }) {
   const [valorA, setValorA] = useState('');
   const [valorB, setValorB] = useState('');
+
+  const handleChangeA = (value) => {
+    setValorA(value);
+    onChange({ ps_01: value, ps_02: valorB });
+  };
+
+  const handleChangeB = (value) => {
+    setValorB(value);
+    onChange({ ps_01: valorA, ps_02: value });
+  };
 
   return (
     <div className='accountsecurity-second-container'>
@@ -11,12 +21,10 @@ export default function AccountSecurity() {
 
       <h3 className='accountsecurity-h3'>QUAL NOME COMPLETO DA SUA MÃE?*</h3>
       <input
-        id='accountsecurity-margin-input'
         className='accountsecurity-input'
         type="text"
         value={valorA}
-        onChange={(e) => setValorA(e.target.value)}
-        placeholder="ESCREVA SUA RESPOSTA"
+        onChange={(e) => handleChangeA(e.target.value)}
       />
 
       <h3 className='accountsecurity-h3'>
@@ -26,8 +34,7 @@ export default function AccountSecurity() {
         className='accountsecurity-input'
         type="text"
         value={valorB}
-        onChange={(e) => setValorB(e.target.value)}
-        placeholder="ESCREVA SUA RESPOSTA"
+        onChange={(e) => handleChangeB(e.target.value)}
       />
     </div>
   );

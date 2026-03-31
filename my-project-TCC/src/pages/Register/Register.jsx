@@ -14,51 +14,36 @@ import {toast } from 'sonner'
 export default function Register() {
   const navigate = useNavigate();
   const { login } = useAuth();
-
+  
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors }
   } = useForm();
-
+  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
-
+  
   const password = watch('password');
-
-
-  const onSubmit = async (data) => {
-    try {
-
-const response = await axios.post('http://localhost:8080/api/v1/Usuario', {
-  nome: data.name,
-  email: data.email,
-  senha: data.password,
-  nivelAcesso: accessLevels.CLIENTE,  // String "CLIENTE", exato
-  dataCadastro: '2025-09-22T12:00:00', // sem o "Z" no final (sem timezone)
-  statusUsuario: true,
-});
-
-
-
-      console.log('Resposta da API:', response.data);
-
-      // Loga o usuário localmente
-      login({
+  
+  
+    const onSubmit = (data) => {
+      const payload = {
+        nome: data.name,
         email: data.email,
-        accessLevel: accessLevels.CLIENTE,
-      });
+        senha: data.password,
+        nivelAcesso: "CLIENTE",
+      };
+
+      localStorage.setItem('registerData', JSON.stringify(payload));
 
       navigate('/security-questions');
-    } catch (error) {
-      console.error('Erro ao cadastrar:', error.response?.data || error.message);
-      toast.error('Erro ao cadastrar usuário. Verifique os dados.');
-    }
-  };
+    };
+
 
   return (
     <div className='register-container'>
