@@ -23,6 +23,7 @@ const Profile = () => {
   const [openFeedback, setOpenFeedback] = useState(false);
   const [openDenuncia, setOpenDenuncia] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [nomesUsuarios, setNomesUsuarios] = useState({});
   
   // loader
   const [showLoader, setShowLoader] = useState(true);
@@ -36,6 +37,21 @@ const Profile = () => {
     return () => clearTimeout(timer);
   }, []);
 
+   const buscarNomeUsuarioPorId = async (usuarioId) => {
+  try {
+    console.log("Buscando usuário:", usuarioId);
+
+    const res = await axios.get(`http://localhost:8080/api/v1/Usuario/${usuarioId}`);
+
+    console.log("Resposta da API:", res.data);
+
+    return res.data?.nome || `Usuário #${usuarioId}`;
+  } catch (error) {
+    console.error(`Erro ao buscar usuário ${usuarioId}:`, error);
+    return `Usuário #${usuarioId}`;
+  }
+};
+
   // Busca feedbacks
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -44,6 +60,14 @@ const Profile = () => {
         const feedbacksPrestador = res.data.filter(
           (f) => Number(f.prestadorId) === Number(dados?.prestadorId) && f.tipoFeedback === "FEEDBACK"
         );
+        
+         const idsUsuarios = [...new Set(feedbacksPrestador.map((f) => f.usuarioId).filter(Boolean))];
+        const nomesArray = await Promise.all(
+  idsUsuarios.map(async (id) => [Number(id), await buscarNomeUsuarioPorId(id)])
+);
+
+        setNomesUsuarios(Object.fromEntries(nomesArray));
+
         setFeedbacks(feedbacksPrestador);
       } catch (error) {
         console.error("Erro ao buscar feedbacks:", error);
@@ -212,6 +236,9 @@ const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
                 <div className="profile-feedback-card">
                   {feedbacks.map((fb, index) => (
                     <div className="feedback-card-lenght" key={index}>
+                      <h3 className="feedback-name">
+                        {nomesUsuarios[Number(fb.usuarioId)] || `Usuário #${fb.usuarioId}`}
+                      </h3>
                       <h2>{fb.titulo}</h2>
                       <p>{fb.descricao}</p>
                     </div>

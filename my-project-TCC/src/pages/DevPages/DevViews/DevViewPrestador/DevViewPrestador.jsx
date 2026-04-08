@@ -18,8 +18,25 @@ const DevViewPrestador = () => {
   const [card, setCard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [feedbacks, setFeedbacks] = useState([]);
+   const [nomesUsuarios, setNomesUsuarios] = useState({});
   const [prestador, setPrestador] = useState(null);
   const [statusPrestador, setStatusPrestador] = useState(false);
+
+    const buscarNomeUsuarioPorId = async (usuarioId) => {
+    try {
+      console.log("Buscando usuário:", usuarioId);
+
+      const res = await axios.get(`http://localhost:8080/api/v1/Usuario/${usuarioId}`);
+
+      console.log("Resposta da API:", res.data);
+
+      return res.data?.nome || `Usuário #${usuarioId}`;
+    } catch (error) {
+      console.error(`Erro ao buscar usuário ${usuarioId}:`, error);
+      return `Usuário #${usuarioId}`;
+    }
+  };
+  
 
   useEffect(() => {
     const fetchPrestador = async () => {
@@ -44,11 +61,18 @@ const DevViewPrestador = () => {
           c => c.prestadorId === prestadorData.id && c.statusContato === "ATIVO"
         );
 
-        // 4. Buscar feedbacks ativos
+        // 4. Buscar feedbacks do prestador
         const feedbacksRes = await axios.get("http://localhost:8080/api/v1/feedback");
         const feedbacksPrestador = feedbacksRes.data.filter(
-          f => f.prestadorId === prestadorData.id && f.statusFeedback === "ATIVO"
+          f => f.prestadorId === prestadorData.id && f.statusFeedback
         );
+
+         const idsUsuarios = [...new Set(feedbacksPrestador.map((f) => f.usuarioId).filter(Boolean))];
+        const nomesArray = await Promise.all(
+          idsUsuarios.map(async (id) => [Number(id), await buscarNomeUsuarioPorId(id)])
+        );
+
+        setNomesUsuarios(Object.fromEntries(nomesArray));
 
         // 5. Fotos do prestador
         const getFotosPrestador = (id) => {
@@ -125,6 +149,28 @@ const DevViewPrestador = () => {
     }
   };
 
+   const editarStatusFeedback = async (feedback) => {
+    const novoStatus = feedback.statusFeedback === "ATIVO" ? "INATIVO" : "ATIVO";
+    const toastId = toast.loading("Atualizando status do feedback...");
+
+    try {
+      await axios.put(`http://localhost:8080/api/v1/feedback/${feedback.id}`, {
+  statusFeedback: novoStatus,
+});
+
+      setFeedbacks((prev) =>
+        prev.map((fb) =>
+          fb.id === feedback.id ? { ...fb, statusFeedback: novoStatus } : fb
+        )
+      );
+
+      toast.success(`Feedback ${novoStatus.toLowerCase()} com sucesso!`, { id: toastId });
+    } catch (error) {
+      console.error("Erro ao atualizar status do feedback:", error);
+      toast.error("Erro ao atualizar status do feedback!", { id: toastId });
+    }
+  };
+
   if (loading) return <Loading />;
   if (!card) return <p>Prestador não encontrado.</p>;
 
@@ -188,8 +234,21 @@ const DevViewPrestador = () => {
             feedbacks.map((fb) => (
               <div
                 key={fb.id}
-                className={`prestview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"}`}
+                className={`prestview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
+                <div className="feedback-status-row">
+                  <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
+                    <input
+                      type="checkbox"
+                      checked={fb.statusFeedback === "ATIVO"}
+                      onChange={() => editarStatusFeedback(fb)}
+                    />
+                    <span className="feedback-slider"></span>
+                  </label>
+                </div>
+                <h3 className="feedback-name">
+                  {nomesUsuarios[Number(fb.usuarioId)] || `Usuário #${fb.usuarioId}`}
+                </h3>
                 <h4>{fb.titulo}</h4>
                 <p>{fb.descricao}</p>
                 {fb.nota !== undefined && <p><strong>Nota:</strong> {fb.nota}⭐</p>}
