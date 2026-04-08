@@ -9,6 +9,7 @@ import InputImg2 from "../../img/bebidas.jpg";
 import HeaderSwitcher from "../../Components/HeaderSwitcher";
 import Loading from "../../Components/Loading/Loading";
 import { useAuth } from "../../Components/AuthContext";
+import { toast } from "sonner";
 import "./Profile.css";
 
 const Profile = () => {
@@ -118,14 +119,24 @@ const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
         descricao: mensagem,
         tipoFeedback: tipo,
         usuarioId: user?.id,
+        nomeUsuario: user?.nome,
         prestadorId: dados.prestadorId,
         dataCadastro: new Date().toISOString(),
         statusFeedback: "ATIVO",
       };
       try {
         await axios.post("http://localhost:8080/api/v1/feedback", payload);
-        setTitulo(""); setMensagem(""); onClose();
-        setFeedbacks((prev) => [...prev, payload]);
+
+if (tipo === "FEEDBACK") {
+  toast.success("Feedback enviado com sucesso!");
+  setFeedbacks((prev) => [...prev, payload]);
+} else {
+  toast.success("Denúncia enviada. Ela será revisada pelos administradores.");
+}
+
+setTitulo("");
+setMensagem("");
+onClose();
       } catch (error) {
         console.error(error);
         alert("Erro ao enviar!");
@@ -237,7 +248,7 @@ const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
                   {feedbacks.map((fb, index) => (
                     <div className="feedback-card-lenght" key={index}>
                       <h3 className="feedback-name">
-                        {nomesUsuarios[Number(fb.usuarioId)] || `Usuário #${fb.usuarioId}`}
+                        {fb.nomeUsuario || nomesUsuarios[Number(fb.usuarioId)] || ""}
                       </h3>
                       <h2>{fb.titulo}</h2>
                       <p>{fb.descricao}</p>
