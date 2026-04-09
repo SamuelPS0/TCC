@@ -17,15 +17,24 @@ const DevViewClient = () => {
   const [usuarioStatus, setUsuarioStatus] = useState(usuario?.statusUsuario || false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [nomesPrestadores, setNomesPrestadores] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // Loader fake
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Buscar feedbacks do usuário
+  const buscarNomePrestadorPorId = async (prestadorId) => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/v1/prestador/${prestadorId}`);
+      return res.data?.nome || `Prestador #${prestadorId}`;
+    } catch (error) {
+      console.error(`Erro ao buscar prestador ${prestadorId}:`, error);
+      return `Prestador #${prestadorId}`;
+    }
+  };
+
   useEffect(() => {
     if (!usuario?.id) return;
 
@@ -37,6 +46,18 @@ const DevViewClient = () => {
           (f) => f.usuarioId === usuario.id
         );
 
+        const idsPrestadores = [
+          ...new Set(feedbacksUsuario.map((f) => f.prestadorId).filter(Boolean))
+        ];
+
+        const nomesArray = await Promise.all(
+          idsPrestadores.map(async (id) => [
+            Number(id),
+            await buscarNomePrestadorPorId(id)
+          ])
+        );
+
+        setNomesPrestadores(Object.fromEntries(nomesArray));
         setFeedbacks(feedbacksUsuario);
 
       } catch (error) {
@@ -47,7 +68,6 @@ const DevViewClient = () => {
     fetchFeedbacks();
   }, [usuario]);
 
-  // Editar nível
   const editarNivel = async (id, novoNivel) => {
     const toastId = toast.loading('Atualizando nível de acesso...');
     try {
@@ -68,7 +88,6 @@ const DevViewClient = () => {
     }
   };
 
-  // Editar status
   const editarStatus = async (id, novoStatus) => {
     const toastId = toast.loading('Atualizando status do usuário...');
     try {
@@ -100,31 +119,15 @@ const DevViewClient = () => {
         <h1 className="devclient-h1">INFORMAÇÕES DO CLIENTE</h1>
         <h3>Apenas administradores podem visualizar estas informações.</h3>
 
-        {/* NOME */}
         <p className="devclient-label">NOME</p>
-        <input
-          className="devclient-input"
-          type="text"
-          value={usuario.nome}
-          disabled
-        />
+        <input className="devclient-input" type="text" value={usuario.nome} disabled />
 
-        {/* EMAIL */}
         <p className="devclient-label">EMAIL</p>
-        <input
-          className="devclient-input"
-          type="email"
-          value={usuario.email}
-          disabled
-        />
+        <input className="devclient-input" type="email" value={usuario.email} disabled />
 
-        {/* NÍVEL */}
         <p className="devclient-label">Nível de acesso</p>
         <div className="devclient-dropdown">
-          <button
-            className="btn"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
+          <button className="btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
             {nivel} <MdOutlineKeyboardArrowDown className="devclient-icon" />
           </button>
 
@@ -146,7 +149,7 @@ const DevViewClient = () => {
           )}
         </div>
 
-        {/* ===== FEEDBACKS ===== */}
+        {/* FEEDBACKS */}
         <div className="prestview-feedbacks">
           {feedbacks.length === 0 ? (
             <p>Nenhum feedback carregado.</p>
@@ -162,8 +165,11 @@ const DevViewClient = () => {
                   {usuario.nome}
                 </h3>
 
-                <h4>{fb.titulo}</h4>
+                <p style={{ fontWeight: "600", color: "#555" }}>
+                  Prestador: {nomesPrestadores[Number(fb.prestadorId)] || `#${fb.prestadorId}`}
+                </p>
 
+                <h4>{fb.titulo}</h4>
                 <p>{fb.descricao}</p>
 
                 {fb.nota !== undefined && (
@@ -174,7 +180,6 @@ const DevViewClient = () => {
           )}
         </div>
 
-        {/* STATUS */}
         <button
           className={`devclient-status-btn ${usuarioStatus ? 'ativo' : 'inativo'}`}
           onClick={() => editarStatus(usuario.id, !usuarioStatus)}

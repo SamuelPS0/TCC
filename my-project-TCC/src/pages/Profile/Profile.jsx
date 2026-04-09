@@ -59,13 +59,18 @@ const Profile = () => {
       try {
         const res = await axios.get("http://localhost:8080/api/v1/feedback");
         const feedbacksPrestador = res.data.filter(
-          (f) => Number(f.prestadorId) === Number(dados?.prestadorId) && f.tipoFeedback === "FEEDBACK"
-        );
+          
+  (f) =>
+    Number(f.prestadorId) === Number(dados?.prestadorId) &&
+    f.tipoFeedback === "FEEDBACK" &&
+    f.statusFeedback === "ATIVO"
+);
         
          const idsUsuarios = [...new Set(feedbacksPrestador.map((f) => f.usuarioId).filter(Boolean))];
         const nomesArray = await Promise.all(
   idsUsuarios.map(async (id) => [Number(id), await buscarNomeUsuarioPorId(id)])
 );
+
 
         setNomesUsuarios(Object.fromEntries(nomesArray));
 
@@ -98,6 +103,9 @@ const getFotosPrestador = (dados) => {
   // Fallback padrão
   return { perfil: ProfileImg, servico: InputImg };
 };
+const feedbacksAtivos = feedbacks.filter(
+  (fb) => fb.statusFeedback?.toUpperCase() === "ATIVO"
+);
 
 
 
@@ -243,21 +251,21 @@ onClose();
                 </button>
               </div>
 
-              {feedbacks.length > 0 ? (
-                <div className="profile-feedback-card">
-                  {feedbacks.map((fb, index) => (
-                    <div className="feedback-card-lenght" key={index}>
-                      <h3 className="feedback-name">
-                        {fb.nomeUsuario || nomesUsuarios[Number(fb.usuarioId)] || ""}
-                      </h3>
-                      <h2>{fb.titulo}</h2>
-                      <p>{fb.descricao}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p style={{ marginTop: "20px" }}>Sem feedbacks ainda.</p>
-              )}
+{feedbacksAtivos.length > 0 ? (
+  <div className="profile-feedback-card">
+    {feedbacksAtivos.map((fb, index) => (
+      <div className="feedback-card-lenght" key={index}>
+        <h3 className="feedback-name">
+          {fb.nomeUsuario || nomesUsuarios[Number(fb.usuarioId)] || ""}
+        </h3>
+        <h2>{fb.titulo}</h2>
+        <p>{fb.descricao}</p>
+      </div>
+    ))}
+  </div>
+) : (
+  <p style={{ marginTop: "20px" }}>Sem feedbacks ativos.</p>
+)}
 
               <FeedbackDenunciaModal isOpen={openFeedback} onClose={() => setOpenFeedback(false)} tipo="FEEDBACK" />
               <FeedbackDenunciaModal isOpen={openDenuncia} onClose={() => setOpenDenuncia(false)} tipo="DENUNCIA" />
