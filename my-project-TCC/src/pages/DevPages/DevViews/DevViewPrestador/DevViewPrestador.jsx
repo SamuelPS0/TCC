@@ -6,6 +6,7 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { IoMdImage, IoIosCall } from "react-icons/io";
 import { FaMapMarkerAlt, FaList } from "react-icons/fa";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 import Loading from "../../../../Components/Loading/Loading";
 import ProfileImg from "../../../../img/Ellipse.png";
 import ProfileImg2 from "../../../../img/pererinha.png";
@@ -117,6 +118,8 @@ const DevViewPrestador = () => {
   }, [prestadorId]);
 
   const editarStatusPrestador = async (id, novoStatus) => {
+
+    
     const statusString = novoStatus ? "ATIVO" : "INATIVO";
     const toastId = toast.loading("Atualizando status...");
     
@@ -149,27 +152,45 @@ const DevViewPrestador = () => {
     }
   };
 
-   const editarStatusFeedback = async (feedback) => {
-    const novoStatus = feedback.statusFeedback === "ATIVO" ? "INATIVO" : "ATIVO";
-    const toastId = toast.loading("Atualizando status do feedback...");
+const editarStatusFeedback = async (feedback) => {
+  const ativando = feedback.statusFeedback !== "ATIVO";
+  const novoStatus = ativando ? "ATIVO" : "INATIVO";
 
-    try {
-      await axios.put(`http://localhost:8080/api/v1/feedback/${feedback.id}`, {
-  statusFeedback: novoStatus,
-});
+  const result = await Swal.fire({
+    title: ativando ? "Ativar feedback?" : "Desativar feedback?",
+    text: ativando
+      ? "O feedback ficará visível novamente."
+      : "O feedback deixará de aparecer para os usuários.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#26c26a",
+    cancelButtonColor: "#e74c3c",
+    confirmButtonText: "Sim",
+    cancelButtonText: "Cancelar",
+  });
 
-      setFeedbacks((prev) =>
-        prev.map((fb) =>
-          fb.id === feedback.id ? { ...fb, statusFeedback: novoStatus } : fb
-        )
-      );
+  if (!result.isConfirmed) return;
 
-      toast.success(`Feedback ${novoStatus.toLowerCase()} com sucesso!`, { id: toastId });
-    } catch (error) {
-      console.error("Erro ao atualizar status do feedback:", error);
-      toast.error("Erro ao atualizar status do feedback!", { id: toastId });
-    }
-  };
+  const toastId = toast.loading("Atualizando status do feedback...");
+
+  try {
+    await axios.put(`http://localhost:8080/api/v1/feedback/${feedback.id}`, {
+      statusFeedback: novoStatus,
+    });
+
+    setFeedbacks((prev) =>
+      prev.map((fb) =>
+        fb.id === feedback.id ? { ...fb, statusFeedback: novoStatus } : fb
+      )
+    );
+
+    toast.success(`Feedback ${novoStatus.toLowerCase()} com sucesso!`, { id: toastId });
+
+  } catch (error) {
+    console.error("Erro ao atualizar status do feedback:", error);
+    toast.error("Erro ao atualizar status do feedback!", { id: toastId });
+  }
+};
 
   if (loading) return <Loading />;
   if (!card) return <p>Prestador não encontrado.</p>;

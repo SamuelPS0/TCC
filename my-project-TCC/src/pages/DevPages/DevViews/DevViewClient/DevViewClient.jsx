@@ -4,6 +4,7 @@ import HeaderSwitcher from '../../../../Components/HeaderSwitcher';
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from 'sonner';
 import axios from 'axios';
+import Swal from "sweetalert2";
 import Loading from '../../../../Components/Loading/Loading';
 
 import "../DevViewPrestador/DevViewPrestador.css";
@@ -88,6 +89,47 @@ const DevViewClient = () => {
     }
   };
 
+
+const editarStatusFeedback = async (feedback) => {
+  const ativando = feedback.statusFeedback !== "ATIVO";
+  const novoStatus = ativando ? "ATIVO" : "INATIVO";
+
+  const result = await Swal.fire({
+    title: ativando ? "Ativar feedback?" : "Desativar feedback?",
+    text: ativando
+      ? "O feedback ficará visível novamente."
+      : "O feedback deixará de aparecer para os usuários.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#26c26a",
+    cancelButtonColor: "#e74c3c",
+    confirmButtonText: "Sim",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (!result.isConfirmed) return;
+
+  const toastId = toast.loading("Atualizando status do feedback...");
+
+  try {
+    await axios.put(`http://localhost:8080/api/v1/feedback/${feedback.id}`, {
+      statusFeedback: novoStatus,
+    });
+
+    setFeedbacks((prev) =>
+      prev.map((fb) =>
+        fb.id === feedback.id ? { ...fb, statusFeedback: novoStatus } : fb
+      )
+    );
+
+    toast.success(`Feedback ${novoStatus.toLowerCase()} com sucesso!`, { id: toastId });
+
+  } catch (error) {
+    console.error("Erro ao atualizar status do feedback:", error);
+    toast.error("Erro ao atualizar status do feedback!", { id: toastId });
+  }
+};
+
   const editarStatus = async (id, novoStatus) => {
     const toastId = toast.loading('Atualizando status do usuário...');
     try {
@@ -149,36 +191,54 @@ const DevViewClient = () => {
           )}
         </div>
 
-        {/* FEEDBACKS */}
-        <div className="prestview-feedbacks">
-          {feedbacks.length === 0 ? (
-            <p>Nenhum feedback carregado.</p>
-          ) : (
-            feedbacks.map((fb) => (
-              <div
-                key={fb.id}
-                className={`prestview-feedback-card ${
-                  fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"
-                } ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
-              >
-                <h3 className="feedback-name">
-                  {usuario.nome}
-                </h3>
+       {/* FEEDBACKS */}
+<div className="devclient-feedbacks">
+  {feedbacks.length === 0 ? (
+    <p>Nenhum feedback carregado.</p>
+  ) : (
+    feedbacks.map((fb) => (
+      <div
+  key={fb.id}
+  className={`devclient-feedback-card ${
+    fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"
+  } ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
+>
+  {/* HEADER */}
+  <div className="devclient-feedback-header">
+    <div>
+      <h3 className="devclient-feedback-name">
+        Usuário: {usuario.nome}
+      </h3>
 
-                <p style={{ fontWeight: "600", color: "#555" }}>
-                  Prestador: {nomesPrestadores[Number(fb.prestadorId)] || `#${fb.prestadorId}`}
-                </p>
+      <p className="devclient-feedback-prestador">
+        Prestador: {nomesPrestadores[Number(fb.prestadorId)] || `#${fb.prestadorId}`}
+      </p>
+    </div>
 
-                <h4>{fb.titulo}</h4>
-                <p>{fb.descricao}</p>
+    <div className="devclient-feedback-status-row">
+      <label className="devclient-feedback-switch">
+        <input
+          type="checkbox"
+          checked={fb.statusFeedback === "ATIVO"}
+          onChange={() => editarStatusFeedback(fb)}
+        />
+        <span className="devclient-feedback-slider"></span>
+      </label>
+    </div>
+  </div>
 
-                {fb.nota !== undefined && (
-                  <p><strong>Nota:</strong> {fb.nota}⭐</p>
-                )}
-              </div>
-            ))
-          )}
-        </div>
+  {/* CONTEÚDO */}
+  <h4 className="devclient-feedback-title">{fb.titulo}</h4>
+
+  <p className="devclient-feedback-desc">{fb.descricao}</p>
+
+  {fb.nota !== undefined && (
+    <p><strong>Nota:</strong> {fb.nota}⭐</p>
+  )}
+</div>
+    ))
+  )}
+</div>
 
         <button
           className={`devclient-status-btn ${usuarioStatus ? 'ativo' : 'inativo'}`}

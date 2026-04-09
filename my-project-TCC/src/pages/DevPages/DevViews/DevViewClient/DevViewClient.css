@@ -187,7 +187,7 @@
 .feedback-card {
   width: 100%;
   max-width: 800px;
-  height: 230px;
+  height: auto;
   padding: 24px;
   border-radius: 5px;
   background: #FFF;
@@ -306,4 +306,150 @@
   .devclient-status-btn {
     margin-bottom: 40px;
   }
+}
+
+
+/* Container de feedbacks */
+.devclient-feedbacks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 765px;
+}
+
+/* Card base */
+.devclient-feedback-card {
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f2f2f2;
+  border-left: 5px solid #f05221;
+}
+
+/* Feedback positivo */
+.devclient-feedback-card.feedback {
+  border: 2px solid #78ff91;
+  background-color: #eafff3;
+  transition: all 0.3s ease;
+}
+
+.devclient-feedback-card.feedback:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
+}
+
+/* Denúncia */
+.devclient-feedback-card.denuncia {
+  border: 2px solid #ff5151;
+  background-color: #faefef;
+  transition: all 0.3s ease;
+}
+
+.devclient-feedback-card.denuncia:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+}
+
+/* Inativo */
+.devclient-feedback-card.inactive {
+  background-color: #e0e0e0;
+  border: 2px solid #999;
+  opacity: 0.7;
+}
+
+/* Nome */
+.devclient-feedback-name {
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}
+
+/* Switch */
+.devclient-feedback-status-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+.devclient-feedback-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.devclient-feedback-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.devclient-feedback-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #bbb;
+  transition: .3s;
+  border-radius: 999px;
+}
+
+.devclient-feedback-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background-color: #fff;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+.devclient-feedback-switch input:checked + .devclient-feedback-slider {
+  background-color: #26c26a;
+}
+
+.devclient-feedback-switch input:checked + .devclient-feedback-slider:before {
+  transform: translateX(22px);
+}
+
+.devclient-feedback-switch input:not(:checked) + .devclient-feedback-slider {
+  background-color: #e74c3c;
+}
+
+/* HEADER DO CARD */
+.devclient-feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+/* Prestador (linha abaixo do usuário) */
+.devclient-feedback-prestador {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #000000;
+  margin-top: 2px;
+}
+
+/* Título */
+.devclient-feedback-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 10px 0 5px 0;
+  color: #000000;
+}
+
+/* Descrição */
+.devclient-feedback-desc {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #000000;
+  margin-bottom: 10px;
 }
