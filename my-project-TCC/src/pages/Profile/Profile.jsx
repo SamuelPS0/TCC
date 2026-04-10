@@ -3,9 +3,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { FaInstagram, FaFacebook, FaWhatsapp, FaLink, FaPaperclip, FaRegAngry } from "react-icons/fa";
 import ProfileImg from "../../img/Ellipse.png";
-import ProfileImg2 from "../../img/pererinha.png";
 import InputImg from "../../img/crosant.png";
-import InputImg2 from "../../img/bebidas.jpg";
 import HeaderSwitcher from "../../Components/HeaderSwitcher";
 import Loading from "../../Components/Loading/Loading";
 import { useAuth } from "../../Components/AuthContext";
@@ -93,15 +91,23 @@ const Profile = () => {
 const getFotosPrestador = (dados) => {
   if (!dados) return { perfil: "", servico: "" };
 
-  const servicoNome = (dados.servicoNome || "").toLowerCase();
+const prestadorId = Number(dados.prestadorId);
+  console.debug("[Profile] Selecionando fotos do prestador:", {
+    prestadorId,
+    temImagemPerfil: Boolean(dados.imagemPerfil),
+    temImagemServico: Boolean(dados.imagemServico),
+  });
 
-  // Se o nome do serviço contém "pererinha", usa as imagens 2
-  if (servicoNome.includes("pererinha")) {
-    return { perfil: ProfileImg2, servico: InputImg2 };
+  // Exceção de regra: primeiro prestador mantém imagens fixas locais.
+  if (prestadorId === 1) {
+    return { perfil: ProfileImg, servico: InputImg };
   }
 
   // Fallback padrão
-  return { perfil: ProfileImg, servico: InputImg };
+  return {
+    perfil: dados.imagemPerfil || ProfileImg,
+    servico: dados.imagemServico || InputImg,
+  };
 };
 const feedbacksAtivos = feedbacks.filter(
   (fb) => fb.statusFeedback?.toUpperCase() === "ATIVO"
@@ -112,6 +118,9 @@ const feedbacksAtivos = feedbacks.filter(
 
 
 const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
+const isPrimeiroPrestador = Number(dados?.prestadorId) === 1;
+const hasImagemPerfil = isPrimeiroPrestador || Boolean(dados?.imagemPerfil);
+const hasImagemServico = isPrimeiroPrestador || Boolean(dados?.imagemServico);
 
   const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
     const [titulo, setTitulo] = useState("");
@@ -199,8 +208,11 @@ onClose();
               <div className="profile-main">
                 <div className="profile-header-container">
                   <div className="profile-images">
-                    <img src={fotos.perfil} alt="Imagem do prestador" className="profile-image" />
-                  </div>
+                     {hasImagemPerfil ? (
+                      <img src={fotos.perfil} alt="Imagem do prestador" className="profile-image" />
+                    ) : (
+                      <p>Imagem não encontrada</p>
+                    )}</div>
                   <h1 className="profile-h1">{dados.servicoNome}</h1>
                   <h3 className="profile-h3">{dados.servicoDescricao}</h3>
                 </div>
@@ -239,8 +251,11 @@ onClose();
               </div>
 
               <div className="profile-input-container">
-                <img src={fotos.servico} alt="Imagem do serviço" className="profile-image-2" />
-              </div>
+               {hasImagemServico ? (
+                  <img src={fotos.servico} alt="Imagem do serviço" className="profile-image-2" />
+                ) : (
+                  <p>Imagem não encontrada</p>
+                )}</div>
 
               <div className="profile-buttons">
                 <button onClick={() => setOpenFeedback(true)} className="profile-feedback">

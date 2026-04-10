@@ -18,6 +18,40 @@ const Cards = ({ filter = {} }) => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const { category, city } = filter;
+  
+  const normalizeImageSrc = (value) => {
+    if (typeof value !== "string") return null;
+    const trimmed = value.trim();
+    if (!trimmed || trimmed.includes("System.Byte[")) {
+      console.warn("[Cards] Campo de imagem inválido recebido do backend:", trimmed);
+      return null;
+    }
+
+    const looksLikeBase64 = /^[A-Za-z0-9+/]+={0,2}$/.test(trimmed);
+
+    const isDirectUrl =
+      trimmed.startsWith("http://") ||
+      trimmed.startsWith("https://") ||
+      trimmed.startsWith("data:image") ||
+      trimmed.startsWith("blob:") ||
+      (trimmed.startsWith("/") && !looksLikeBase64);
+
+    if (isDirectUrl) return trimmed;
+    console.debug("[Cards] Convertendo base64 puro para data URI.");
+    return `data:image/jpeg;base64,${trimmed}`;
+  };
+
+  const getImageField = (obj = {}, possibleKeys = []) => {
+    for (const key of possibleKeys) {
+      const parsed = normalizeImageSrc(obj?.[key]);
+      if (parsed) {
+        console.debug(`[Cards] Imagem encontrada em '${key}'.`);
+        return parsed;
+      }
+    }
+    return null;
+  };
+
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -28,7 +62,8 @@ const Cards = ({ filter = {} }) => {
           categoriasRes,
           regioesRes,
           contatosRes,
-          feedbacksRes
+          feedbacksRes,
+          usuariosRes
         ] = await Promise.all([
           axios.get("http://localhost:8080/api/v1/servico"),
           axios.get("http://localhost:8080/api/v1/prestador"),
@@ -36,6 +71,7 @@ const Cards = ({ filter = {} }) => {
           axios.get("http://localhost:8080/api/v1/regiao"),
           axios.get("http://localhost:8080/api/v1/contato"),
           axios.get("http://localhost:8080/api/v1/feedback"),
+          axios.get("http://localhost:8080/api/v1/Usuario"),
         ]);
 
         const servicos = servicosRes.data;
@@ -44,6 +80,11 @@ const Cards = ({ filter = {} }) => {
         const regioes = regioesRes.data;
         const contatos = contatosRes.data;
         const feedbacks = feedbacksRes.data;
+        const usuarios = usuariosRes.data;
+
+        const usuariosById = Object.fromEntries(
+          usuarios.map((usuario) => [Number(usuario.id), usuario])
+        );
 
         const cardsArray = servicos.map((servico, index) => {
           const prestador = prestadores[index] || {};
@@ -51,6 +92,15 @@ const Cards = ({ filter = {} }) => {
           const regiao = regioes[index] || {};
           const contato = contatos[index] || {};
           const feedback = feedbacks[index] || {};
+          const usuarioId = Number(
+            prestador.usuario_id ?? prestador.usuarioId ?? prestador.usuario?.id
+          );
+          const usuario = usuariosById[usuarioId] || {};
+          console.debug("[Cards] Montando card para prestador:", {
+            prestadorId: prestador.id,
+            usuarioId,
+            servicoId: servico.id,
+          });
 
           return {
             prestadorId: prestador.id,
@@ -61,6 +111,12 @@ const Cards = ({ filter = {} }) => {
             uf: prestador.uf || regiao.uf || "UF não disponível",
             prestadorNome: prestador.nome || "Prestador não disponível",
             contatoMidia: contato.link || null,
+            imagemPerfil:
+              getImageField(usuario, ["foto", "imagem", "avatar", "fotoPerfil", "imagemPerfil"]) ||
+              getImageField(prestador, ["fotoPerfil", "imagemPerfil", "foto", "imagem", "avatar"]) ||
+              getImageField(servico, ["fotoPerfil", "imagemPerfil", "fotoPrestador"]),
+            imagemServico: getImageField(servico, ["fotoServico", "imagemServico", "foto", "imagem"]),
+            
             feedbackTitulo: feedback.titulo || null,
             feedbackDescricao: feedback.descricao || null
           };
