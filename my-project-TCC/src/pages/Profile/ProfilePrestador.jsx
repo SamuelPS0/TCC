@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import HeaderSwitcher from '../../Components/HeaderSwitcher';
 import './ProfilePrestador.css';
 import './Modal.css'; // Importando o CSS separado
+import { breakLineEveryNChars } from '../../utils/formatFeedbackText';
 import { FaInstagram, FaFacebook, FaWhatsapp, FaLink, FaPaperclip, FaRegAngry } from "react-icons/fa";
 
 // MODAL FEEDBACK sem inputs, com 4 quadrados
@@ -80,13 +81,13 @@ function DenunciaModal({ isOpen, onClose }) {
 function ProfilePrestadorCard({ titulo, mensagem }) {
   const maxTitulo = 30;
   const displayTitulo = titulo.length > maxTitulo ? titulo.slice(0, maxTitulo) + "..." : titulo;
-  const maxMensagem = 500;
-  const displayMensagem = mensagem.length > maxMensagem ? mensagem.slice(0, maxMensagem) + '...' : mensagem;
+  const displayMensagem = breakLineEveryNChars(mensagem, 70);
 
   return (
     <div className="feedback-card">
       <h2>{displayTitulo}</h2>
-      <p>{displayMensagem}</p>
+      
+      <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>{displayMensagem}</p>
     </div>
   );
 }

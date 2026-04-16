@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import Loading from '../../../../Components/Loading/Loading';
-
+import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
 import "../DevViewPrestador/DevViewPrestador.css";
 import './DevViewClient.css';
 
@@ -230,7 +230,9 @@ const editarStatusFeedback = async (feedback) => {
   {/* CONTEÚDO */}
   <h4 className="devclient-feedback-title">{fb.titulo}</h4>
 
-  <p className="devclient-feedback-desc">{fb.descricao}</p>
+  <p className="devclient-feedback-desc" style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
+    {breakLineEveryNChars(fb.descricao, 70)}
+  </p>
 
   {fb.nota !== undefined && (
     <p><strong>Nota:</strong> {fb.nota}⭐</p>

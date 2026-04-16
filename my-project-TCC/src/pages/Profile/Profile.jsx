@@ -9,6 +9,7 @@ import Loading from "../../Components/Loading/Loading";
 import { useAuth } from "../../Components/AuthContext";
 import { toast } from "sonner";
 import "./Profile.css";
+import { breakLineEveryNChars } from '../../utils/formatFeedbackText';
 
 const Profile = () => {
   const location = useLocation();
@@ -274,7 +275,9 @@ onClose();
           {fb.nomeUsuario || nomesUsuarios[Number(fb.usuarioId)] || ""}
         </h3>
         <h2>{fb.titulo}</h2>
-        <p>{fb.descricao}</p>
+        <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
+                  {breakLineEveryNChars(fb.descricao, 70)}
+                </p>
       </div>
     ))}
   </div>

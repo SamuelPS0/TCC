@@ -13,6 +13,7 @@ import ProfileImg2 from "../../../../img/pererinha.png";
 import InputImg from "../../../../img/crosant.png";
 import InputImg2 from "../../../../img/bebidas.jpg";
 import "./DevViewPrestador.css";
+import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
 
 const DevViewPrestador = () => {
   const { prestadorId } = useParams();
@@ -271,7 +272,9 @@ const editarStatusFeedback = async (feedback) => {
                   {nomesUsuarios[Number(fb.usuarioId)] || `Usuário #${fb.usuarioId}`}
                 </h3>
                 <h4>{fb.titulo}</h4>
-                <p>{fb.descricao}</p>
+               <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
+                  {breakLineEveryNChars(fb.descricao, 70)}
+                </p>
                 {fb.nota !== undefined && <p><strong>Nota:</strong> {fb.nota}⭐</p>}
               </div>
             ))

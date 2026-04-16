@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import Loading from '../../../../Components/Loading/Loading';
 import './DevViewADM.css';
+import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
 
 const DevViewADM = () => {
   const location = useLocation();
@@ -142,7 +143,9 @@ const DevViewADM = () => {
                 }`}
               >
                 <h2>{fb.titulo}</h2>
-                <p>{fb.descricao}</p>
+                <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
+                  {breakLineEveryNChars(fb.descricao, 70)}
+                </p>
               </div>
             ))
           ) : (
