@@ -14,6 +14,14 @@ const SkeletonCard = () => (
   </div>
 );
 
+const DESCRIPTION_LIMIT = 90;
+
+const truncateDescription = (description = "") => {
+  if (description.length <= DESCRIPTION_LIMIT) return description;
+
+  return `${description.slice(0, DESCRIPTION_LIMIT)}...`;
+};
+
 const Cards = ({ filter = {} }) => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -159,8 +167,7 @@ const Cards = ({ filter = {} }) => {
                 <MdStars className="edit-icon" /> {card.categoria}
                 <FaSearchLocation className="edit-icon-2" /> {card.cidade} - {card.uf}
               </p>
-              <p className="cards-description">{card.servicoDescricao}</p>
-            </div>
+             <p className="cards-description">{truncateDescription(card.servicoDescricao)}</p> </div>
           </Link>
         ))
       )}

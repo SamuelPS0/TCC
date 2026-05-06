@@ -11,6 +11,13 @@ import { toast } from "sonner";
 import "./Profile.css";
 import { breakLineEveryNChars } from '../../utils/formatFeedbackText';
 
+const getContatoPrestadorId = (contato = {}) =>
+  Number(contato.prestadorId ?? contato.prestador_id ?? contato.prestador?.id);
+
+const contatoEstaAtivo = (contato = {}) =>
+  String(contato.statusContato ?? contato.status_contato ?? "ATIVO").toUpperCase() === "ATIVO";
+
+
 const Profile = () => {
   const location = useLocation();
   const dados = location.state?.perfil;
@@ -24,6 +31,8 @@ const Profile = () => {
   const [openDenuncia, setOpenDenuncia] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
   const [nomesUsuarios, setNomesUsuarios] = useState({});
+
+    const [contatos, setContatos] = useState([]);
   
   // loader
   const [showLoader, setShowLoader] = useState(true);
@@ -81,13 +90,72 @@ const Profile = () => {
     if (dados) fetchFeedbacks();
   }, [dados]);
 
-  const getContatoIcon = (link) => {
-    if (!link) return <FaLink />;
-    if (link.includes("instagram.com")) return <FaInstagram />;
-    if (link.includes("facebook.com")) return <FaFacebook />;
-    if (link.includes("wa.me") || link.includes("whatsapp.com")) return <FaWhatsapp />;
-    return <FaLink />;
+    const normalizeContatoTipo = (contato = {}) =>
+    String(
+      contato.tipoContato ??
+      contato.tipo_contato ??
+      contato.tipo ??
+      contato.label ??
+      "Link"
+    )
+      .trim()
+      .toLowerCase();
+
+  const getContatoInfo = (contato = {}) => {
+    const tipo = normalizeContatoTipo(contato);
+
+    if (tipo === "instagram") {
+      return { Icon: FaInstagram, label: "Instagram", className: "instagram" };
+    }
+
+    if (tipo === "facebook") {
+      return { Icon: FaFacebook, label: "Facebook", className: "facebook" };
+    }
+
+    if (tipo === "whatsapp") {
+      return { Icon: FaWhatsapp, label: "WhatsApp", className: "whatsapp" };
+    }
+
+    return { Icon: FaLink, label: contato.label || contato.tipoContato || contato.tipo_contato || "Link", className: "" };
   };
+
+  const getContatoHref = (contato = {}) => {
+    const link = contato.link ?? contato.value ?? contato.url ?? contato;
+
+    if (typeof link !== "string") return "#";
+
+    const trimmedLink = link.trim();
+    if (!trimmedLink) return "#";
+
+    if (/^(https?:)?\/\//i.test(trimmedLink) || /^(mailto:|tel:)/i.test(trimmedLink)) {
+      return trimmedLink;
+    }
+
+    return `https://${trimmedLink}`;
+  };
+    useEffect(() => {
+    const fetchContatos = async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/api/v1/contato");
+        const contatosPrestador = (res.data || []).filter(
+          (contato) =>
+            getContatoPrestadorId(contato) === Number(dados?.prestadorId) &&
+            contatoEstaAtivo(contato)
+        );
+
+        setContatos(contatosPrestador);
+      } catch (error) {
+        console.error("Erro ao buscar contatos do prestador:", error);
+        setContatos([]);
+      }
+    };
+
+    if (dados?.prestadorId) {
+      fetchContatos();
+    } else {
+      setContatos([]);
+    }
+  }, [dados?.prestadorId]);
 
 const getFotosPrestador = (dados) => {
   if (!dados) return { perfil: "", servico: "" };
@@ -122,6 +190,7 @@ const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
 const isPrimeiroPrestador = Number(dados?.prestadorId) === 1;
 const hasImagemPerfil = isPrimeiroPrestador || Boolean(dados?.imagemPerfil);
 const hasImagemServico = isPrimeiroPrestador || Boolean(dados?.imagemServico);
+const hasDescricaoLonga = (dados?.servicoDescricao || "").length > 90;
 
   const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
     const [titulo, setTitulo] = useState("");
@@ -206,7 +275,7 @@ onClose();
           <HeaderSwitcher />
           <div className="profile-container">
             <div className="profile-positioning">
-              <div className="profile-main">
+              <div className={`profile-main ${hasDescricaoLonga ? "profile-main-long-description" : ""}`}>
                 <div className="profile-header-container">
                   <div className="profile-images">
                      {hasImagemPerfil ? (
@@ -223,30 +292,25 @@ onClose();
                 </div>
 
                 <div className="profile-main-container-footer-p2">
-                  {dados.contatoMidia && (
-                    <a
-                      href={dados.contatoMidia}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`contact-link ${
-                        dados.contatoMidia.includes("instagram.com")
-                          ? "instagram"
-                          : dados.contatoMidia.includes("facebook.com")
-                          ? "facebook"
-                          : dados.contatoMidia.includes("wa.me") || dados.contatoMidia.includes("whatsapp.com")
-                          ? "whatsapp"
-                          : ""
-                      }`}
-                    >
-                      {getContatoIcon(dados.contatoMidia)}{" "}
-                      {dados.contatoMidia.includes("instagram.com")
-                        ? "Instagram"
-                        : dados.contatoMidia.includes("facebook.com")
-                        ? "Facebook"
-                        : dados.contatoMidia.includes("wa.me") || dados.contatoMidia.includes("whatsapp.com")
-                        ? "WhatsApp"
-                        : "Link"}
-                    </a>
+                  {contatos.length > 0 ? (
+                    contatos.map((contato, index) => {
+                      const { Icon, label, className } = getContatoInfo(contato);
+
+                      return (
+                        <a
+                          key={`${label}-${index}`}
+                          href={getContatoHref(contato)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`contact-link ${className}`}
+                        >
+                          <Icon className="contact-icon" />
+                          {label}
+                        </a>
+                      );
+                    })
+                  ) : (
+                    <span className="contact-text">Nenhum meio de contato cadastrado.</span>
                   )}
                 </div>
               </div>
