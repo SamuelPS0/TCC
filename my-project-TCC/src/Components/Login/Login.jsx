@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';import axios from 'axios';
 import LogoLogin from '../../img/DivulgAÍ-removebg-preview.png';
 import './Login.css';
 import { toast } from 'sonner';
@@ -11,29 +10,60 @@ import { FaLock, FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { useAuth } from '../../Components/AuthContext';
 import accessLevels from '../../Components/accessLevels';
 
-export default function Login({ buttonText = "Entrar" }) {
+export default function Login({
+  buttonText = 'Entrar',
+  loadingText = 'Entrando...',
+  passwordLabel = 'Senha',
+  passwordPlaceholder = 'Digite sua senha',
+  onSubmit: customSubmit,
+  onDataChange,
+  isSubmitting = false,
+  passwordDisabled = false,
+  buttonDisabled = false,
+}) {
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm();
+    } = useForm({
+    defaultValues: {
+      email: '',
+      senha: '',
+    },
+  });
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+   const email = watch('email');
+  const senha = watch('senha');
+  const submitLoading = loading || isSubmitting;
+
+  useEffect(() => {
+    if (onDataChange) {
+      onDataChange({ email, senha });
+    }
+  }, [email, senha, onDataChange]);
+
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const onSubmit = async (dataLogin) => {
+       if (customSubmit) {
+      await customSubmit(dataLogin);
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await axios.get('http://localhost:8080/api/v1/Usuario');
       const usuarios = response.data;
 
       const usuarioEncontrado = usuarios.find(
-        (u) => 
+        (u) =>
           u.email.toLowerCase().trim() === dataLogin.email.toLowerCase().trim() &&
           u.senha === dataLogin.senha
       );
@@ -44,25 +74,25 @@ export default function Login({ buttonText = "Entrar" }) {
         return;
       }
 
-      if (usuarioEncontrado.statusUsuario === false){
+      if (usuarioEncontrado.statusUsuario === false) {
         toast.error('O usuario está inativo em nosso site, tente novamente mais tarde.');
         return;
       }
 
       const level = usuarioEncontrado.nivelAcesso || accessLevels.CLIENTE;
 
-   login({
-  id: usuarioEncontrado.id, // ← agora o id é salvo
-  email: usuarioEncontrado.email,
-  accessLevel: level
-});
+      login({
+        id: usuarioEncontrado.id,
+        email: usuarioEncontrado.email,
+        accessLevel: level,
+      });
 
-localStorage.setItem('userLevel', level);
-console.log("Usuário logado com sucesso:", {
-  id: usuarioEncontrado.id,
-  email: usuarioEncontrado.email,
-  accessLevel: level
-});
+      localStorage.setItem('userLevel', level);
+      console.log('Usuário logado com sucesso:', {
+        id: usuarioEncontrado.id,
+        email: usuarioEncontrado.email,
+        accessLevel: level,
+      });
 
 
       navigate('/');
@@ -94,12 +124,13 @@ console.log("Usuário logado com sucesso:", {
         </label>
 
         <label className="login-form">
-          <div className="password-margin">Senha</div>
+           <div className="password-margin">{passwordLabel}</div>
           <div className="input-icon-wrapper">
             <FaLock className="input-icon" />
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Digite sua senha"
+              placeholder={passwordPlaceholder}
+              disabled={passwordDisabled}
               {...register('senha', { required: 'Senha é obrigatória' })}
             />
             {showPassword ? (
@@ -111,8 +142,8 @@ console.log("Usuário logado com sucesso:", {
           {errors.senha && <span className="error">{errors.senha.message}</span>}
         </label>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Entrando...' : buttonText}
+        <button type="submit" disabled={submitLoading || buttonDisabled}>
+          {submitLoading ? loadingText : buttonText}
         </button>
       </form>
     </div>

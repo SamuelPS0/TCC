@@ -9,6 +9,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}.login-form input:disabled {
+  color: #777;
+  cursor: not-allowed;
+  border-bottom-color: #9c9c9c;
+}
+
+.login-form button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .img-edit {

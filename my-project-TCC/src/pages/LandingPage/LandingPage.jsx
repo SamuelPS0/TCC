@@ -134,6 +134,7 @@ export default function LandingPage() {
           <p>Rua Exemplo 123, São Paulo - SP</p>
           <p>contato@divulgai.com</p>
           <p>(11) 90000-0000</p>
+          <li><Link to="/">Fale conosco</Link></li>
         </div>
       </div>
 

@@ -12,7 +12,20 @@
   justify-content: center;
   align-items: center;
 }
+.accountsecurity-error {
+  width: 454px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  color: #c62828;
+  font-family: Montserrat, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+}
 
+.accountsecurity-error-hidden {
+  visibility: hidden;
+}
 .accountsecurity-h1 {
   color: #000;
   text-align: center;
