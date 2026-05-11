@@ -1,50 +1,50 @@
 .devadm-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: auto;
-  background: #F6F6F6;
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+  font-family: Montserrat, sans-serif;
 }
 
 .devadm-container {
+  margin-top: 200px;
+  width: 100%;
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 850px;
-}
-
-.devadm-h1 {
-  margin-top: 200px;
 }
 
 .devadm-container h1 {
+  width: 100%;
+  max-width: 800px;
   color: #000;
-  font-family: Montserrat, sans-serif;
+  text-align: left;
   font-size: 3rem;
   font-weight: 600;
-  text-align: center;
   margin-bottom: 10px;
 }
 
 .devadm-container h3 {
-  color: #AFAFAF;
-  font-family: Montserrat, sans-serif;
-  font-size: 1.5rem;
-  font-weight: 300;
-  text-align: center;
-  margin-bottom: 40px;
+  width: 100%;
+  max-width: 800px;
+  color: #555;
+  text-align: left;
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 35px;
 }
 
 .devadm-label {
+  width: 100%;
+  max-width: 800px;
   color: #000;
-  font-family: Montserrat, sans-serif;
-  font-size: 1.1rem;
-  font-weight: 500;
-  align-self: flex-start;
-  margin-left: 26px;
-  margin-bottom: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
 }
 
 .devadm-input {
@@ -128,7 +128,6 @@
   cursor: pointer;
 }
 
-
 .devadm-dropdown-menu {
   position: absolute;
   top: 72%;
@@ -162,12 +161,6 @@
 .devadm-dropdown-item:hover {
   background-color: #eeeded;
   cursor: pointer;
-}
-
-.devadm-icon {
-  width: 35px;
-  height: 35px;
-  margin-right: 10px;
 }
 
 .devadm-icon {
@@ -229,7 +222,6 @@
   background-color: #faefef;
 }
 
-
 .devadm-status-btn {
   padding: 10px 20px;
   border: none;
@@ -247,8 +239,6 @@
   background-color: #f44336;
   color: white;
 }
-
-
 
 @media (max-width: 1024px) {
   .devadm-container h1 {
@@ -306,4 +296,208 @@
   .devadm-status-btn {
     margin-bottom: 40px;
   }
+}
+
+/* Feedbacks e denúncias - mesmo padrão visual do DevViewPrestador */
+.devadm-feedback-title {
+  margin-top: 50px;
+}
+
+.devadm-feedbacks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 920px;
+  align-items: stretch;
+}
+
+.devadm-feedback-card {
+  max-width: 953px;
+  padding: 15px;
+  height: auto;
+  border-radius: 8px;
+  background-color: #f2f2f2;
+  border-left: 5px solid #f05221;
+}
+
+.devadm-feedback-card.feedback {
+  border: 2px solid #78ff91;
+  background-color: #eafff3;
+  transition: all 0.3s ease;
+}
+
+.devadm-feedback-card.feedback:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
+}
+
+.devadm-feedback-card.denuncia {
+  border: 2px solid #ff5151;
+  background-color: #faefef;
+  transition: all 0.3s ease;
+}
+
+.devadm-feedback-card.denuncia:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+}
+
+.devadm-feedback-card.inactive {
+  background-color: #e0e0e0;
+  border: 2px solid #999;
+  opacity: 0.7;
+}
+
+.devadm-feedback-card h4 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.devadm-feedback-card p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.devadm-feedback-name {
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #f05221;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}
+
+.devadm-feedback-status-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+.devadm-feedback-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.devadm-feedback-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.devadm-feedback-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #bbb;
+  transition: .3s;
+  border-radius: 999px;
+}
+
+.devadm-feedback-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background-color: #fff;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+.devadm-feedback-switch input:checked + .devadm-feedback-slider {
+  background-color: #26c26a;
+}
+
+.devadm-feedback-switch input:checked + .devadm-feedback-slider:before {
+  transform: translateX(22px);
+}
+
+.devadm-feedback-switch input:not(:checked) + .devadm-feedback-slider {
+  background-color: #e74c3c;
+}
+
+.devadm-feedback-card.inactive .devadm-feedback-slider {
+  background-color: #e74c3c !important;
+}
+/* Ajuste final: no DevViewADM os cards seguem exatamente o visual do DevViewPrestador */
+.devadm-container .devadm-feedback-title {
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 16px;
+}
+
+.devadm-container .devadm-feedback-card {
+  max-width: 953px;
+  padding: 15px;
+  height: auto;
+  border-radius: 8px;
+  background-color: #f2f2f2;
+  border-left: 5px solid #f05221;
+  text-align: left;
+}
+
+.devadm-container .devadm-feedback-card.feedback {
+  border: 2px solid #78ff91;
+  background-color: #eafff3;
+  transition: all 0.3s ease;
+}
+
+.devadm-container .devadm-feedback-card.feedback:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
+}
+
+.devadm-container .devadm-feedback-card.denuncia {
+  border: 2px solid #ff5151;
+  background-color: #faefef;
+  transition: all 0.3s ease;
+}
+
+.devadm-container .devadm-feedback-card.denuncia:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+}
+
+.devadm-container .devadm-feedback-card.inactive {
+  background-color: #e0e0e0;
+  border: 2px solid #999;
+  opacity: 0.7;
+}
+
+.devadm-container h3.devadm-feedback-name,
+.devadm-container .devadm-feedback-name {
+  color: #f05221;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: normal;
+  text-align: left;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.devadm-container .devadm-feedback-card h4 {
+  color: #333;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  text-align: left;
+}
+
+.devadm-container .devadm-feedback-card p {
+  color: #555;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 2px 0;
+  text-align: left;
 }

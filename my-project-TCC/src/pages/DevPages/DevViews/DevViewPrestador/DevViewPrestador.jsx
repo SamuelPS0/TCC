@@ -8,12 +8,48 @@ import { FaMapMarkerAlt, FaList } from "react-icons/fa";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 import Loading from "../../../../Components/Loading/Loading";
-import ProfileImg from "../../../../img/Ellipse.png";
-import ProfileImg2 from "../../../../img/pererinha.png";
-import InputImg from "../../../../img/crosant.png";
-import InputImg2 from "../../../../img/bebidas.jpg";
 import "./DevViewPrestador.css";
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
+
+const normalizeImageSrc = (value) => {
+  if (typeof value !== "string") return null;
+
+  const trimmed = value.trim();
+
+  if (!trimmed || trimmed.includes("System.Byte[")) {
+    return null;
+  }
+
+  const looksLikeBase64 = /^[A-Za-z0-9+/]+={0,2}$/.test(trimmed);
+  const isDirectUrl =
+    trimmed.startsWith("http://") ||
+    trimmed.startsWith("https://") ||
+    trimmed.startsWith("data:image") ||
+    trimmed.startsWith("blob:") ||
+    (trimmed.startsWith("/") && !looksLikeBase64);
+
+  if (isDirectUrl) return trimmed;
+
+  return `data:image/jpeg;base64,${trimmed}`;
+};
+
+const getImageField = (obj = {}, possibleKeys = []) => {
+  for (const key of possibleKeys) {
+    const parsed = normalizeImageSrc(obj?.[key]);
+    if (parsed) return parsed;
+  }
+
+  return null;
+};
+
+const getPrestadorId = (item = {}) =>
+  Number(item.prestadorId ?? item.prestador_id ?? item.prestador?.id);
+
+const isAtivo = (status) => String(status ?? "ATIVO").toUpperCase() === "ATIVO";
+
+const getContatoLabel = (contato = {}) =>
+  contato.tipoContato ?? contato.tipo_contato ?? contato.tipo ?? contato.label ?? "Contato";
+
 
 const DevViewPrestador = () => {
   const { prestadorId } = useParams();
@@ -55,18 +91,21 @@ const DevViewPrestador = () => {
 
         // 2. Buscar serviço do prestador
         const servicosRes = await axios.get("http://localhost:8080/api/v1/servico");
-        const servico = servicosRes.data.find(s => s.prestador.id === prestadorData.id);
+        const servico = (servicosRes.data || []).find(
+          (s) => getPrestadorId(s) === Number(prestadorData.id)
+        );
+        const usuarioPrestador = prestadorData.usuario || servico?.prestador?.usuario || {};
 
         // 3. Buscar contatos ativos
         const contatosRes = await axios.get("http://localhost:8080/api/v1/contato");
-        const contatosAtivos = contatosRes.data.filter(
-          c => c.prestadorId === prestadorData.id && c.statusContato === "ATIVO"
+        const contatosAtivos = (contatosRes.data || []).filter(
+          (c) => getPrestadorId(c) === Number(prestadorData.id) && isAtivo(c.statusContato)
         );
 
         // 4. Buscar feedbacks do prestador
         const feedbacksRes = await axios.get("http://localhost:8080/api/v1/feedback");
-        const feedbacksPrestador = feedbacksRes.data.filter(
-          f => f.prestadorId === prestadorData.id && f.statusFeedback
+        const feedbacksPrestador = (feedbacksRes.data || []).filter(
+          (f) => Number(f.prestadorId) === Number(prestadorData.id) && f.statusFeedback
         );
 
          const idsUsuarios = [...new Set(feedbacksPrestador.map((f) => f.usuarioId).filter(Boolean))];
@@ -76,28 +115,32 @@ const DevViewPrestador = () => {
 
         setNomesUsuarios(Object.fromEntries(nomesArray));
 
-        // 5. Fotos do prestador
-        const getFotosPrestador = (id) => {
-          if (id === 1) return { perfil: ProfileImg, servico: InputImg };
-          if (id === 2) return { perfil: ProfileImg2, servico: InputImg2 };
-          return { perfil: ProfileImg, servico: InputImg };
-        };
-        const fotos = getFotosPrestador(prestadorData.id);
+        // 5. Fotos e informações vindas do backend
+        const fotoPerfil =
+          getImageField(prestadorData, ["foto", "fotoPerfil", "imagemPerfil", "imagem"]) ||
+          getImageField(usuarioPrestador, ["foto", "fotoPerfil", "imagemPerfil", "imagem"]);
+        const fotoServico = getImageField(servico, [
+          "fotoServico",
+          "imagemServico",
+          "foto",
+          "imagem",
+        ]);
 
         // 6. Montar card
         const cardData = {
-          prestadorNome: prestadorData.nome || "",
-          servicoDescricao: servico?.descricao || "",
-          categoria: servico?.categoria?.nome || "",
-          cidade: prestadorData.cidade || "",
-          uf: prestadorData.uf || "",
-          contatos: {
-            whatsapp: contatosAtivos.find(c => c.tipoContato === "WhatsApp")?.link || "",
-            instagram: contatosAtivos.find(c => c.tipoContato === "Instagram")?.link || "",
-            facebook: contatosAtivos.find(c => c.tipoContato === "Facebook")?.link || "",
-          },
-          foto: fotos.perfil,
-          fotoServico: fotos.servico,
+          prestadorNome: prestadorData.nome || usuarioPrestador.nome || "Nome não cadastrado",
+          servicoNome: servico?.nome || "Serviço não cadastrado",
+          servicoDescricao: servico?.descricao || "Descrição não cadastrada",
+          categoria: servico?.categoria?.nome || "Categoria não cadastrada",
+          cidade: prestadorData.cidade || "Cidade não cadastrada",
+          uf: prestadorData.uf || "UF não cadastrada",
+          contatos: contatosAtivos.map((contato) => ({
+            id: contato.id ?? `${getContatoLabel(contato)}-${contato.link}`,
+            tipo: getContatoLabel(contato),
+            link: contato.link ?? contato.value ?? contato.url ?? "Contato sem link cadastrado",
+          })),
+          foto: fotoPerfil,
+          fotoServico,
         };
 
         // 7. Atualizar estados
@@ -200,13 +243,24 @@ const editarStatusFeedback = async (feedback) => {
     <div className="prestview-page">
       <HeaderSwitcher />
       <div className="prestview-container">
-        <img src={card.foto} alt="Prestador" className="prestview-photo" />
+        {card.foto ? (
+          <img src={card.foto} alt="Prestador" className="prestview-photo" />
+        ) : (
+          <div className="prestview-photo-placeholder">Foto do prestador não cadastrada</div>
+        )}
 
         <div className="prestview-field">
           <label className="prestview-label">
             <IoPersonCircleOutline className="icon" /> Nome
           </label>
           <input type="text" className="prestview-input" value={card.prestadorNome} readOnly />
+        </div>
+
+        <div className="prestview-field">
+          <label className="prestview-label">
+            <FaList className="icon" /> Serviço
+          </label>
+          <input type="text" className="prestview-input" value={card.servicoNome} readOnly />
         </div>
 
         <div className="prestview-field">
@@ -221,9 +275,26 @@ const editarStatusFeedback = async (feedback) => {
             <IoIosCall className="icon" /> Contatos
           </label>
           <div className="prestview-contacts">
-            <input type="text" placeholder="WhatsApp" value={card.contatos.whatsapp} readOnly className="prestview-input" />
-            <input type="text" placeholder="Instagram" value={card.contatos.instagram} readOnly className="prestview-input" />
-            <input type="text" placeholder="Facebook" value={card.contatos.facebook} readOnly className="prestview-input" />
+            {card.contatos.length === 0 ? (
+              <input
+                type="text"
+                value="Nenhum contato ativo cadastrado"
+                readOnly
+                className="prestview-input"
+              />
+            ) : (
+              card.contatos.map((contato) => (
+                <div className="prestview-contact-row" key={contato.id}>
+                  <span className="prestview-contact-type">{contato.tipo}</span>
+                  <input
+                    type="text"
+                    value={contato.link}
+                    readOnly
+                    className="prestview-input"
+                  />
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -245,7 +316,11 @@ const editarStatusFeedback = async (feedback) => {
           <label className="prestview-label">
             <IoMdImage className="icon" /> Foto serviço
           </label>
-          <img src={card.fotoServico} alt="Imagem do serviço" className="prestview-image-2" />
+          {card.fotoServico ? (
+            <img src={card.fotoServico} alt="Imagem do serviço" className="prestview-image-2" />
+          ) : (
+            <div className="prestview-service-image-placeholder">Foto do serviço não cadastrada</div>
+          )}
         </div>
 
         <h2 className="feedback-title">Feedbacks & Ocorrências</h2>

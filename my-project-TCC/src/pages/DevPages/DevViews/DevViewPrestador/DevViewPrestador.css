@@ -279,3 +279,47 @@ textarea.prestview-input {
     .prestview-contacts { flex-direction: column; }
     .prestview-buttons { flex-direction: column; }
 }
+
+.prestview-photo-placeholder {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  border: 2px dashed #f05221;
+  color: #777;
+  background-color: #fff7f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+.prestview-contact-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prestview-contact-type {
+  color: #f05221;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.prestview-service-image-placeholder {
+  width: 100%;
+  max-width: 925px;
+  height: 272px;
+  border-radius: 10px;
+  border: 2px dashed #f05221;
+  color: #777;
+  background-color: #fff7f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 600;
+  box-sizing: border-box;
+}

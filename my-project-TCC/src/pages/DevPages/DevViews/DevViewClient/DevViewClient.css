@@ -453,3 +453,232 @@
   color: #000000;
   margin-bottom: 10px;
 }
+/* Feedbacks e denúncias - mesmo padrão visual do DevViewPrestador */
+.devclient-feedbacks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 920px;
+  align-items: stretch;
+}
+
+.devclient-feedback-card {
+  max-width: 953px;
+  padding: 15px;
+  height: auto;
+  border-radius: 8px;
+  background-color: #f2f2f2;
+  border-left: 5px solid #f05221;
+}
+
+.devclient-feedback-card.feedback {
+  border: 2px solid #78ff91;
+  background-color: #eafff3;
+  transition: all 0.3s ease;
+}
+
+.devclient-feedback-card.feedback:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
+}
+
+.devclient-feedback-card.denuncia {
+  border: 2px solid #ff5151;
+  background-color: #faefef;
+  transition: all 0.3s ease;
+}
+
+.devclient-feedback-card.denuncia:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+}
+
+.devclient-feedback-card.inactive {
+  background-color: #e0e0e0;
+  border: 2px solid #999;
+  opacity: 0.7;
+}
+
+.devclient-feedback-card h4,
+.devclient-feedback-title {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.devclient-feedback-card p,
+.devclient-feedback-desc {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.devclient-feedback-name {
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #f05221;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}
+
+.devclient-feedback-prestador {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #555;
+  margin: 2px 0 10px 0;
+}
+
+.devclient-feedback-status-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+.devclient-feedback-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.devclient-feedback-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.devclient-feedback-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #bbb;
+  transition: .3s;
+  border-radius: 999px;
+}
+
+.devclient-feedback-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background-color: #fff;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+.devclient-feedback-switch input:checked + .devclient-feedback-slider {
+  background-color: #26c26a;
+}
+
+.devclient-feedback-switch input:checked + .devclient-feedback-slider:before {
+  transform: translateX(22px);
+}
+
+.devclient-feedback-switch input:not(:checked) + .devclient-feedback-slider {
+  background-color: #e74c3c;
+}
+
+.devclient-feedback-card.inactive .devclient-feedback-slider {
+  background-color: #e74c3c !important;
+}
+
+.devclient-feedback-section-title {
+  margin-top: 50px;
+}
+/* Ajuste final: no DevViewClient os cards usam exatamente o visual do DevViewPrestador */
+.devclient-container .feedback-title {
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 16px;
+}
+
+.devclient-container .prestview-feedbacks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 920px;
+  align-items: stretch;
+}
+
+.devclient-container .prestview-feedback-card {
+  max-width: 953px;
+  padding: 15px;
+  height: auto;
+  border-radius: 8px;
+  background-color: #f2f2f2;
+  border-left: 5px solid #f05221;
+  text-align: left;
+}
+
+.devclient-container .prestview-feedback-card.feedback {
+  border: 2px solid #78ff91;
+  background-color: #eafff3;
+  transition: all 0.3s ease;
+}
+
+.devclient-container .prestview-feedback-card.feedback:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
+}
+
+.devclient-container .prestview-feedback-card.denuncia {
+  border: 2px solid #ff5151;
+  background-color: #faefef;
+  transition: all 0.3s ease;
+}
+
+.devclient-container .prestview-feedback-card.denuncia:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+}
+
+.devclient-container .prestview-feedback-card.inactive {
+  background-color: #e0e0e0;
+  border: 2px solid #999;
+  opacity: 0.7;
+}
+
+.devclient-container h3.feedback-name,
+.devclient-container .feedback-name {
+  color: #f05221;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: normal;
+  text-align: left;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.devclient-container .prestview-feedback-card h4 {
+  color: #333;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  text-align: left;
+}
+
+.devclient-container .prestview-feedback-card p {
+  color: #555;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 2px 0;
+  text-align: left;
+}
+
+.devclient-container .feedback-status-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}

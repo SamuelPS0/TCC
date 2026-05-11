@@ -4,6 +4,7 @@ import HeaderSwitcher from '../../../../Components/HeaderSwitcher';
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from 'sonner';
 import axios from 'axios';
+import Swal from "sweetalert2";
 import Loading from '../../../../Components/Loading/Loading';
 import './DevViewADM.css';
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
@@ -72,6 +73,45 @@ const DevViewADM = () => {
     }
   };
 
+  const editarStatusFeedback = async (feedback) => {
+    const ativando = feedback.statusFeedback !== "ATIVO";
+    const novoStatus = ativando ? "ATIVO" : "INATIVO";
+
+    const result = await Swal.fire({
+      title: ativando ? "Ativar feedback?" : "Desativar feedback?",
+      text: ativando
+        ? "O feedback ficará visível novamente."
+        : "O feedback deixará de aparecer para os usuários.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#26c26a",
+      cancelButtonColor: "#e74c3c",
+      confirmButtonText: "Sim",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
+    const toastId = toast.loading("Atualizando status do feedback...");
+
+    try {
+      await axios.put(`http://localhost:8080/api/v1/feedback/${feedback.id}`, {
+        statusFeedback: novoStatus,
+      });
+
+      setFeedbacks((prev) =>
+        prev.map((fb) =>
+          fb.id === feedback.id ? { ...fb, statusFeedback: novoStatus } : fb
+        )
+      );
+
+      toast.success(`Feedback ${novoStatus.toLowerCase()} com sucesso!`, { id: toastId });
+    } catch (error) {
+      console.error("Erro ao atualizar status do feedback:", error);
+      toast.error("Erro ao atualizar status do feedback!", { id: toastId });
+    }
+  };
+
   // Função para editar status do usuário
   const editarStatus = async (id, novoStatus) => {
     const toastId = toast.loading('Atualizando status do usuário...');
@@ -133,19 +173,40 @@ const DevViewADM = () => {
         </div>
 
         {/* ====== Feedbacks e Denúncias ====== */}
+        <h2 className="devadm-feedback-title">Feedbacks & Ocorrências</h2>
         <div className="devadm-feedbacks">
           {feedbacks.length > 0 ? (
             feedbacks.map((fb) => (
               <div
                 key={fb.id}
-                className={`feedback-card ${
+                className={`devadm-feedback-card ${
                   fb.tipoFeedback === 'FEEDBACK' ? 'feedback' : 'denuncia'
-                }`}
+                } ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
-                <h2>{fb.titulo}</h2>
+                <div className="devadm-feedback-status-row">
+                  <label
+                    className="devadm-feedback-switch"
+                    title={
+                      fb.statusFeedback === "ATIVO"
+                        ? "Desativar feedback"
+                        : "Ativar feedback"
+                    }
+                  >
+                    <input
+                      type="checkbox"
+                      checked={fb.statusFeedback === "ATIVO"}
+                      onChange={() => editarStatusFeedback(fb)}
+                    />
+                    <span className="devadm-feedback-slider"></span>
+                  </label>
+                </div>
+
+                <h3 className="devadm-feedback-name">{usuario.nome}</h3>
+                <h4>{fb.titulo}</h4>
                 <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
+                {fb.nota !== undefined && <p><strong>Nota:</strong> {fb.nota}⭐</p>}
               </div>
             ))
           ) : (

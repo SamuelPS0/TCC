@@ -2,28 +2,25 @@ import React, { useEffect, useMemo, useState } from 'react';
 import './ForgotPassword.css';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 import AccountSecurity from '../../Components/AccountSecurity/AccountSecurity';
 import Login from '../../Components/Login/Login';
+import { useAuth } from '../../Components/AuthContext';
+import accessLevels from '../../Components/accessLevels';
 
-const normalizeSecurityAnswer = (value = '') =>
-  value.toLowerCase().replace(/\s/g, '');
+const normalizeSecurityAnswer = (value = '') => String(value ?? '').toLowerCase().replace(/\s/g, '');
 
-const securityErrorMessage =
-  'As informações digitadas não correspondem aos dados cadastrados em nosso sistema.';
+const securityErrorMessage = 'As informações digitadas não correspondem aos dados cadastrados em nosso sistema.';
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [usuarios, setUsuarios] = useState([]);
-
-  const [loginData, setLoginData] = useState({
-    email: '',
-    senha: '',
-  });
-
+  const [loginData, setLoginData] = useState({ email: '', senha: '' });
   const [securityData, setSecurityData] = useState({
     ps_01: '',
     ps_02: '',
   });
-
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [updatingPassword, setUpdatingPassword] = useState(false);
 
@@ -32,20 +29,10 @@ export default function ForgotPassword() {
       setLoadingUsers(true);
 
       try {
-        console.log('==== BUSCANDO USUÁRIOS ====');
-
-        const response = await axios.get(
-          'http://localhost:8080/api/v1/Usuario'
-        );
-
-        console.log('==== DADOS RECEBIDOS DO BACKEND ====');
-        console.log(response.data);
-
+        const response = await axios.get('http://localhost:8080/api/v1/Usuario');
         setUsuarios(response.data);
       } catch (error) {
-        console.error('==== ERRO AO BUSCAR USUÁRIOS ====');
-        console.error(error.response?.data || error.message);
-
+        console.error('Erro ao buscar usuários:', error.response?.data || error.message);
         toast.error('Erro ao carregar dados de recuperação de senha.');
       } finally {
         setLoadingUsers(false);
@@ -55,122 +42,47 @@ export default function ForgotPassword() {
     fetchUsuarios();
   }, []);
 
+  const email = loginData.email.trim();
+  const novaSenha = loginData.senha;
+  const emailPreenchido = email.length > 0;
+
   const usuarioEncontrado = useMemo(() => {
-    const emailNormalizado = loginData.email.toLowerCase().trim();
-
-    console.log('==== EMAIL DIGITADO ====');
-    console.log(loginData.email);
-
-    console.log('==== EMAIL NORMALIZADO ====');
-    console.log(emailNormalizado);
+    const emailNormalizado = email.toLowerCase();
 
     if (!emailNormalizado) {
       return null;
     }
 
-    const usuario =
-      usuarios.find(
-        (usuario) =>
-          usuario.email?.toLowerCase().trim() === emailNormalizado
-      ) || null;
-
-    console.log('==== USUÁRIO ENCONTRADO ====');
-    console.log(usuario);
-
-    return usuario;
-  }, [loginData.email, usuarios]);
+    return usuarios.find((usuario) => usuario.email?.toLowerCase().trim() === emailNormalizado) || null;
+  }, [email, usuarios]);
 
   const validationState = useMemo(() => {
     const ps01Preenchida = securityData.ps_01.length > 0;
     const ps02Preenchida = securityData.ps_02.length > 0;
-
-    const resposta01Normalizada = normalizeSecurityAnswer(
-      securityData.ps_01
-    );
-
-    const resposta02Normalizada = normalizeSecurityAnswer(
-      securityData.ps_02
-    );
-
-    const backendResposta01 = normalizeSecurityAnswer(
-      usuarioEncontrado?.ps_01 || ''
-    );
-
-    const backendResposta02 = normalizeSecurityAnswer(
-      usuarioEncontrado?.ps_02 || ''
-    );
-
-    console.log('==== RESPOSTAS DIGITADAS ====');
-    console.log(securityData);
-
-    console.log('==== RESPOSTAS NORMALIZADAS ====');
-    console.log({
-      resposta01Normalizada,
-      resposta02Normalizada,
-    });
-
-    console.log('==== RESPOSTAS DO BACKEND ====');
-    console.log({
-      backendResposta01,
-      backendResposta02,
-    });
-
+    const podeValidarRespostas = emailPreenchido && !loadingUsers;
     const primeiraRespostaCorreta =
       Boolean(usuarioEncontrado) &&
-      resposta01Normalizada === backendResposta01;
-
+      normalizeSecurityAnswer(securityData.ps_01) === normalizeSecurityAnswer(usuarioEncontrado.ps_01);
     const segundaRespostaCorreta =
       Boolean(usuarioEncontrado) &&
-      resposta02Normalizada === backendResposta02;
-
-    console.log('==== VALIDAÇÃO DAS SECURITY QUESTIONS ====');
-    console.log({
-      primeiraRespostaCorreta,
-      segundaRespostaCorreta,
-    });
+      normalizeSecurityAnswer(securityData.ps_02) === normalizeSecurityAnswer(usuarioEncontrado.ps_02);
 
     return {
       primeiraRespostaCorreta,
       segundaRespostaCorreta,
-      respostasValidas:
-        primeiraRespostaCorreta && segundaRespostaCorreta,
-
+      respostasValidas: primeiraRespostaCorreta && segundaRespostaCorreta,
       errors: {
-        ps_01:
-          ps01Preenchida &&
-          usuarioEncontrado &&
-          !primeiraRespostaCorreta
-            ? securityErrorMessage
-            : '',
-
-        ps_02:
-          ps02Preenchida &&
-          usuarioEncontrado &&
-          !segundaRespostaCorreta
-            ? securityErrorMessage
-            : '',
+        ps_01: ps01Preenchida && podeValidarRespostas && !primeiraRespostaCorreta ? securityErrorMessage : '',
+        ps_02: ps02Preenchida && podeValidarRespostas && !segundaRespostaCorreta ? securityErrorMessage : '',
       },
     };
-  }, [securityData, usuarioEncontrado]);
+  }, [emailPreenchido, loadingUsers, securityData, usuarioEncontrado]);
 
-  const handleReset = async (data = loginData) => {
-    const email = data.email?.trim() || '';
-    const senha = data.senha || '';
+  const handleReset = async (formData = {}) => {
+    const emailInformado = (formData.email || email).trim();
+    const senhaInformada = formData.senha || novaSenha;
 
-    console.log('==== INICIANDO RESET DE SENHA ====');
-
-    console.log({
-      email,
-      senha,
-      securityData,
-    });
-
-    if (
-      !email ||
-      !securityData.ps_01 ||
-      !securityData.ps_02 ||
-      !senha
-    ) {
+    if (!emailInformado || !securityData.ps_01 || !securityData.ps_02 || !senhaInformada) {
       toast.error('Preencha todos os campos');
       return;
     }
@@ -189,34 +101,40 @@ export default function ForgotPassword() {
 
     try {
       const updatedUser = {
-        ...usuarioEncontrado,
-        senha,
+        nome: usuarioEncontrado.nome,
+        email: usuarioEncontrado.email,
+        senha: senhaInformada,
+        nivelAcesso: usuarioEncontrado.nivelAcesso,
+        ps_01: usuarioEncontrado.ps_01,
+        ps_02: usuarioEncontrado.ps_02,
+        dataCadastro: usuarioEncontrado.dataCadastro,
+        statusUsuario: usuarioEncontrado.statusUsuario,
       };
 
-      console.log('==== PAYLOAD ENVIADO PARA RESET DE SENHA ====');
-      console.log(updatedUser);
-
-      const response = await axios.put(
+      await axios.put(
         `http://localhost:8080/api/v1/Usuario/${usuarioEncontrado.id}`,
         updatedUser
       );
 
-      console.log('==== RESPOSTA DO BACKEND AO ATUALIZAR SENHA ====');
-      console.log(response.data);
-
       setUsuarios((usuariosAtuais) =>
         usuariosAtuais.map((usuario) =>
-          usuario.id === usuarioEncontrado.id
-            ? updatedUser
-            : usuario
+          usuario.id === usuarioEncontrado.id ? { ...updatedUser, id: usuarioEncontrado.id } : usuario
         )
       );
 
-      toast.success('Senha alterada com sucesso!');
-    } catch (error) {
-      console.error('==== ERRO AO ATUALIZAR SENHA ====');
-      console.error(error.response?.data || error.message);
+      const level = usuarioEncontrado.nivelAcesso || accessLevels.CLIENTE;
 
+      login({
+        id: usuarioEncontrado.id,
+        email: usuarioEncontrado.email,
+        accessLevel: level,
+      });
+      localStorage.setItem('userLevel', level);
+
+      toast.success('Senha alterada com sucesso!');
+      navigate('/home-list');
+    } catch (error) {
+      console.error('Erro ao atualizar senha:', error.response?.data || error.message);
       toast.error('Erro ao processar solicitação');
     } finally {
       setUpdatingPassword(false);
@@ -225,10 +143,6 @@ export default function ForgotPassword() {
 
   return (
     <div className="container-forgotpassword">
-
-      <div className="forgotpassword-login-edit">
-      </div>
-
       <Login
         buttonText="Trocar senha"
         loadingText="Atualizando..."
@@ -238,15 +152,10 @@ export default function ForgotPassword() {
         onSubmit={handleReset}
         isSubmitting={updatingPassword}
         passwordDisabled={!validationState.respostasValidas}
-        buttonDisabled={
-          loadingUsers || !validationState.respostasValidas
-        }
+        buttonDisabled={loadingUsers || !validationState.respostasValidas}
       />
 
-      <AccountSecurity
-        onChange={setSecurityData}
-        errors={validationState.errors}
-      />
+      <AccountSecurity onChange={setSecurityData} errors={validationState.errors} />
     </div>
   );
 }

@@ -18,23 +18,12 @@ const DevViewClient = () => {
   const [usuarioStatus, setUsuarioStatus] = useState(usuario?.statusUsuario || false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
-  const [nomesPrestadores, setNomesPrestadores] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
-
-  const buscarNomePrestadorPorId = async (prestadorId) => {
-    try {
-      const res = await axios.get(`http://localhost:8080/api/v1/prestador/${prestadorId}`);
-      return res.data?.nome || `Prestador #${prestadorId}`;
-    } catch (error) {
-      console.error(`Erro ao buscar prestador ${prestadorId}:`, error);
-      return `Prestador #${prestadorId}`;
-    }
-  };
 
   useEffect(() => {
     if (!usuario?.id) return;
@@ -47,18 +36,6 @@ const DevViewClient = () => {
           (f) => f.usuarioId === usuario.id
         );
 
-        const idsPrestadores = [
-          ...new Set(feedbacksUsuario.map((f) => f.prestadorId).filter(Boolean))
-        ];
-
-        const nomesArray = await Promise.all(
-          idsPrestadores.map(async (id) => [
-            Number(id),
-            await buscarNomePrestadorPorId(id)
-          ])
-        );
-
-        setNomesPrestadores(Object.fromEntries(nomesArray));
         setFeedbacks(feedbacksUsuario);
 
       } catch (error) {
@@ -191,56 +168,39 @@ const editarStatusFeedback = async (feedback) => {
           )}
         </div>
 
-       {/* FEEDBACKS */}
-<div className="devclient-feedbacks">
-  {feedbacks.length === 0 ? (
-    <p>Nenhum feedback carregado.</p>
-  ) : (
-    feedbacks.map((fb) => (
-      <div
-  key={fb.id}
-  className={`devclient-feedback-card ${
-    fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"
-  } ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
->
-  {/* HEADER */}
-  <div className="devclient-feedback-header">
-    <div>
-      <h3 className="devclient-feedback-name">
-        Usuário: {usuario.nome}
-      </h3>
-
-      <p className="devclient-feedback-prestador">
-        Prestador: {nomesPrestadores[Number(fb.prestadorId)] || `#${fb.prestadorId}`}
-      </p>
-    </div>
-
-    <div className="devclient-feedback-status-row">
-      <label className="devclient-feedback-switch">
-        <input
-          type="checkbox"
-          checked={fb.statusFeedback === "ATIVO"}
-          onChange={() => editarStatusFeedback(fb)}
-        />
-        <span className="devclient-feedback-slider"></span>
-      </label>
-    </div>
-  </div>
-
-  {/* CONTEÚDO */}
-  <h4 className="devclient-feedback-title">{fb.titulo}</h4>
-
-  <p className="devclient-feedback-desc" style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
-    {breakLineEveryNChars(fb.descricao, 70)}
-  </p>
-
-  {fb.nota !== undefined && (
-    <p><strong>Nota:</strong> {fb.nota}⭐</p>
-  )}
-</div>
-    ))
-  )}
-</div>
+        {/* FEEDBACKS */}
+        <h2 className="feedback-title">Feedbacks & Ocorrências</h2>
+        <div className="prestview-feedbacks">
+          {feedbacks.length === 0 ? (
+            <p>Nenhum feedback carregado.</p>
+          ) : (
+            feedbacks.map((fb) => (
+              <div
+                key={fb.id}
+                className={`prestview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
+              >
+                <div className="feedback-status-row">
+                  <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
+                    <input
+                      type="checkbox"
+                      checked={fb.statusFeedback === "ATIVO"}
+                      onChange={() => editarStatusFeedback(fb)}
+                    />
+                    <span className="feedback-slider"></span>
+                  </label>
+                </div>
+                <h3 className="feedback-name">
+                  {usuario.nome || `Usuário #${fb.usuarioId}`}
+                </h3>
+                <h4>{fb.titulo}</h4>
+                <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
+                  {breakLineEveryNChars(fb.descricao, 70)}
+                </p>
+                {fb.nota !== undefined && <p><strong>Nota:</strong> {fb.nota}⭐</p>}
+              </div>
+            ))
+          )}
+        </div>
 
         <button
           className={`devclient-status-btn ${usuarioStatus ? 'ativo' : 'inativo'}`}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import '../AccountSecurity/AccountSecurity.css'
 
-const securityErrorPlaceholder = 'Mensagem de validação';
+const securityErrorPlaceholder = '\u00A0';
+const normalizeSecurityAnswer = (value = '') => String(value ?? '').toLowerCase().replace(/\s/g, '');
 
 export default function AccountSecurity({ onChange, errors = {} }) {
   const [valorA, setValorA] = useState('');
@@ -9,12 +10,12 @@ export default function AccountSecurity({ onChange, errors = {} }) {
 
   const handleChangeA = (value) => {
     setValorA(value);
-    onChange({ ps_01: value, ps_02: valorB });
+    onChange({ ps_01: normalizeSecurityAnswer(value), ps_02: normalizeSecurityAnswer(valorB) });
   };
 
   const handleChangeB = (value) => {
     setValorB(value);
-    onChange({ ps_01: valorA, ps_02: value });
+    onChange({ ps_01: normalizeSecurityAnswer(valorA), ps_02: normalizeSecurityAnswer(value) });
   };
 
   return (
@@ -34,7 +35,7 @@ export default function AccountSecurity({ onChange, errors = {} }) {
       <h3 className='accountsecurity-h3'>
         <span>QUAL NOME DO SEU MELHOR AMIGO(A) DE INFÂNCIA?*</span>
       </h3>
-          <input
+      <input
         className='accountsecurity-input'
         type="text"
         placeholder="ESCREVA SUA RESPOSTA"
