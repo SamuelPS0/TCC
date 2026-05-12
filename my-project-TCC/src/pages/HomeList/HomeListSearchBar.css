@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.homelist-searchbar {
+  width: 100%;
+  max-width: 700px;
+  position: relative;
+  z-index: 5;
+}
+
+.homelist-searchbar__form {
+  width: 100%;
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 1px minmax(160px, 1fr) auto;
+  align-items: center;
+  gap: 0;
+  padding: 12px 18px;
+  background-color: #ffffff;
+  border: 1px solid #d8d8d8;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+  font-family: "Poppins", sans-serif;
+}
+
+.homelist-searchbar__field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  padding-right: 14px;
+}
+
+.homelist-searchbar__field--location {
+  padding-right: 18px;
+  padding-left: 14px;
+}
+
+.homelist-searchbar__label {
+  color: #f05221;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.homelist-searchbar__input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #222222;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.homelist-searchbar__input::placeholder {
+  color: #5f5f5f;
+  opacity: 1;
+}
+
+.homelist-searchbar__select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+.homelist-searchbar__divider {
+  width: 1px;
+  height: 28px;
+  background-color: #e4e4e4;
+}
+
+.homelist-searchbar__button {
+  min-width: 82px;
+  height: 38px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f05221;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.homelist-searchbar__button:hover {
+  background-color: #d94317;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(240, 82, 33, 0.3);
+}
+
+.homelist-searchbar__button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.homelist-searchbar__suggestions {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 14px;
+  right: 18px;
+  z-index: 20;
+  max-height: 210px;
+  margin: 0;
+  padding: 6px 0;
+  overflow-y: auto;
+  list-style: none;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+.homelist-searchbar__suggestion {
+  padding: 10px 12px;
+  color: #333333;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.homelist-searchbar__suggestion:hover {
+  background-color: #fff1ec;
+  color: #f05221;
+}
+
+.homelist-searchbar__suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.homelist-searchbar__suggestions::-webkit-scrollbar-thumb {
+  background-color: #f05221;
+  border-radius: 999px;
+}
+
+.homelist-searchbar__suggestions::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+}
+
+@media (max-width: 900px) {
+  .homelist-searchbar {
+    max-width: 100%;
+  }
+
+  .homelist-searchbar__form {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .homelist-searchbar__field,
+  .homelist-searchbar__field--location {
+    padding: 0;
+  }
+
+  .homelist-searchbar__divider {
+    display: none;
+  }
+
+  .homelist-searchbar__button {
+    width: 100%;
+  }
+
+  .homelist-searchbar__suggestions {
+    left: 0;
+    right: 0;
+  }
+}
