@@ -9,16 +9,53 @@ const AdmUserComponent = ({termoBusca }) => {
   const [usuarios, setUsuarios] = useState([]);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [statusPrestadorPorUsuarioId, setStatusPrestadorPorUsuarioId] = useState({});
 
-  const navigate = useNavigate();
+  
+    const normalizeStatus = (status, fallback = "") =>
+    String(status ?? fallback).trim().toUpperCase();
+
+  const getStatusExibicao = (usuario) => {
+    if (usuario.nivelAcesso === "PRESTADOR") {
+      const statusPrestador = normalizeStatus(
+        statusPrestadorPorUsuarioId[Number(usuario.id)],
+        ""
+      );
+
+      if (statusPrestador === "EM_ANALISE") return "EM_ANALISE";
+      if (statusPrestador === "INATIVO") return "INATIVO";
+      if (statusPrestador === "ATIVO") return "ATIVO";
+    }
+
+    if (usuario.statusUsuario === null) return "EM_ANALISE";
+    return usuario.statusUsuario ? "ATIVO" : "INATIVO";
+  };
 
   // Carrega usuários da API
   const carregarUsuarios = async () => {
     toast.success('Usuários carregados')
     try {
-      const resposta = await axios.get(`http://localhost:8080/api/v1/Usuario`);
-      setUsuarios(resposta.data);
-      setUsuariosFiltrados(resposta.data);
+      const [respostaUsuarios, respostaPrestadores] = await Promise.all([
+        axios.get(`http://localhost:8080/api/v1/Usuario`),
+        axios.get(`http://localhost:8080/api/v1/prestador`),
+      ]);
+
+      const usuariosData = respostaUsuarios.data || [];
+      const prestadoresData = respostaPrestadores.data || [];
+
+      const statusPorUsuario = prestadoresData.reduce((acc, prestador) => {
+        const usuarioId = Number(prestador?.usuario?.id ?? prestador?.usuario_id);
+
+        if (!Number.isNaN(usuarioId) && usuarioId > 0) {
+          acc[usuarioId] = normalizeStatus(prestador.statusPrestador, "EM_ANALISE");
+        }
+
+        return acc;
+      }, {});
+
+      setStatusPrestadorPorUsuarioId(statusPorUsuario);
+      setUsuarios(usuariosData);
+      setUsuariosFiltrados(usuariosData);
     } catch (error) {
       toast.warning('Falha ao carregar usuários');
       console.log("Erro ao carregar usuários:", error);
@@ -48,11 +85,10 @@ const AdmUserComponent = ({termoBusca }) => {
     }
 
     if (tipo === 'status') {
-      if (valor === 'ATIVO') lista = lista.filter((u) => u.statusUsuario === true);
-      if (valor === 'INATIVO') lista = lista.filter((u) => u.statusUsuario === false);
-      if (valor === 'EM ANÁLISE') lista = lista.filter((u) => u.statusUsuario === null);
+          if (valor === 'ATIVO') lista = lista.filter((u) => getStatusExibicao(u) === 'ATIVO');
+      if (valor === 'INATIVO') lista = lista.filter((u) => getStatusExibicao(u) === 'INATIVO');
+      if (valor === 'EM ANÁLISE') lista = lista.filter((u) => getStatusExibicao(u) === 'EM_ANALISE');
     }
-
     setUsuariosFiltrados(lista);
     setOpenDropdown(null);
   };
@@ -161,10 +197,14 @@ const handleVisualizar = async (usuario) => {
             <div className="auc-col nome">{usuario.nome}</div>
             <div className="auc-col email">{usuario.email}</div>
             <div className="auc-col nivel">{usuario.nivelAcesso}</div>
-            <div className={`auc-col status ${usuario.statusUsuario ? "ativo" : "inativo"}`}>
-              {usuario.statusUsuario === null
+            <div
+              className={`auc-col status ${
+                getStatusExibicao(usuario) === "ATIVO" ? "ativo" : "inativo"
+              }`}
+            >
+              {getStatusExibicao(usuario) === "EM_ANALISE"
                 ? "Em análise"
-                : usuario.statusUsuario
+                : getStatusExibicao(usuario) === "ATIVO"
                 ? "Ativo"
                 : "Inativo"}
             </div>

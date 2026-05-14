@@ -64,6 +64,12 @@ const formatRating = (rating) => {
   return rating.toFixed(1).replace(".", ",");
 };
 
+const normalizeStatus = (value, fallback = "") =>
+  String(value ?? fallback).trim().toUpperCase();
+
+const isPrestadorAtivo = (prestador = {}) =>
+  normalizeStatus(prestador?.statusPrestador, "INATIVO") === "ATIVO";
+
 const Cards = ({ filter = {} }) => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -115,44 +121,50 @@ const Cards = ({ filter = {} }) => {
           return acc;
         }, {});
 
-        const cardsArray = servicos.map((servico) => {
-          const prestador = servico.prestador || {};
-          const usuario = prestador.usuario || {};
-          const categoriaObj = servico.categoria || {};
-          const prestadorId = Number(prestador.id);
-          const contato = contatosByPrestadorId[prestadorId] || {};
-          const notas = notasByPrestadorId[prestadorId] || [];
+        const cardsArray = servicos
+          .filter((servico) => isPrestadorAtivo(servico?.prestador))
+          .map((servico) => {
+            const prestador = servico.prestador || {};
+            const usuario = prestador.usuario || {};
+            const categoriaObj = servico.categoria || {};
+            const prestadorId = Number(prestador.id);
+            const contato = contatosByPrestadorId[prestadorId] || {};
+            const notas = notasByPrestadorId[prestadorId] || [];
 
-          const avaliacaoMedia =
-            notas.length > 0
-              ? notas.reduce((total, nota) => total + nota, 0) / notas.length
-              : null;
+            const avaliacaoMedia =
+              notas.length > 0
+                ? notas.reduce((total, nota) => total + nota, 0) / notas.length
+                : null;
 
-          return {
-            prestadorId: prestador.id || null,
-            servicoNome: servico.nome || "Serviço não disponível",
-            servicoDescricao: servico.descricao || "Descrição não disponível",
-            categoria: categoriaObj.nome || "Categoria não disponível",
-            cidade: prestador.cidade || "Cidade não disponível",
-            uf: prestador.uf || "UF não disponível",
-            prestadorNome:
-              prestador.nome || usuario.nome || "Prestador não disponível",
-            contatoMidia: contato.link || null,
-            imagemPerfil:
-              getImageField(prestador, ["foto"]) ||
-              getImageField(usuario, ["foto"]) ||
-              null,
-            imagemServico:
-              getImageField(servico, [
-                "fotoServico",
-                "imagemServico",
-                "foto",
-                "imagem",
-              ]) || null,
-            avaliacaoMedia,
-            totalAvaliacoes: notas.length,
-          };
-        });
+            return {
+              prestadorId: prestador.id || null,
+              servicoNome: servico.nome || "Serviço não disponível",
+              servicoDescricao: servico.descricao || "Descrição não disponível",
+              categoria: categoriaObj.nome || "Categoria não disponível",
+              cidade: prestador.cidade || "Cidade não disponível",
+              uf: prestador.uf || "UF não disponível",
+              prestadorNome:
+                prestador.nome || usuario.nome || "Prestador não disponível",
+              contatoMidia: contato.link || null,
+              imagemPerfil:
+                getImageField(prestador, ["foto"]) ||
+                getImageField(usuario, ["foto"]) ||
+                null,
+              imagemServico:
+                getImageField(servico, [
+                  "fotoServico",
+                  "imagemServico",
+                  "foto",
+                  "imagem",
+                ]) || null,
+              avaliacaoMedia,
+              totalAvaliacoes: notas.length,
+              statusPrestador: normalizeStatus(
+                prestador.statusPrestador,
+                "INATIVO"
+              ),
+            };
+          });
 
         setCards(cardsArray);
       } catch (error) {
@@ -269,4 +281,4 @@ const Cards = ({ filter = {} }) => {
   );
 };
 
-export default Cards
+export default Cards;
