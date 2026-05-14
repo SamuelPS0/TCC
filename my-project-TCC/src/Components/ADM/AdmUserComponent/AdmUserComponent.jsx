@@ -10,7 +10,7 @@ const AdmUserComponent = ({termoBusca }) => {
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [statusPrestadorPorUsuarioId, setStatusPrestadorPorUsuarioId] = useState({});
-
+  const navigate = useNavigate();
   
     const normalizeStatus = (status, fallback = "") =>
     String(status ?? fallback).trim().toUpperCase();

@@ -67,8 +67,13 @@ const formatRating = (rating) => {
 const normalizeStatus = (value, fallback = "") =>
   String(value ?? fallback).trim().toUpperCase();
 
-const isPrestadorAtivo = (prestador = {}) =>
-  normalizeStatus(prestador?.statusPrestador, "INATIVO") === "ATIVO";
+const getPrestadorStatus = (prestador = {}) =>
+  normalizeStatus(
+    prestador?.statusPrestador ?? prestador?.status_prestador ?? prestador?.status,
+    "INATIVO"
+  );
+
+const isPrestadorAtivo = (prestador = {}) => getPrestadorStatus(prestador) === "ATIVO";
 
 const Cards = ({ filter = {} }) => {
   const [cards, setCards] = useState([]);
@@ -159,10 +164,7 @@ const Cards = ({ filter = {} }) => {
                 ]) || null,
               avaliacaoMedia,
               totalAvaliacoes: notas.length,
-              statusPrestador: normalizeStatus(
-                prestador.statusPrestador,
-                "INATIVO"
-              ),
+              statusPrestador: getPrestadorStatus(prestador),
             };
           });
 
