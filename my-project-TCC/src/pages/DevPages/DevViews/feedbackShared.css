@@ -1,0 +1,16 @@
+.devview-feedback-card {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #ececec;
+  background: #fff;
+}
+.devview-feedback-card.feedback { border-left: 6px solid #26c26a; background: #f1fff6; }
+.devview-feedback-card.denuncia { border-left: 6px solid #e74c3c; background: #fff3f2; }
+.devview-feedback-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+.devview-feedback-user { display: flex; align-items: center; gap: 10px; }
+.devview-feedback-avatar { width: 32px; height: 32px; border-radius: 50%; background: #f05221; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.devview-feedback-name { font-weight: 700; color: #1f1f1f; }
+.devview-feedback-time { color: #737373; font-size: 12px; }
+.devview-feedback-title { font-weight: 700; margin-bottom: 6px; }
+.devview-feedback-note { margin-top: 8px; color: #444; font-size: 13px; }
