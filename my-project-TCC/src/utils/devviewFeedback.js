@@ -35,10 +35,3 @@ export const formatTempoFeedback = (dataCadastro) => {
 
   return data.toLocaleDateString("pt-BR");
 };
-
-
-export const getNotaInteira = (nota) => {
-  const notaNumerica = Math.round(Number(nota));
-  if (!Number.isFinite(notaNumerica) || notaNumerica < 1) return 0;
-  return Math.min(5, notaNumerica);
-};

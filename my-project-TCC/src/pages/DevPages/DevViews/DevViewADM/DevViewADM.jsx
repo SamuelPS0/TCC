@@ -9,7 +9,7 @@ import { MdStars } from "react-icons/md";
 import Loading from '../../../../Components/Loading/Loading';
 import './DevViewADM.css';
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
-import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
+import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback } from '../../../../utils/devviewFeedback';
 import '../feedbackShared.css';
 
 const DevViewADM = () => {
@@ -215,7 +215,7 @@ const DevViewADM = () => {
                 <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
-                <p className="devview-feedback-note"><strong>Nota:</strong> {getNotaInteira(fb.nota) > 0 ? Array.from({ length: getNotaInteira(fb.nota) }, (_, index) => <MdStars key={index} className="devview-feedback-star" />) : formatNotaFeedback(fb.nota)}</p>
+                <p className="devview-feedback-note"><strong>Nota:</strong> {formatNotaFeedback(fb.nota)}</p>
               </div>
             ))
           ) : (
