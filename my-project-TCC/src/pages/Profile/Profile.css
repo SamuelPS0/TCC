@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alata&family=Anuphan:wght@100..700&family=Edu+NSW+ACT+Hand+Pre:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alata&family=Anuphan:wght@100..700&family=Edu+NSW+ACT+Hand+Pre:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 .profile-container {
@@ -323,44 +323,85 @@
 .profile-feedback-card {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
   margin-top: 50px; 
   width: 100%; 
   max-width: 953px;
 }
 .feedback-card-lenght{
   width: 100%;
-  max-width: 824px;
-  margin-bottom: 45px;
-  height: 200px;
-  padding: 24px;
-  border-radius: 5px;
-  background: #FFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  min-height: 274px;
+  padding: 28px 32px 20px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .feedback-card-lenght:hover {
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
   transform: translateY(-4px); 
 }
 
+.feedback-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.feedback-card-user {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 14px;
+}
+
+.feedback-avatar {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ffd9d4;
+  color: #ff4f2a;
+  font-family: Poppins, Montserrat, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.feedback-user-info {
+  min-width: 0;
+}
+
 .feedback-card-lenght h2 {
-  color: #000;
-  font-family: Montserrat, sans-serif;
-  font-size: 36px;
-  font-weight: 500;
-  margin-bottom: 15px;
+  color: #070720;
+  font-family: Poppins, Montserrat, sans-serif;
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.12;
+  margin: 0 0 16px;
+  overflow-wrap: anywhere;
 }
 
 .feedback-card-lenght p {
-  color: #000;
+  color: #20243b;
   font-family: Montserrat, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 35px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.62;
+  margin: 0;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #dddddd;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
 }
 
 .feedback-card:hover {
@@ -385,12 +426,56 @@
   padding-bottom: 50px;
 }
 .feedback-name {
-    font-size: 30px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  color: #D33200;
-  margin-bottom: 10px;
-  margin-top: -10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ff4b23;
+  font-family: Poppins, Montserrat, sans-serif;
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1.15;
+  margin: 0 0 6px;
+  overflow-wrap: anywhere;
+}
+
+.feedback-verified-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  color: #19c464;
+}
+
+.feedback-meta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #a5abb8;
+  font-family: Montserrat, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.feedback-report-button {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #ff3151;
+  cursor: pointer;
+  font-size: 24px;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.feedback-report-button:hover {
+  color: #d9002c;
+  transform: translateY(-1px);
 }
 
 
@@ -399,6 +484,35 @@
     width: 100%;
     padding-inline: 16px;
     box-sizing: border-box;
+  }
+
+  .feedback-card-lenght {
+    min-height: auto;
+    padding: 22px 20px 18px;
+    border-radius: 18px;
+  }
+
+  .feedback-card-header {
+    gap: 12px;
+  }
+
+  .feedback-avatar {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+    font-size: 19px;
+  }
+
+  .feedback-name {
+    font-size: 18px;
+  }
+
+  .feedback-card-lenght h2 {
+    font-size: 24px;
+  }
+
+  .feedback-card-lenght p {
+    font-size: 14px;
   }
 }
 

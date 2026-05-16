@@ -16,6 +16,8 @@ import {
   FaExclamationTriangle,
   FaRegCommentDots,
   FaLock,
+  FaCheckCircle,
+  FaRegFlag,
 } from "react-icons/fa";
 import ProfileImg from "../../img/Ellipse.png";
 import InputImg from "../../img/crosant.png";
@@ -31,6 +33,52 @@ const getContatoPrestadorId = (contato = {}) =>
 
 const contatoEstaAtivo = (contato = {}) =>
   String(contato.statusContato ?? contato.status_contato ?? "ATIVO").toUpperCase() === "ATIVO";
+
+const getNomeFeedback = (feedback = {}, nomesUsuarios = {}) =>
+  feedback.nomeUsuario ||
+  nomesUsuarios[Number(feedback.usuarioId)] ||
+  `Usuário #${feedback.usuarioId || ""}`.trim();
+
+const getInicialFeedback = (nome = "") =>
+  nome.trim().charAt(0).toUpperCase() || "?";
+
+const formatNotaFeedback = (nota) => {
+  const notaNumerica = Number(nota);
+
+  if (!notaNumerica) {
+    return "Sem nota";
+  }
+
+  return `${notaNumerica} estrela${notaNumerica > 1 ? "s" : ""}`;
+};
+
+const formatTempoFeedback = (dataCadastro) => {
+  if (!dataCadastro) {
+    return "Agora";
+  }
+
+  const data = new Date(dataCadastro);
+
+  if (Number.isNaN(data.getTime())) {
+    return "Agora";
+  }
+
+  const diferencaMinutos = Math.max(
+    0,
+    Math.floor((Date.now() - data.getTime()) / 60000)
+  );
+
+  if (diferencaMinutos < 1) return "Agora";
+  if (diferencaMinutos < 60) return `Há ${diferencaMinutos} min`;
+
+  const diferencaHoras = Math.floor(diferencaMinutos / 60);
+  if (diferencaHoras < 24) return `Há ${diferencaHoras} h`;
+
+  const diferencaDias = Math.floor(diferencaHoras / 24);
+  if (diferencaDias < 30) return `Há ${diferencaDias} d`;
+
+  return data.toLocaleDateString("pt-BR");
+};
 
 const Profile = () => {
   const location = useLocation();
@@ -576,19 +624,48 @@ const Profile = () => {
 
               {feedbacksAtivos.length > 0 ? (
                 <div className="profile-feedback-card">
-                  {feedbacksAtivos.map((fb, index) => (
-                    <div className="feedback-card-lenght" key={index}>
-                      <h3 className="feedback-name">
-                        {fb.nomeUsuario || nomesUsuarios[Number(fb.usuarioId)] || ""}
-                      </h3>
+                  {feedbacksAtivos.map((fb, index) => {
+                    const nomeFeedback = getNomeFeedback(fb, nomesUsuarios);
 
-                      <h2>{fb.titulo}</h2>
+                    return (
+                      <article className="feedback-card-lenght" key={fb.id || index}>
+                        <div className="feedback-card-header">
+                          <div className="feedback-card-user">
+                            <div className="feedback-avatar" aria-hidden="true">
+                              {getInicialFeedback(nomeFeedback)}
+                            </div>
 
-                      <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
-                        {breakLineEveryNChars(fb.descricao, 70)}
-                      </p>
-                    </div>
-                  ))}
+                            <div className="feedback-user-info">
+                              <h3 className="feedback-name">
+                                {nomeFeedback}
+                                <FaCheckCircle className="feedback-verified-icon" />
+                              </h3>
+
+                              <div className="feedback-meta">
+                                <span>{formatNotaFeedback(fb.nota)}</span>
+                                <span aria-hidden="true">•</span>
+                                <span>{formatTempoFeedback(fb.dataCadastro)}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <button
+                            className="feedback-report-button"
+                            type="button"
+                            aria-label="Denunciar feedback"
+                          >
+                            <FaRegFlag />
+                          </button>
+                        </div>
+
+                        <h2>{fb.titulo}</h2>
+
+                        <p>
+                          {breakLineEveryNChars(fb.descricao, 110)}
+                        </p>
+                      </article>
+                    );
+                  })}
                 </div>
               ) : (
                 <p style={{ marginTop: "20px" }}>Sem feedbacks ativos.</p>
