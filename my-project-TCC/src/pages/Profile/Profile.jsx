@@ -17,8 +17,9 @@ import {
   FaRegCommentDots,
   FaLock,
   FaCheckCircle,
-  FaRegFlag,
+  FaRegFlag
 } from "react-icons/fa";
+import { MdStars } from "react-icons/md";
 import ProfileImg from "../../img/Ellipse.png";
 import InputImg from "../../img/crosant.png";
 import HeaderSwitcher from "../../Components/HeaderSwitcher";
@@ -49,7 +50,7 @@ const formatNotaFeedback = (nota) => {
     return "Sem nota";
   }
 
-  return `${notaNumerica} estrela${notaNumerica > 1 ? "s" : ""}`;
+  return "";
 };
 
 const formatTempoFeedback = (dataCadastro) => {
@@ -642,7 +643,9 @@ const Profile = () => {
                               </h3>
 
                               <div className="feedback-meta">
-                                <span>{formatNotaFeedback(fb.nota)}</span>
+                                <span className="profile-feedback-stars">{Array.from({ length: Math.min(5, Math.max(0, Math.round(Number(fb.nota) || 0))) }, (_, index) => (
+                                  <MdStars key={index} className="profile-feedback-star-icon" />
+                                ))}</span>
                                 <span aria-hidden="true">•</span>
                                 <span>{formatTempoFeedback(fb.dataCadastro)}</span>
                               </div>

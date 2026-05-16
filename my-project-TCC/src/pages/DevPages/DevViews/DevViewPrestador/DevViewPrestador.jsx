@@ -7,6 +7,7 @@ import { IoMdImage, IoIosCall } from "react-icons/io";
 import { FaMapMarkerAlt, FaList } from "react-icons/fa";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
+import { MdStars } from "react-icons/md";
 import Loading from "../../../../Components/Loading/Loading";
 import "./DevViewPrestador.css";
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';

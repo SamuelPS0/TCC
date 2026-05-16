@@ -1312,3 +1312,7 @@
     font-size: 34px;
   }
 }
+
+
+.profile-feedback-stars { display: inline-flex; align-items: center; gap: 2px; }
+.profile-feedback-star-icon { color: #f05221; width: 15px; height: 15px; }
