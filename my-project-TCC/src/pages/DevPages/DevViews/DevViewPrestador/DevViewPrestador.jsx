@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import Loading from "../../../../Components/Loading/Loading";
 import "./DevViewPrestador.css";
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
+import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback } from '../../../../utils/devviewFeedback';
+import '../feedbackShared.css';
 
 const normalizeImageSrc = (value) => {
   if (typeof value !== "string") return null;
@@ -339,7 +341,7 @@ const editarStatusFeedback = async (feedback) => {
             feedbacks.map((fb) => (
               <div
                 key={fb.id}
-                className={`prestview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
+                className={`prestview-feedback-card devview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
                 <div className="feedback-status-row">
                   <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
@@ -351,14 +353,18 @@ const editarStatusFeedback = async (feedback) => {
                     <span className="feedback-slider"></span>
                   </label>
                 </div>
-                <h3 className="feedback-name">
-                  {nomesUsuarios[Number(fb.usuarioId)] || `Usuário #${fb.usuarioId}`}
-                </h3>
+                <div className="devview-feedback-user">
+                  <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, nomesUsuarios))}</span>
+                  <div>
+                    <h3 className="devview-feedback-name">{getNomeFeedback(fb, nomesUsuarios)}</h3>
+                    <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
+                  </div>
+                </div>
                 <h4>{fb.titulo}</h4>
                <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
-                {fb.nota !== undefined && <p><strong>Nota:</strong> {fb.nota}⭐</p>}
+                <p className="devview-feedback-note"><strong>Nota:</strong> {formatNotaFeedback(fb.nota)}</p>
               </div>
             ))
           )}
