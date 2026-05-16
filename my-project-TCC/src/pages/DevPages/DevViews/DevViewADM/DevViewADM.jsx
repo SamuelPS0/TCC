@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import HeaderSwitcher from '../../../../Components/HeaderSwitcher';
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from 'sonner';
 import axios from 'axios';
 import Swal from "sweetalert2";
+import { MdStars } from "react-icons/md";
 import Loading from '../../../../Components/Loading/Loading';
 import './DevViewADM.css';
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
+import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
+import '../feedbackShared.css';
 
 const DevViewADM = () => {
   const location = useLocation();
@@ -18,6 +21,7 @@ const DevViewADM = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [prestadoresInfo, setPrestadoresInfo] = useState({});
 
   // Carregamento inicial de 2 segundos (mesmo padrão do DevViewClient)
   useEffect(() => {
@@ -37,6 +41,9 @@ const DevViewADM = () => {
   // Busca feedbacks e denúncias do usuário
   useEffect(() => {
     const buscarFeedbacks = async () => {
+      const prestadoresRes = await axios.get("http://localhost:8080/api/v1/prestador");
+      const prestadoresMap = Object.fromEntries((prestadoresRes.data || []).map((p) => [Number(p.id), p]));
+      setPrestadoresInfo(prestadoresMap);
       if (!usuario?.id) return;
 
       console.log('🔹 Buscando feedbacks e denúncias do usuário:', usuario.id);
@@ -179,7 +186,7 @@ const DevViewADM = () => {
             feedbacks.map((fb) => (
               <div
                 key={fb.id}
-                className={`devadm-feedback-card ${
+                className={`devadm-feedback-card devview-feedback-card ${
                   fb.tipoFeedback === 'FEEDBACK' ? 'feedback' : 'denuncia'
                 } ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
@@ -201,12 +208,19 @@ const DevViewADM = () => {
                   </label>
                 </div>
 
-                <h3 className="devadm-feedback-name">{usuario.nome}</h3>
+                <div className="devview-feedback-user">
+                  <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome }))}</span>
+                  <div>
+                    <h3 className="devview-feedback-name">{getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome })}</h3>
+                    <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
+                  </div>
+                </div>
                 <h4>{fb.titulo}</h4>
+                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || `Prestador #${fb.prestadorId || ""}`}</Link></p>
                 <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
-                {fb.nota !== undefined && <p><strong>Nota:</strong> {fb.nota}⭐</p>}
+                <p className="devview-feedback-note"><strong>Nota:</strong> {getNotaInteira(fb.nota) > 0 ? Array.from({ length: getNotaInteira(fb.nota) }, (_, index) => <MdStars key={index} className="devview-feedback-star" />) : formatNotaFeedback(fb.nota)}</p>
               </div>
             ))
           ) : (

@@ -573,7 +573,7 @@
 }
 
 .profile-modal-close:hover {
-  color: #f05221;
+  color: #ffc400;
   transform: scale(1.05);
 }
 
@@ -677,7 +677,7 @@
 }
 
 .profile-rating-star:hover {
-  color: #f05221;
+  color: #ffc400;
   transform: translateY(-1px) scale(1.08);
 }
 
@@ -731,7 +731,7 @@
 .profile-modal-field textarea:focus,
 .profile-denuncia-select:focus,
 .profile-denuncia-textarea-label textarea:focus {
-  border-color: #f05221;
+  border-color: #ffc400;
   box-shadow: 0 0 0 2px rgba(240, 82, 33, 0.12);
 }
 
@@ -751,7 +751,7 @@
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
-  color: #f05221;
+  color: #ffc400;
   font-size: 15px;
   pointer-events: none;
 }
@@ -975,7 +975,7 @@
 }
 
 .profile-modal-close:hover {
-  color: #f05221;
+  color: #ffc400;
   transform: scale(1.05);
 }
 
@@ -1075,7 +1075,7 @@
 }
 
 .profile-rating-star:hover {
-  color: #f05221;
+  color: #ffc400;
   transform: scale(1.08);
 }
 
@@ -1148,7 +1148,7 @@
 .profile-modal-field textarea:focus,
 .profile-denuncia-select:focus,
 .profile-denuncia-textarea-label textarea:focus {
-  border-color: #f05221;
+  border-color: #ffc400;
   box-shadow: 0 0 0 3px rgba(240, 82, 33, 0.1);
 }
 
@@ -1157,7 +1157,7 @@
   top: 50%;
   left: 16px;
   transform: translateY(-50%);
-  color: #f05221;
+  color: #ffc400;
   font-size: 18px;
   pointer-events: none;
 }
@@ -1312,3 +1312,7 @@
     font-size: 34px;
   }
 }
+
+
+.profile-feedback-stars { display: inline-flex; align-items: center; gap: 2px; }
+.profile-feedback-star-icon { color: #ffc400; width: 15px; height: 15px; }

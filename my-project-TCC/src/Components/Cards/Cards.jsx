@@ -142,6 +142,7 @@ const Cards = ({ filter = {} }) => {
                 : null;
 
             return {
+              servicoId: servico.id || null,
               prestadorId: prestador.id || null,
               servicoNome: servico.nome || "Serviço não disponível",
               servicoDescricao: servico.descricao || "Descrição não disponível",
@@ -179,6 +180,19 @@ const Cards = ({ filter = {} }) => {
 
     fetchCards();
   }, []);
+
+
+  const registrarCliqueCard = async (card) => {
+    try {
+      await axios.post("http://localhost:8080/api/v1/clique", {
+        servicoId: card.servicoId,
+        prestadorId: card.prestadorId,
+        dataClique: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error("Erro ao registrar clique do card:", error);
+    }
+  };
 
   const filteredCards = useMemo(() => {
     const [cityName, cityUF] = city ? city.split(" - ") : [null, null];
@@ -231,6 +245,7 @@ const Cards = ({ filter = {} }) => {
             state={{ perfil: card }}
             key={`${card.prestadorId}-${card.servicoNome}`}
             className="cards-link"
+            onClick={() => registrarCliqueCard(card)}
           >
             <article className="cards">
               <div className="cards-image-wrapper">

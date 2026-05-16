@@ -1,0 +1,19 @@
+.devview-feedback-card {
+  width: 100%;
+  min-height: 220px;
+  padding: 24px 28px 18px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+.devview-feedback-card.feedback { border: 2px solid #78ff91; background: #f4fff7; }
+.devview-feedback-card.denuncia { border: 2px solid #ffb7b7; background: #fff7f7; }
+.devview-feedback-user { display: flex; align-items: center; gap: 12px; }
+.devview-feedback-avatar { width: 50px; height: 50px; border-radius: 50%; background: #ffd9d4; color: #ff4f2a; display:flex; align-items:center; justify-content:center; font-weight:900; }
+.devview-feedback-name { font-size: 20px; font-weight: 800; color:#ff4b23; margin: 0 0 4px; }
+.devview-feedback-time { color:#a5abb8; font-size:12px; margin:0; }
+.devview-feedback-target { margin: 6px 0 10px; font-size: 13px; color:#667; }
+.devview-feedback-target a { color:#f05221; font-weight:700; text-decoration:none; }
+.devview-feedback-target a:hover { text-decoration:underline; }
+.devview-feedback-note { margin-top:8px; color:#444; font-size:13px; display:flex; align-items:center; gap:4px; }
+.devview-feedback-star { color: #ffc400; width: 16px; height: 16px; }
