@@ -44,21 +44,11 @@ const HomeList = () => {
   return (
     <main className="homelist-page">
       <div className="homelist-shell">
-        <span className="homelist-breadcrumb">EncontrarServiços</span>
-
-        <HeaderSwitcher />
+                <HeaderSwitcher />
 
         <section className="homelist-hero" aria-label="Busca de prestadores">
           <div className="homelist-hero__content">
-            <div className="homelist-hero__text">
-              <h1>Encontre os melhores prestadores de serviços</h1>
-              <p>
-                Pesquise, compare e escolha os melhores profissionais próximos a
-                você!
-              </p>
-            </div>
-
-            <HomeListSearchBar
+                        <HomeListSearchBar
               initialCategory={category}
               initialLocation={city}
             />
