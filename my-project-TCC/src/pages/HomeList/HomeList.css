@@ -68,27 +68,27 @@
 .homelist-hero__content {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(210px, 280px) minmax(420px, 1fr);
+  grid-template-columns: minmax(280px, 1fr) minmax(640px, 2fr);
   align-items: center;
-  gap: 42px;
+  gap: 52px;
   position: relative;
   z-index: 2;
 }
 
 .homelist-hero__text h1 {
-  max-width: 260px;
+  max-width: 100%;
   margin: 0 0 12px;
   color: #111111;
-  font-size: 1.42rem;
+  font-size: 2.2rem;
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.15;
 }
 
 .homelist-hero__text p {
-  max-width: 270px;
+  max-width: 90%;
   margin: 0;
   color: #222222;
-  font-size: 0.82rem;
+  font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.35;
 }
@@ -142,7 +142,7 @@
   color: #222222;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
-  font-size: 0.82rem;
+  font-size: 1.1rem;
   font-weight: 500;
 }
 

@@ -48,6 +48,10 @@ const HomeList = () => {
 
         <section className="homelist-hero" aria-label="Busca de prestadores">
           <div className="homelist-hero__content">
+            <div className="homelist-hero__text">
+              <h1>Encontre os melhores prestadores da sua região</h1>
+              <p>Compare avaliações, descubra serviços e escolha com confiança.</p>
+            </div>
                         <HomeListSearchBar
               initialCategory={category}
               initialLocation={city}

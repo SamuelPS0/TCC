@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import HeaderSwitcher from "../../../../Components/HeaderSwitcher";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { IoMdImage, IoIosCall } from "react-icons/io";
@@ -11,7 +11,7 @@ import { MdStars } from "react-icons/md";
 import Loading from "../../../../Components/Loading/Loading";
 import "./DevViewPrestador.css";
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
-import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback } from '../../../../utils/devviewFeedback';
+import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
 import '../feedbackShared.css';
 
 const normalizeImageSrc = (value) => {
@@ -61,6 +61,7 @@ const DevViewPrestador = () => {
   const { prestadorId } = useParams();
   const [card, setCard] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [prestadoresInfo, setPrestadoresInfo] = useState({});
   const [feedbacks, setFeedbacks] = useState([]);
    const [nomesUsuarios, setNomesUsuarios] = useState({});
   const [prestador, setPrestador] = useState(null);
@@ -362,10 +363,11 @@ const editarStatusFeedback = async (feedback) => {
                   </div>
                 </div>
                 <h4>{fb.titulo}</h4>
+                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || `Prestador #${fb.prestadorId || ""}`}</Link></p>
                <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
-                <p className="devview-feedback-note"><strong>Nota:</strong> {formatNotaFeedback(fb.nota)}</p>
+                <p className="devview-feedback-note"><strong>Nota:</strong> {getNotaInteira(fb.nota) > 0 ? Array.from({ length: getNotaInteira(fb.nota) }, (_, index) => <MdStars key={index} className="devview-feedback-star" />) : formatNotaFeedback(fb.nota)}</p>
               </div>
             ))
           )}

@@ -2,19 +2,19 @@
 
 .homelist-searchbar {
   width: 100%;
-  max-width: 700px;
+  max-width: 980px;
   position: relative;
   z-index: 5;
 }
 
 .homelist-searchbar__form {
   width: 100%;
-  min-height: 58px;
+  min-height: 90px;
   display: grid;
   grid-template-columns: minmax(160px, 1fr) 1px minmax(160px, 1fr) auto;
   align-items: center;
   gap: 0;
-  padding: 12px 18px;
+  padding: 20px 24px;
   background-color: #ffffff;
   border: 1px solid #d8d8d8;
   border-radius: 3px;
@@ -38,7 +38,7 @@
 
 .homelist-searchbar__label {
   color: #f05221;
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.1;
 }
@@ -51,7 +51,7 @@
   background-color: transparent;
   color: #222222;
   font-family: "Poppins", sans-serif;
-  font-size: 0.72rem;
+  font-size: 1rem;
   font-weight: 500;
   line-height: 1.2;
 }
@@ -73,15 +73,15 @@
 }
 
 .homelist-searchbar__button {
-  min-width: 82px;
-  height: 38px;
+  min-width: 130px;
+  height: 52px;
   border: none;
   border-radius: 4px;
   background-color: #f05221;
   color: #ffffff;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 700;
   transition:
     background-color 0.2s ease,
@@ -122,7 +122,7 @@
   color: #333333;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 500;
   transition:
     background-color 0.2s ease,

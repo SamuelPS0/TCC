@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import HeaderSwitcher from '../../../../Components/HeaderSwitcher';
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from 'sonner';
@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { MdStars } from "react-icons/md";
 import Loading from '../../../../Components/Loading/Loading';
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
-import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback } from '../../../../utils/devviewFeedback';
+import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
 import '../feedbackShared.css';
 import "../DevViewPrestador/DevViewPrestador.css";
 import './DevViewClient.css';
@@ -22,6 +22,7 @@ const DevViewClient = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [prestadoresInfo, setPrestadoresInfo] = useState({});
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
@@ -32,6 +33,9 @@ const DevViewClient = () => {
     if (!usuario?.id) return;
 
     const fetchFeedbacks = async () => {
+      const prestadoresRes = await axios.get("http://localhost:8080/api/v1/prestador");
+      const prestadoresMap = Object.fromEntries((prestadoresRes.data || []).map((p) => [Number(p.id), p]));
+      setPrestadoresInfo(prestadoresMap);
       try {
         const res = await axios.get("http://localhost:8080/api/v1/feedback");
 
@@ -200,10 +204,11 @@ const editarStatusFeedback = async (feedback) => {
                   </div>
                 </div>
                 <h4>{fb.titulo}</h4>
+                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || `Prestador #${fb.prestadorId || ""}`}</Link></p>
                 <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
-                <p className="devview-feedback-note"><strong>Nota:</strong> {formatNotaFeedback(fb.nota)}</p>
+                <p className="devview-feedback-note"><strong>Nota:</strong> {getNotaInteira(fb.nota) > 0 ? Array.from({ length: getNotaInteira(fb.nota) }, (_, index) => <MdStars key={index} className="devview-feedback-star" />) : formatNotaFeedback(fb.nota)}</p>
               </div>
             ))
           )}
