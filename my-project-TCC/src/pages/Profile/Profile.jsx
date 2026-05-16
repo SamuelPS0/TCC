@@ -32,6 +32,17 @@ const getContatoPrestadorId = (contato = {}) =>
 const contatoEstaAtivo = (contato = {}) =>
   String(contato.statusContato ?? contato.status_contato ?? "ATIVO").toUpperCase() === "ATIVO";
 
+const logAxiosErrorDetalhado = (contexto, error, payload) => {
+  console.group(`[Profile] ${contexto}`);
+  console.error("Payload enviado:", payload);
+  console.error("Status HTTP:", error.response?.status ?? "Sem status HTTP");
+  console.error("Resposta da API:", error.response?.data ?? "Sem resposta da API");
+  console.error("Mensagem de erro completa:", error.message);
+  console.error("Stack trace:", error.stack ?? "Stack trace indisponível");
+  console.error("Erro original:", error);
+  console.groupEnd();
+};
+
 const Profile = () => {
   const location = useLocation();
   const dados = location.state?.perfil;
@@ -273,24 +284,56 @@ const Profile = () => {
         return;
       }
 
+      if (!user?.id) {
+        console.error("[Profile] Usuário logado não encontrado ao enviar feedback/denúncia.", {
+          user,
+          dados,
+          tipo,
+        });
+        alert("Não foi possível identificar o usuário logado.");
+        return;
+      }
+
+      if (!dados?.prestadorId) {
+        console.error("[Profile] Prestador não encontrado ao enviar feedback/denúncia.", {
+          user,
+          dados,
+          tipo,
+        });
+        alert("Não foi possível identificar o prestador avaliado.");
+        return;
+      }
+
       const payload = {
         titulo: tituloTratado,
         descricao: mensagemTratada,
-        tipoFeedback: tipo,
-        usuarioId: user?.id,
+        tipoFeedback: isFeedback ? "FEEDBACK" : "DENUNCIA",
+        usuarioId: Number(user.id),
         nomeUsuario: user?.nome,
-        prestadorId: dados.prestadorId,
+        prestadorId: Number(dados.prestadorId),
         dataCadastro: new Date().toISOString(),
         statusFeedback: "ATIVO",
-        ...(isFeedback ? { nota } : {}),
+        ...(isFeedback ? { nota: Number(nota) } : { nota: 0 }),
       };
 
+      console.group(`[Profile] Enviando ${isFeedback ? "feedback" : "denúncia"} para API`);
+      console.debug("Payload enviado:", payload);
+
       try {
-        await axios.post("http://localhost:8080/api/v1/feedback", payload);
+        const response = await axios.post("http://localhost:8080/api/v1/feedback", payload);
+
+        console.debug("Status HTTP:", response.status);
+        console.debug("Resposta da API:", response.data);
+        console.groupEnd();
 
         if (isFeedback) {
           toast.success("Feedback enviado com sucesso!");
-          setFeedbacks((prev) => [...prev, payload]);
+          const feedbackCriado = response.data || payload;
+          setFeedbacks((prev) => [...prev, feedbackCriado]);
+          setNomesUsuarios((prev) => ({
+            ...prev,
+            [Number(user.id)]: user?.nome || `Usuário #${user.id}`,
+          }));
         } else {
           toast.success("Denúncia enviada. Ela será revisada pelos administradores.");
         }
@@ -298,8 +341,13 @@ const Profile = () => {
         resetForm();
         onClose();
       } catch (error) {
-        console.error(error);
-        alert("Erro ao enviar!");
+        console.groupEnd();
+        logAxiosErrorDetalhado(
+          `Erro ao enviar ${isFeedback ? "feedback" : "denúncia"}`,
+          error,
+          payload
+        );
+        alert("Erro ao enviar! Veja o console para os detalhes completos.");
       }
     };
 

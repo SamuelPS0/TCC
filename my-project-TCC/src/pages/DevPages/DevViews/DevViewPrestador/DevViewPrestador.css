@@ -206,6 +206,55 @@ textarea.prestview-input {
   margin-bottom: 10px;
   margin-top: -10px;
 }
+
+.feedback-participants {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+}
+
+.feedback-profile-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f05221;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.feedback-profile-link:hover {
+  color: #338787;
+}
+
+.feedback-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  color: #444;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+}
+
+.feedback-type-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #333;
+  font-weight: 700;
+}
 .feedback-status-row {
     display: flex;
     justify-content: flex-end;

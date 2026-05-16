@@ -2,9 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { MdStars } from "react-icons/md";
 import { FaSearchLocation } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TfiFaceSad } from "react-icons/tfi";
 import "./Cards.css";
+
+const API_BASE_URL = "http://localhost:8080/api/v1";
+const DESCRIPTION_LIMIT = 88;
 
 const SkeletonCard = () => (
   <div className="card-skeleton">
@@ -14,8 +17,6 @@ const SkeletonCard = () => (
     <div className="skeleton text"></div>
   </div>
 );
-
-const DESCRIPTION_LIMIT = 88;
 
 const truncateDescription = (description = "") => {
   if (description.length <= DESCRIPTION_LIMIT) return description;
@@ -33,7 +34,6 @@ const normalizeImageSrc = (value) => {
   }
 
   const looksLikeBase64 = /^[A-Za-z0-9+/]+={0,2}$/.test(trimmed);
-
   const isDirectUrl =
     trimmed.startsWith("http://") ||
     trimmed.startsWith("https://") ||
@@ -75,9 +75,20 @@ const getPrestadorStatus = (prestador = {}) =>
 
 const isPrestadorAtivo = (prestador = {}) => getPrestadorStatus(prestador) === "ATIVO";
 
+const getServicoCounter = (servico = {}) =>
+  Number(
+    servico.contador ??
+      servico.contadorCliques ??
+      servico.quantidadeCliques ??
+      servico.totalCliques ??
+      0
+  ) || 0;
+
 const Cards = ({ filter = {} }) => {
+  const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updatingCounterId, setUpdatingCounterId] = useState(null);
 
   const { category = "", city = "", minRating = "" } = filter;
 
@@ -85,9 +96,9 @@ const Cards = ({ filter = {} }) => {
     const fetchCards = async () => {
       try {
         const [servicosRes, contatosRes, feedbacksRes] = await Promise.all([
-          axios.get("http://localhost:8080/api/v1/servico"),
-          axios.get("http://localhost:8080/api/v1/contato"),
-          axios.get("http://localhost:8080/api/v1/feedback"),
+          axios.get(`${API_BASE_URL}/servico`),
+          axios.get(`${API_BASE_URL}/contato`),
+          axios.get(`${API_BASE_URL}/feedback`),
         ]);
 
         const servicos = servicosRes.data || [];
@@ -108,9 +119,7 @@ const Cards = ({ filter = {} }) => {
         );
 
         const notasByPrestadorId = feedbacksAtivos.reduce((acc, feedback) => {
-          const prestadorId = Number(
-            feedback.prestadorId ?? feedback.prestador?.id
-          );
+          const prestadorId = Number(feedback.prestadorId ?? feedback.prestador?.id);
           const nota = Number(feedback.nota);
 
           if (!prestadorId || Number.isNaN(nota)) {
@@ -142,6 +151,8 @@ const Cards = ({ filter = {} }) => {
                 : null;
 
             return {
+              servicoId: servico.id || null,
+              servicoOriginal: servico,
               prestadorId: prestador.id || null,
               servicoNome: servico.nome || "Serviço não disponível",
               servicoDescricao: servico.descricao || "Descrição não disponível",
@@ -165,6 +176,7 @@ const Cards = ({ filter = {} }) => {
               avaliacaoMedia,
               totalAvaliacoes: notas.length,
               statusPrestador: getPrestadorStatus(prestador),
+              contador: getServicoCounter(servico),
             };
           });
 
@@ -193,19 +205,84 @@ const Cards = ({ filter = {} }) => {
         ? normalizeText(card.cidade).includes(normalizeText(cityName))
         : true;
 
-      const matchUF = cityUF
-        ? normalizeText(card.uf) === normalizeText(cityUF)
-        : true;
+      const matchUF = cityUF ? normalizeText(card.uf) === normalizeText(cityUF) : true;
 
       const matchRating =
         parsedMinRating !== null
-          ? card.avaliacaoMedia !== null &&
-            card.avaliacaoMedia > parsedMinRating
+          ? card.avaliacaoMedia !== null && card.avaliacaoMedia > parsedMinRating
           : true;
 
       return matchCategory && matchCity && matchUF && matchRating;
     });
   }, [cards, category, city, minRating]);
+
+  const abrirPerfilComContador = async (card) => {
+    if (!card?.servicoId) {
+      console.warn("[Cards] Serviço sem id. Abrindo perfil sem atualizar contador.", card);
+      navigate("/profile", { state: { perfil: card } });
+      return;
+    }
+
+    const contadorAtual = Number(card.contador ?? 0) || 0;
+    const proximoContador = contadorAtual + 1;
+    const payload = {
+      ...card.servicoOriginal,
+      contador: proximoContador,
+      contadorCliques: proximoContador,
+    };
+
+    setUpdatingCounterId(card.servicoId);
+    setCards((prevCards) =>
+      prevCards.map((item) =>
+        item.servicoId === card.servicoId ? { ...item, contador: proximoContador } : item
+      )
+    );
+
+    console.debug("[Cards] Payload enviado para contador do serviço:", {
+      endpoint: `${API_BASE_URL}/servico/${card.servicoId}`,
+      payload,
+    });
+
+    try {
+      const response = await axios.put(`${API_BASE_URL}/servico/${card.servicoId}`, payload);
+
+      console.debug("[Cards] Resposta da API ao atualizar contador:", {
+        status: response.status,
+        data: response.data,
+        headers: response.headers,
+      });
+
+      setCards((prevCards) =>
+        prevCards.map((item) =>
+          item.servicoId === card.servicoId
+            ? {
+                ...item,
+                contador: getServicoCounter(response.data || payload) || proximoContador,
+                servicoOriginal: response.data || payload,
+              }
+            : item
+        )
+      );
+    } catch (error) {
+      console.error("[Cards] Erro ao atualizar contador do serviço:", {
+        payload,
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+        stack: error.stack,
+        error,
+      });
+
+      setCards((prevCards) =>
+        prevCards.map((item) =>
+          item.servicoId === card.servicoId ? { ...item, contador: contadorAtual } : item
+        )
+      );
+    } finally {
+      setUpdatingCounterId(null);
+      navigate("/profile", { state: { perfil: { ...card, contador: proximoContador } } });
+    }
+  };
 
   return (
     <div className="cards-container">
@@ -226,13 +303,17 @@ const Cards = ({ filter = {} }) => {
         </div>
       ) : (
         filteredCards.map((card) => (
-          <Link
-            to="/profile"
-            state={{ perfil: card }}
-            key={`${card.prestadorId}-${card.servicoNome}`}
+          <button
+            type="button"
+            key={`${card.prestadorId}-${card.servicoId}-${card.servicoNome}`}
             className="cards-link"
+            onClick={() => abrirPerfilComContador(card)}
           >
-            <article className="cards">
+            <article
+              className={`cards ${
+                updatingCounterId === card.servicoId ? "cards--updating" : ""
+              }`}
+            >
               <div className="cards-image-wrapper">
                 {card.imagemServico ? (
                   <img
@@ -241,18 +322,18 @@ const Cards = ({ filter = {} }) => {
                     className="cards-image"
                   />
                 ) : (
-                  <div className="cards-image cards-image--empty">
-                    Sem imagem
-                  </div>
+                  <div className="cards-image cards-image--empty">Sem imagem</div>
                 )}
 
                 <span className="cards-rating">
                   <MdStars className="cards-rating__icon" />
                   {formatRating(card.avaliacaoMedia)}
 
-                  {card.totalAvaliacoes > 0 && (
-                    <small>({card.totalAvaliacoes})</small>
-                  )}
+                  {card.totalAvaliacoes > 0 && <small>({card.totalAvaliacoes})</small>}
+                </span>
+
+                <span className="cards-counter">
+                  {card.contador} clique{card.contador === 1 ? "" : "s"}
                 </span>
               </div>
 
@@ -276,7 +357,7 @@ const Cards = ({ filter = {} }) => {
                 </p>
               </div>
             </article>
-          </Link>
+          </button>
         ))
       )}
     </div>
