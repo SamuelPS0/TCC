@@ -200,18 +200,14 @@ const Cards = ({ filter = {} }) => {
     );
 
     try {
-      await axios.patch(`http://localhost:8080/api/v1/servico/${card.servicoId}`, {
+      await axios.post("http://localhost:8080/api/v1/clique", {
+        servicoId: card.servicoId,
+        prestadorId: card.prestadorId,
         contador: proximoContador,
+        dataClique: new Date().toISOString(),
       });
-    } catch (patchError) {
-      try {
-        await axios.put(`http://localhost:8080/api/v1/servico/${card.servicoId}`, {
-          ...card,
-          contador: proximoContador,
-        });
-      } catch (error) {
-        console.error("Erro ao atualizar contador de visualizações:", error);
-      }
+    } catch (error) {
+      console.error("Erro ao atualizar contador de visualizações:", error);
     }
   };
 

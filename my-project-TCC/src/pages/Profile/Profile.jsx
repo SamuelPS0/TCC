@@ -349,7 +349,7 @@ const Profile = () => {
       
       statusFeedback: "ATIVO",
 
-      ...(isFeedback ? { nota } : {})
+      nota: isFeedback ? nota : 0,
     };
 
     console.log("TIPO RECEBIDO:", tipo);
