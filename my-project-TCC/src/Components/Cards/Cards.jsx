@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { MdStars } from "react-icons/md";
 import { FaSearchLocation } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TfiFaceSad } from "react-icons/tfi";
 import "./Cards.css";
 
@@ -76,6 +76,7 @@ const getPrestadorStatus = (prestador = {}) =>
 const isPrestadorAtivo = (prestador = {}) => getPrestadorStatus(prestador) === "ATIVO";
 
 const Cards = ({ filter = {} }) => {
+  const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -103,8 +104,9 @@ const Cards = ({ filter = {} }) => {
 
         const feedbacksAtivos = feedbacks.filter(
           (feedback) =>
-            feedback?.tipoFeedback === "FEEDBACK" &&
-            feedback?.statusFeedback === "ATIVO"
+            String(feedback?.tipoFeedback || "").toUpperCase() === "FEEDBACK" &&
+            String(feedback?.statusFeedback || "").toUpperCase() === "ATIVO" &&
+            Number.isFinite(Number(feedback?.nota))
         );
 
         const notasByPrestadorId = feedbacksAtivos.reduce((acc, feedback) => {
@@ -142,6 +144,7 @@ const Cards = ({ filter = {} }) => {
                 : null;
 
             return {
+              servicoId: servico.id || null,
               prestadorId: prestador.id || null,
               servicoNome: servico.nome || "Serviço não disponível",
               servicoDescricao: servico.descricao || "Descrição não disponível",
@@ -179,6 +182,54 @@ const Cards = ({ filter = {} }) => {
 
     fetchCards();
   }, []);
+
+
+  const incrementServiceViewCounter = async (card) => {
+    const servicoId = Number(card?.servicoId);
+
+    if (!servicoId) return;
+
+    const contadorAtual = Number(card?.contadorVisualizacoes ?? card?.contador ?? 0);
+    const proximoContador = Number.isFinite(contadorAtual) ? contadorAtual + 1 : 1;
+
+    try {
+      await axios.patch(`http://localhost:8080/api/v1/servico/${servicoId}`, {
+        contador: proximoContador,
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar contador por PATCH:", error);
+
+      try {
+        await axios.put(`http://localhost:8080/api/v1/servico/${servicoId}`, {
+          contador: proximoContador,
+        });
+      } catch (putError) {
+        console.error("Erro ao atualizar contador por PUT:", putError);
+      }
+    }
+
+    setCards((prevCards) =>
+      prevCards.map((prevCard) =>
+        Number(prevCard.servicoId) === servicoId
+          ? {
+              ...prevCard,
+              contador: proximoContador,
+              contadorVisualizacoes: proximoContador,
+            }
+          : prevCard
+      )
+    );
+  };
+
+  const handleCardClick = async (event, card) => {
+    event.preventDefault();
+
+    await incrementServiceViewCounter(card);
+
+    navigate("/profile", {
+      state: { perfil: card },
+    });
+  };
 
   const filteredCards = useMemo(() => {
     const [cityName, cityUF] = city ? city.split(" - ") : [null, null];
@@ -231,6 +282,7 @@ const Cards = ({ filter = {} }) => {
             state={{ perfil: card }}
             key={`${card.prestadorId}-${card.servicoNome}`}
             className="cards-link"
+            onClick={(event) => handleCardClick(event, card)}
           >
             <article className="cards">
               <div className="cards-image-wrapper">
