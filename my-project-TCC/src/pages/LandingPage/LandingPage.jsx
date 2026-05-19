@@ -123,7 +123,7 @@ export default function LandingPage() {
         <div className="footer-col">
           <h4>Links</h4>
           <ul>
-            <li><Link to="/">Início</Link></li>
+            <li><Link to="#">Fale Conosco</Link></li>
             <li><Link to="/privacity">Termos de uso</Link></li>
             <li><Link to="/privacity">Políticas de Privacidade</Link></li>
           </ul>
