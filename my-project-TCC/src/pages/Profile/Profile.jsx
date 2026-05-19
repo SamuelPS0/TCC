@@ -83,6 +83,14 @@ const formatTempoFeedback = (dataCadastro) => {
   return data.toLocaleDateString("pt-BR");
 };
 
+const isFeedbackAvaliavel = (feedback = {}) => {
+  const tipo = String(feedback?.tipoFeedback ?? "").trim().toUpperCase();
+  const status = String(feedback?.statusFeedback ?? "").trim().toUpperCase();
+  const nota = Number(feedback?.nota);
+
+  return tipo === "FEEDBACK" && status === "ATIVO" && !Number.isNaN(nota) && nota > 0;
+};
+
 const Profile = () => {
   const location = useLocation();
   const dados = location.state?.perfil;
@@ -136,8 +144,7 @@ const Profile = () => {
         const feedbacksPrestador = res.data.filter(
           (f) =>
             Number(f.prestadorId) === Number(dados?.prestadorId) &&
-            f.tipoFeedback === "FEEDBACK" &&
-            f.statusFeedback === "ATIVO"
+            isFeedbackAvaliavel(f)
         );
 
         const idsUsuarios = [
@@ -278,9 +285,7 @@ const Profile = () => {
     };
   };
 
-  const feedbacksAtivos = feedbacks.filter(
-    (fb) => fb.statusFeedback?.toUpperCase() === "ATIVO"
-  );
+  const feedbacksAtivos = feedbacks.filter(isFeedbackAvaliavel);
 
   const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
   const isPrimeiroPrestador = Number(dados?.prestadorId) === 1;

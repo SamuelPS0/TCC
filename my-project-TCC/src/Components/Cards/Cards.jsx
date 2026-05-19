@@ -75,6 +75,14 @@ const getPrestadorStatus = (prestador = {}) =>
 
 const isPrestadorAtivo = (prestador = {}) => getPrestadorStatus(prestador) === "ATIVO";
 
+const isFeedbackValido = (feedback = {}) => {
+  const tipo = String(feedback?.tipoFeedback ?? "").trim().toUpperCase();
+  const status = String(feedback?.statusFeedback ?? "").trim().toUpperCase();
+  const nota = Number(feedback?.nota);
+
+  return tipo === "FEEDBACK" && status === "ATIVO" && !Number.isNaN(nota) && nota > 0;
+};
+
 const Cards = ({ filter = {} }) => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -101,11 +109,7 @@ const Cards = ({ filter = {} }) => {
           ])
         );
 
-        const feedbacksAtivos = feedbacks.filter(
-          (feedback) =>
-            feedback?.tipoFeedback === "FEEDBACK" &&
-            feedback?.statusFeedback === "ATIVO"
-        );
+        const feedbacksAtivos = feedbacks.filter(isFeedbackValido);
 
         const notasByPrestadorId = feedbacksAtivos.reduce((acc, feedback) => {
           const prestadorId = Number(
@@ -166,6 +170,7 @@ const Cards = ({ filter = {} }) => {
               avaliacaoMedia,
               totalAvaliacoes: notas.length,
               statusPrestador: getPrestadorStatus(prestador),
+              contador: Number(servico.contador ?? 0),
             };
           });
 
@@ -183,14 +188,30 @@ const Cards = ({ filter = {} }) => {
 
 
   const registrarCliqueCard = async (card) => {
+    const contadorAtual = Number(card.contador ?? 0);
+    const proximoContador = contadorAtual + 1;
+
+    setCards((prevCards) =>
+      prevCards.map((item) =>
+        item.servicoId === card.servicoId
+          ? { ...item, contador: proximoContador }
+          : item
+      )
+    );
+
     try {
-      await axios.post("http://localhost:8080/api/v1/clique", {
-        servicoId: card.servicoId,
-        prestadorId: card.prestadorId,
-        dataClique: new Date().toISOString(),
+      await axios.patch(`http://localhost:8080/api/v1/servico/${card.servicoId}`, {
+        contador: proximoContador,
       });
-    } catch (error) {
-      console.error("Erro ao registrar clique do card:", error);
+    } catch (patchError) {
+      try {
+        await axios.put(`http://localhost:8080/api/v1/servico/${card.servicoId}`, {
+          ...card,
+          contador: proximoContador,
+        });
+      } catch (error) {
+        console.error("Erro ao atualizar contador de visualizações:", error);
+      }
     }
   };
 
