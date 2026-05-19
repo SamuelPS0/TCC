@@ -19,6 +19,8 @@ import {
   FaCheckCircle,
   FaRegFlag
 } from "react-icons/fa";
+
+//...(isFeedback ? { nota } : { nota: 0 })
 import { MdStars } from "react-icons/md";
 import ProfileImg from "../../img/Ellipse.png";
 import InputImg from "../../img/crosant.png";
@@ -295,64 +297,93 @@ const Profile = () => {
     "Outro motivo",
   ];
 
-  const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
-    const isFeedback = tipo === "FEEDBACK";
+ const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
 
-    const [titulo, setTitulo] = useState("");
-    const [mensagem, setMensagem] = useState("");
-    const [nota, setNota] = useState(0);
+  const tipoNormalizado = String(tipo).toUpperCase();
 
-    const resetForm = () => {
-      setTitulo("");
-      setMensagem("");
-      setNota(0);
+  const isFeedback = tipoNormalizado === "FEEDBACK";
+  const isDenuncia = tipoNormalizado === "DENUNCIA";
+
+  const [titulo, setTitulo] = useState("");
+  const [mensagem, setMensagem] = useState("");
+  const [nota, setNota] = useState(0);
+
+  const resetForm = () => {
+    setTitulo("");
+    setMensagem("");
+    setNota(0);
+  };
+
+  const fecharModal = () => {
+    resetForm();
+    onClose();
+  };
+
+  const enviar = async () => {
+
+    const tituloTratado = titulo.trim();
+    const mensagemTratada = mensagem.trim();
+
+    if (
+      !tituloTratado ||
+      !mensagemTratada ||
+      (isFeedback && !nota)
+    ) {
+      alert("Preencha todos os campos obrigatórios!");
+      return;
+    }
+
+    const payload = {
+      titulo: tituloTratado,
+      descricao: mensagemTratada,
+      tipoFeedback: isFeedback ? "FEEDBACK" : "DENUNCIA",
+      usuarioId: user?.id,
+      nomeUsuario: user?.nome,
+      prestadorId: dados.prestadorId,
+      dataCadastro: new Date().toISOString(),
+      
+      statusFeedback: "ATIVO",
+
+      ...(isFeedback ? { nota } : {})
     };
 
-    const fecharModal = () => {
+    console.log("TIPO RECEBIDO:", tipo);
+    console.log("É FEEDBACK?", isFeedback);
+    console.log("É DENUNCIA?", isDenuncia);
+    console.log("PAYLOAD:", payload);
+
+    try {
+
+      await axios.post(
+        "http://localhost:8080/api/v1/feedback",
+        payload
+      );
+
+      if (isFeedback) {
+
+        toast.success("Feedback enviado com sucesso!");
+
+        setFeedbacks((prev) => [...prev, payload]);
+
+      } else {
+
+        toast.success(
+          "Denúncia enviada. Ela será revisada pelos administradores."
+        );
+      }
+
       resetForm();
       onClose();
-    };
 
-    const enviar = async () => {
-      const tituloTratado = titulo.trim();
-      const mensagemTratada = mensagem.trim();
+    } catch (error) {
 
-      if (!tituloTratado || !mensagemTratada || (isFeedback && !nota)) {
-        alert("Preencha todos os campos obrigatórios!");
-        return;
-      }
+      console.error("ERRO AO ENVIAR:", error);
 
-      const payload = {
-        titulo: tituloTratado,
-        descricao: mensagemTratada,
-        tipoFeedback: tipo,
-        usuarioId: user?.id,
-        nomeUsuario: user?.nome,
-        prestadorId: dados.prestadorId,
-        dataCadastro: new Date().toISOString(),
-        statusFeedback: "ATIVO",
-        ...(isFeedback ? { nota } : {}),
-      };
+      alert("Erro ao enviar!");
+    }
+  };
 
-      try {
-        await axios.post("http://localhost:8080/api/v1/feedback", payload);
-
-        if (isFeedback) {
-          toast.success("Feedback enviado com sucesso!");
-          setFeedbacks((prev) => [...prev, payload]);
-        } else {
-          toast.success("Denúncia enviada. Ela será revisada pelos administradores.");
-        }
-
-        resetForm();
-        onClose();
-      } catch (error) {
-        console.error(error);
-        alert("Erro ao enviar!");
-      }
-    };
-
-    if (!isOpen) return null;
+  if (!isOpen) return null;
 
     return (
       <div
