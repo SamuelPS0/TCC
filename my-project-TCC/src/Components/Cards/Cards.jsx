@@ -199,15 +199,43 @@ const Cards = ({ filter = {} }) => {
       )
     );
 
-    try {
-      await axios.post("http://localhost:8080/api/v1/clique", {
-        servicoId: card.servicoId,
-        prestadorId: card.prestadorId,
-        contador: proximoContador,
-        dataClique: new Date().toISOString(),
-      });
-    } catch (error) {
-      console.error("Erro ao atualizar contador de visualizações:", error);
+    const updatePayload = {
+      id: card.servicoId,
+      prestadorId: card.prestadorId,
+      contador: proximoContador,
+    };
+
+    const requests = [
+      () => axios.put(`http://localhost:8080/api/v1/servico/${card.servicoId}`, updatePayload),
+      () => axios.patch(`http://localhost:8080/api/v1/servico/${card.servicoId}`, { contador: proximoContador }),
+      () => axios.post(`http://localhost:8080/api/v1/servico/${card.servicoId}/contador`, { contador: proximoContador }),
+    ];
+
+    let persisted = false;
+
+    for (const sendRequest of requests) {
+      try {
+        await sendRequest();
+        persisted = true;
+        break;
+      } catch (error) {
+        const status = error?.response?.status;
+
+        if (![404, 405].includes(status)) {
+          console.error("Erro ao atualizar contador de visualizações:", error);
+          break;
+        }
+      }
+    }
+
+    if (!persisted) {
+      setCards((prevCards) =>
+        prevCards.map((item) =>
+          item.servicoId === card.servicoId
+            ? { ...item, contador: contadorAtual }
+            : item
+        )
+      );
     }
   };
 

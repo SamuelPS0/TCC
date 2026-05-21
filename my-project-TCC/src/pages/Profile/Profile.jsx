@@ -20,7 +20,6 @@ import {
   FaRegFlag
 } from "react-icons/fa";
 
-//...(isFeedback ? { nota } : { nota: 0 })
 import { MdStars } from "react-icons/md";
 import ProfileImg from "../../img/Ellipse.png";
 import InputImg from "../../img/crosant.png";
@@ -44,6 +43,17 @@ const getNomeFeedback = (feedback = {}, nomesUsuarios = {}) =>
 
 const getInicialFeedback = (nome = "") =>
   nome.trim().charAt(0).toUpperCase() || "?";
+
+const getUsuarioLogadoId = (user = {}) => {
+  const userId = Number(user?.id ?? user?.usuarioId ?? user?.usuario?.id);
+
+  if (!Number.isNaN(userId) && userId > 0) {
+    return userId;
+  }
+
+  const fromStorage = Number(localStorage.getItem("usuarioId"));
+  return !Number.isNaN(fromStorage) && fromStorage > 0 ? fromStorage : null;
+};
 
 const formatNotaFeedback = (nota) => {
   const notaNumerica = Number(nota);
@@ -338,12 +348,19 @@ const Profile = () => {
       return;
     }
 
+    const usuarioId = getUsuarioLogadoId(user);
+
+    if (!usuarioId) {
+      toast.error("Não foi possível identificar o usuário logado.");
+      return;
+    }
+
     const payload = {
       titulo: tituloTratado,
       descricao: mensagemTratada,
       tipoFeedback: isFeedback ? "FEEDBACK" : "DENUNCIA",
-      usuarioId: user?.id,
-      nomeUsuario: user?.nome,
+      usuarioId: usuarioId,
+      nomeUsuario: user?.nome || user?.usuario?.nome || "Usuário",
       prestadorId: dados.prestadorId,
       dataCadastro: new Date().toISOString(),
       
