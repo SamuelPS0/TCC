@@ -20,7 +20,6 @@ import {
   FaRegFlag
 } from "react-icons/fa";
 
-//...(isFeedback ? { nota } : { nota: 0 })
 import { MdStars } from "react-icons/md";
 import ProfileImg from "../../img/Ellipse.png";
 import InputImg from "../../img/crosant.png";
@@ -44,6 +43,17 @@ const getNomeFeedback = (feedback = {}, nomesUsuarios = {}) =>
 
 const getInicialFeedback = (nome = "") =>
   nome.trim().charAt(0).toUpperCase() || "?";
+
+const getUsuarioLogadoId = (user = {}) => {
+  const userId = Number(user?.id ?? user?.usuarioId ?? user?.usuario?.id);
+
+  if (!Number.isNaN(userId) && userId > 0) {
+    return userId;
+  }
+
+  const fromStorage = Number(localStorage.getItem("usuarioId"));
+  return !Number.isNaN(fromStorage) && fromStorage > 0 ? fromStorage : null;
+};
 
 const formatNotaFeedback = (nota) => {
   const notaNumerica = Number(nota);
@@ -81,6 +91,14 @@ const formatTempoFeedback = (dataCadastro) => {
   if (diferencaDias < 30) return `Há ${diferencaDias} d`;
 
   return data.toLocaleDateString("pt-BR");
+};
+
+const isFeedbackAvaliavel = (feedback = {}) => {
+  const tipo = String(feedback?.tipoFeedback ?? "").trim().toUpperCase();
+  const status = String(feedback?.statusFeedback ?? "").trim().toUpperCase();
+  const nota = Number(feedback?.nota);
+
+  return tipo === "FEEDBACK" && status === "ATIVO" && !Number.isNaN(nota) && nota > 0;
 };
 
 const Profile = () => {
@@ -136,8 +154,7 @@ const Profile = () => {
         const feedbacksPrestador = res.data.filter(
           (f) =>
             Number(f.prestadorId) === Number(dados?.prestadorId) &&
-            f.tipoFeedback === "FEEDBACK" &&
-            f.statusFeedback === "ATIVO"
+            isFeedbackAvaliavel(f)
         );
 
         const idsUsuarios = [
@@ -278,9 +295,7 @@ const Profile = () => {
     };
   };
 
-  const feedbacksAtivos = feedbacks.filter(
-    (fb) => fb.statusFeedback?.toUpperCase() === "ATIVO"
-  );
+  const feedbacksAtivos = feedbacks.filter(isFeedbackAvaliavel);
 
   const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
   const isPrimeiroPrestador = Number(dados?.prestadorId) === 1;
@@ -333,18 +348,25 @@ const Profile = () => {
       return;
     }
 
+    const usuarioId = getUsuarioLogadoId(user);
+
+    if (!usuarioId) {
+      toast.error("Não foi possível identificar o usuário logado.");
+      return;
+    }
+
     const payload = {
       titulo: tituloTratado,
       descricao: mensagemTratada,
       tipoFeedback: isFeedback ? "FEEDBACK" : "DENUNCIA",
-      usuarioId: user?.id,
-      nomeUsuario: user?.nome,
+      usuarioId: usuarioId,
+      nomeUsuario: user?.nome || user?.usuario?.nome || "Usuário",
       prestadorId: dados.prestadorId,
       dataCadastro: new Date().toISOString(),
       
       statusFeedback: "ATIVO",
 
-      ...(isFeedback ? { nota } : {})
+      nota: isFeedback ? nota : 0,
     };
 
     console.log("TIPO RECEBIDO:", tipo);
