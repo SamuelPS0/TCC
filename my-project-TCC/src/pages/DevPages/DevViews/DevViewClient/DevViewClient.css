@@ -623,7 +623,7 @@
 
 .devclient-container .prestview-feedback-card.feedback {
   border: 2px solid #78ff91;
-  background-color: #eafff3;
+  background-color: #ffffff;
   transition: all 0.3s ease;
 }
 
@@ -634,7 +634,7 @@
 
 .devclient-container .prestview-feedback-card.denuncia {
   border: 2px solid #ff5151;
-  background-color: #faefef;
+  background-color: #ffffff;
   transition: all 0.3s ease;
 }
 
