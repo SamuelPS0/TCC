@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import HeaderSwitcher from "../../../../Components/HeaderSwitcher";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { IoMdImage, IoIosCall } from "react-icons/io";
@@ -59,6 +59,7 @@ const getContatoLabel = (contato = {}) =>
 
 const DevViewPrestador = () => {
   const { prestadorId } = useParams();
+  const navigate = useNavigate();
   const [card, setCard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [prestadoresInfo, setPrestadoresInfo] = useState({});
@@ -248,6 +249,18 @@ const editarStatusFeedback = async (feedback) => {
   }
 };
 
+const abrirDevViewUsuario = async (usuarioId) => {
+  if (!usuarioId) return;
+
+  try {
+    const { data } = await axios.get(`http://localhost:8080/api/v1/Usuario/${usuarioId}`);
+    navigate("/dev-view-client", { state: { usuario: data } });
+  } catch (error) {
+    console.error("Erro ao abrir DevView do usuário:", error);
+    toast.error("Não foi possível abrir o DevView do usuário.");
+  }
+};
+
   if (loading) return <Loading />;
   if (!card) return <p>Prestador não encontrado.</p>;
 
@@ -358,7 +371,15 @@ const editarStatusFeedback = async (feedback) => {
                 <div className="devview-feedback-user">
                   <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, nomesUsuarios))}</span>
                   <div>
-                    <h3 className="devview-feedback-name">{getNomeFeedback(fb, nomesUsuarios)}</h3>
+                    <h3 className="devview-feedback-name">
+                      <button
+                        type="button"
+                        className="devview-feedback-name-link"
+                        onClick={() => abrirDevViewUsuario(fb.usuarioId)}
+                      >
+                        {getNomeFeedback(fb, nomesUsuarios)}
+                      </button>
+                    </h3>
                     <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
                   </div>
                 </div>
