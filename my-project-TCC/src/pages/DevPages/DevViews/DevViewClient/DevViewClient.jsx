@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import { MdStars } from "react-icons/md";
+import { FaRegFlag } from "react-icons/fa";
 import Loading from '../../../../Components/Loading/Loading';
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
 import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
@@ -208,22 +209,20 @@ const editarStatusFeedback = async (feedback) => {
               >
                 <div className="devview-feedback-header">
                   <div className="devview-feedback-user">
-                    <span className="devview-feedback-avatar">
-                      {getInicialFeedback(getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome }))}
-                    </span>
-                    <div>
-                      <h3 className="devview-feedback-name">
-                        <button
-                          type="button"
-                          className="devview-feedback-name-link"
-                          onClick={() => abrirDevViewUsuario(fb.usuarioId)}
-                        >
-                          {getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome })}
-                        </button>
-                      </h3>
-                      <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
-                    </div>
+                  <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome }))}</span>
+                  <div>
+                    <h3 className="devview-feedback-name">
+                      <button
+                        type="button"
+                        className="devview-feedback-name-link"
+                        onClick={() => abrirDevViewUsuario(fb.usuarioId)}
+                      >
+                        {getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome })}
+                      </button>
+                    </h3>
+                    <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
                   </div>
+                </div>
                   <div className="feedback-status-row">
                     <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
                       <input

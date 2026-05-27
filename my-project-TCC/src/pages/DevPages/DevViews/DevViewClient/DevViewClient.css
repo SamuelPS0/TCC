@@ -605,9 +605,9 @@
 .devclient-container .prestview-feedbacks {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 24px;
   width: 100%;
-  max-width: 920px;
+  max-width: 980px;
   align-items: stretch;
 }
 
@@ -619,34 +619,33 @@
   background-color: #ffffff;
   border-left: 5px solid #f05221;
   text-align: left;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 .devclient-container .prestview-feedback-card.feedback {
-  border: 2px solid #78ff91;
+  border: none;
   background-color: #ffffff;
-  transition: all 0.3s ease;
 }
 
 .devclient-container .prestview-feedback-card.feedback:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
 }
 
 .devclient-container .prestview-feedback-card.denuncia {
-  border: 2px solid #ff5151;
+  border: none;
   background-color: #ffffff;
-  transition: all 0.3s ease;
 }
 
 .devclient-container .prestview-feedback-card.denuncia:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
 }
 
 .devclient-container .prestview-feedback-card.inactive {
-  background-color: #e0e0e0;
-  border: 2px solid #999;
-  opacity: 0.7;
+  background-color: #f1f1f1;
+  opacity: 0.85;
 }
 
 .devclient-container h3.feedback-name,
@@ -662,17 +661,22 @@
 }
 
 .devclient-container .prestview-feedback-card h4 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 5px 0;
+  color: #070720;
+  font-family: Poppins, Montserrat, sans-serif;
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.12;
+  margin: 0 0 16px;
   text-align: left;
+  overflow-wrap: anywhere;
 }
 
 .devclient-container .prestview-feedback-card p {
-  color: #555;
-  font-size: 14px;
-  font-weight: 400;
+  color: #20243b;
+  font-family: Montserrat, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.62;
   margin: 2px 0;
   text-align: left;
 }
