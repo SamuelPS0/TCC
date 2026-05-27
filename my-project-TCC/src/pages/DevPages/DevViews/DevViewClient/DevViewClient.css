@@ -607,12 +607,12 @@
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  max-width: 980px;
+  max-width: 94%;
   align-items: stretch;
 }
 
 .devclient-container .prestview-feedback-card {
-  max-width: 953px;
+  max-width: 100%;
   padding: 15px;
   height: auto;
   border-radius: 8px;
