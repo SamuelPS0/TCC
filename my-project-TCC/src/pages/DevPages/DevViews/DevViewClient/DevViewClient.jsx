@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import { MdStars } from "react-icons/md";
+import { FaRegFlag } from "react-icons/fa";
 import Loading from '../../../../Components/Loading/Loading';
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
 import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
@@ -200,14 +201,14 @@ const editarStatusFeedback = async (feedback) => {
                 className={`prestview-feedback-card devview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
                 <div className="feedback-status-row">
-                  <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
-                    <input
-                      type="checkbox"
-                      checked={fb.statusFeedback === "ATIVO"}
-                      onChange={() => editarStatusFeedback(fb)}
-                    />
-                    <span className="feedback-slider"></span>
-                  </label>
+                  <button
+                    className="feedback-report-button"
+                    type="button"
+                    aria-label="Denunciar feedback"
+                    title="Denunciar feedback"
+                  >
+                    <FaRegFlag />
+                  </button>
                 </div>
                 <div className="devview-feedback-user">
                   <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome }))}</span>

@@ -605,48 +605,47 @@
 .devclient-container .prestview-feedbacks {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 24px;
   width: 100%;
-  max-width: 920px;
+  max-width: 980px;
   align-items: stretch;
 }
 
 .devclient-container .prestview-feedback-card {
-  max-width: 953px;
-  padding: 15px;
-  height: auto;
-  border-radius: 8px;
-  background-color: #f2f2f2;
-  border-left: 5px solid #f05221;
+  width: 100%;
+  min-height: 274px;
+  padding: 28px 32px 20px;
+  border-radius: 22px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
   text-align: left;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 .devclient-container .prestview-feedback-card.feedback {
-  border: 2px solid #78ff91;
+  border: none;
   background-color: #ffffff;
-  transition: all 0.3s ease;
 }
 
 .devclient-container .prestview-feedback-card.feedback:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
 }
 
 .devclient-container .prestview-feedback-card.denuncia {
-  border: 2px solid #ff5151;
+  border: none;
   background-color: #ffffff;
-  transition: all 0.3s ease;
 }
 
 .devclient-container .prestview-feedback-card.denuncia:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
 }
 
 .devclient-container .prestview-feedback-card.inactive {
-  background-color: #e0e0e0;
-  border: 2px solid #999;
-  opacity: 0.7;
+  background-color: #f1f1f1;
+  opacity: 0.85;
 }
 
 .devclient-container h3.feedback-name,
@@ -662,17 +661,22 @@
 }
 
 .devclient-container .prestview-feedback-card h4 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 5px 0;
+  color: #070720;
+  font-family: Poppins, Montserrat, sans-serif;
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.12;
+  margin: 0 0 16px;
   text-align: left;
+  overflow-wrap: anywhere;
 }
 
 .devclient-container .prestview-feedback-card p {
-  color: #555;
-  font-size: 14px;
-  font-weight: 400;
+  color: #20243b;
+  font-family: Montserrat, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.62;
   margin: 2px 0;
   text-align: left;
 }
@@ -680,5 +684,52 @@
 .devclient-container .feedback-status-row {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+.devclient-container .feedback-report-button {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #ff3151;
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.devclient-container .feedback-report-button:hover {
+  color: #d9002c;
+  transform: translateY(-1px);
+}
+
+.devclient-container .devview-feedback-user {
+  margin-bottom: 14px;
+}
+
+.devclient-container .devview-feedback-avatar {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  font-size: 22px;
+}
+
+.devclient-container .devview-feedback-name {
+  font-size: 21px;
+  font-weight: 900;
+  margin: 0 0 6px;
+}
+
+.devclient-container .devview-feedback-time {
+  font-size: 13px;
+  font-weight: 800;
+  color: #a5abb8;
+}
+
+.devclient-container .devview-feedback-target,
+.devclient-container .devview-feedback-note {
+  font-size: 14px;
 }
