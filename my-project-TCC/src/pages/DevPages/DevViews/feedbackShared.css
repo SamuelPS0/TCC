@@ -8,6 +8,7 @@
 }
 .devview-feedback-card.feedback { border: 2px solid #78ff91; }
 .devview-feedback-card.denuncia { border: 2px solid #ffb7b7; }
+.devview-feedback-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
 .devview-feedback-user { display: flex; align-items: center; gap: 12px; }
 .devview-feedback-avatar { width: 50px; height: 50px; border-radius: 50%; background: #ffd9d4; color: #ff4f2a; display:flex; align-items:center; justify-content:center; font-weight:900; }
 .devview-feedback-name { font-size: 20px; font-weight: 800; color:#ff4b23; margin: 0 0 4px; }
