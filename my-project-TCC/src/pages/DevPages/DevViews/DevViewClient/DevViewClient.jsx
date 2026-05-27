@@ -91,6 +91,13 @@ const editarStatusFeedback = async (feedback) => {
     cancelButtonColor: "#e74c3c",
     confirmButtonText: "Sim",
     cancelButtonText: "Cancelar",
+    customClass: {
+      popup: "swal-poppins-popup",
+      title: "swal-poppins-title",
+      htmlContainer: "swal-poppins-text",
+      confirmButton: "swal-poppins-confirm",
+      cancelButton: "swal-poppins-cancel",
+    },
   });
 
   if (!result.isConfirmed) return;
@@ -200,17 +207,8 @@ const editarStatusFeedback = async (feedback) => {
                 key={fb.id}
                 className={`prestview-feedback-card devview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
-                <div className="feedback-status-row">
-                  <button
-                    className="feedback-report-button"
-                    type="button"
-                    aria-label="Denunciar feedback"
-                    title="Denunciar feedback"
-                  >
-                    <FaRegFlag />
-                  </button>
-                </div>
-                <div className="devview-feedback-user">
+                <div className="devview-feedback-header">
+                  <div className="devview-feedback-user">
                   <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome }))}</span>
                   <div>
                     <h3 className="devview-feedback-name">

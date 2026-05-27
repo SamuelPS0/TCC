@@ -20,3 +20,11 @@
 .devview-feedback-target a:hover { text-decoration:underline; }
 .devview-feedback-note { margin-top:8px; color:#444; font-size:13px; display:flex; align-items:center; gap:4px; }
 .devview-feedback-star { color: #ffc400; width: 16px; height: 16px; }
+
+.swal-poppins-popup,
+.swal-poppins-title,
+.swal-poppins-text,
+.swal-poppins-confirm,
+.swal-poppins-cancel {
+  font-family: "Poppins", sans-serif !important;
+}

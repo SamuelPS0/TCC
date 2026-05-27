@@ -95,6 +95,13 @@ const DevViewADM = () => {
       cancelButtonColor: "#e74c3c",
       confirmButtonText: "Sim",
       cancelButtonText: "Cancelar",
+      customClass: {
+        popup: "swal-poppins-popup",
+        title: "swal-poppins-title",
+        htmlContainer: "swal-poppins-text",
+        confirmButton: "swal-poppins-confirm",
+        cancelButton: "swal-poppins-cancel",
+      },
     });
 
     if (!result.isConfirmed) return;
