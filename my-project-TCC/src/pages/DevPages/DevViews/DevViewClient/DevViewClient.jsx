@@ -225,6 +225,17 @@ const editarStatusFeedback = async (feedback) => {
                     <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
                   </div>
                 </div>
+                  <div className="feedback-status-row">
+                    <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
+                      <input
+                        type="checkbox"
+                        checked={fb.statusFeedback === "ATIVO"}
+                        onChange={() => editarStatusFeedback(fb)}
+                      />
+                      <span className="feedback-slider"></span>
+                    </label>
+                  </div>
+                </div>
                 <h4>{fb.titulo}</h4>
                 <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || `Prestador #${fb.prestadorId || ""}`}</Link></p>
                 <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>

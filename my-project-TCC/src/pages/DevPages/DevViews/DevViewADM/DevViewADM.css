@@ -373,7 +373,7 @@
 .devadm-feedback-status-row {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 6px;
+  margin-bottom: 0;
 }
 
 .devadm-feedback-switch {
