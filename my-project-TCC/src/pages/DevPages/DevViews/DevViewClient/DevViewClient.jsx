@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import { MdStars } from "react-icons/md";
+import { FaRegFlag } from "react-icons/fa";
 import Loading from '../../../../Components/Loading/Loading';
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
 import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
