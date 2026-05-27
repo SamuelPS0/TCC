@@ -224,6 +224,13 @@ const editarStatusFeedback = async (feedback) => {
     cancelButtonColor: "#e74c3c",
     confirmButtonText: "Sim",
     cancelButtonText: "Cancelar",
+    customClass: {
+      popup: "swal-poppins-popup",
+      title: "swal-poppins-title",
+      htmlContainer: "swal-poppins-text",
+      confirmButton: "swal-poppins-confirm",
+      cancelButton: "swal-poppins-cancel",
+    },
   });
 
   if (!result.isConfirmed) return;
@@ -358,29 +365,31 @@ const abrirDevViewUsuario = async (usuarioId) => {
                 key={fb.id}
                 className={`prestview-feedback-card devview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
-                <div className="feedback-status-row">
-                  <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
-                    <input
-                      type="checkbox"
-                      checked={fb.statusFeedback === "ATIVO"}
-                      onChange={() => editarStatusFeedback(fb)}
-                    />
-                    <span className="feedback-slider"></span>
-                  </label>
-                </div>
-                <div className="devview-feedback-user">
-                  <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, nomesUsuarios))}</span>
-                  <div>
-                    <h3 className="devview-feedback-name">
-                      <button
-                        type="button"
-                        className="devview-feedback-name-link"
-                        onClick={() => abrirDevViewUsuario(fb.usuarioId)}
-                      >
-                        {getNomeFeedback(fb, nomesUsuarios)}
-                      </button>
-                    </h3>
-                    <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
+                <div className="devview-feedback-header">
+                  <div className="devview-feedback-user">
+                    <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, nomesUsuarios))}</span>
+                    <div>
+                      <h3 className="devview-feedback-name">
+                        <button
+                          type="button"
+                          className="devview-feedback-name-link"
+                          onClick={() => abrirDevViewUsuario(fb.usuarioId)}
+                        >
+                          {getNomeFeedback(fb, nomesUsuarios)}
+                        </button>
+                      </h3>
+                      <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
+                    </div>
+                  </div>
+                  <div className="feedback-status-row">
+                    <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
+                      <input
+                        type="checkbox"
+                        checked={fb.statusFeedback === "ATIVO"}
+                        onChange={() => editarStatusFeedback(fb)}
+                      />
+                      <span className="feedback-slider"></span>
+                    </label>
                   </div>
                 </div>
                 <h4>{fb.titulo}</h4>
