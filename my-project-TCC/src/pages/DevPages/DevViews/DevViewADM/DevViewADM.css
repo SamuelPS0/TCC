@@ -177,51 +177,6 @@
   gap: 20px;
 }
 
-.feedback-card {
-  width: 100%;
-  max-width: 800px;
-  height: 230px;
-  padding: 24px;
-  border-radius: 5px;
-  background: #FFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-}
-
-.feedback-card:hover {
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
-  transform: translateY(-4px); 
-}
-
-.feedback-card h2 {
-  color: #000;
-  font-family: Montserrat, sans-serif;
-  font-size: 36px;
-  font-weight: 500;
-  margin-bottom: 15px;
-}
-
-.feedback-card p {
-  color: #000;
-  font-family: Montserrat, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 35px;
-}
-
-/* Diferenciação */
-.feedback-card.feedback {
-  border: 2px solid #78ff91;
-  background-color: #eafff3;
-}
-
-.feedback-card.denuncia {
-  border: 2px solid #ff5151;
-  background-color: #faefef;
-}
-
 .devadm-status-btn {
   padding: 10px 20px;
   border: none;
@@ -298,82 +253,32 @@
   }
 }
 
-/* Feedbacks e denúncias - mesmo padrão visual do DevViewPrestador */
-.devadm-feedback-title {
+/* Feedbacks e denúncias no DevViewADM seguem o mesmo visual do Profile */
+.devadm-feedback-title,
+.devadm-container .devadm-feedback-title {
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
   margin-top: 50px;
+  margin-bottom: 16px;
 }
 
 .devadm-feedbacks {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 28px;
+  margin-top: 50px;
   width: 100%;
-  max-width: 920px;
-  align-items: stretch;
-}
-
-.devadm-feedback-card {
   max-width: 953px;
-  padding: 15px;
-  height: auto;
-  border-radius: 8px;
-  background-color: #f2f2f2;
-  border-left: 5px solid #f05221;
-}
-
-.devadm-feedback-card.feedback {
-  border: 2px solid #78ff91;
-  background-color: #eafff3;
-  transition: all 0.3s ease;
-}
-
-.devadm-feedback-card.feedback:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
-}
-
-.devadm-feedback-card.denuncia {
-  border: 2px solid #ff5151;
-  background-color: #faefef;
-  transition: all 0.3s ease;
-}
-
-.devadm-feedback-card.denuncia:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
-}
-
-.devadm-feedback-card.inactive {
-  background-color: #e0e0e0;
-  border: 2px solid #999;
-  opacity: 0.7;
-}
-
-.devadm-feedback-card h4 {
-  margin: 0 0 5px 0;
-  font-size: 16px;
-  color: #333;
-}
-
-.devadm-feedback-card p {
-  margin: 2px 0;
-  font-size: 14px;
-  color: #555;
-}
-
-.devadm-feedback-name {
-  font-size: 15px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  color: #f05221;
-  margin-bottom: 10px;
-  margin-top: -10px;
 }
 
 .devadm-feedback-status-row {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 6px;
+  margin-bottom: 0;
 }
 
 .devadm-feedback-switch {
@@ -418,86 +323,7 @@
   transform: translateX(22px);
 }
 
-.devadm-feedback-switch input:not(:checked) + .devadm-feedback-slider {
-  background-color: #e74c3c;
-}
-
+.devadm-feedback-switch input:not(:checked) + .devadm-feedback-slider,
 .devadm-feedback-card.inactive .devadm-feedback-slider {
-  background-color: #e74c3c !important;
-}
-/* Ajuste final: no DevViewADM os cards seguem exatamente o visual do DevViewPrestador */
-.devadm-container .devadm-feedback-title {
-  color: #000;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  text-align: center;
-  margin-top: 50px;
-  margin-bottom: 16px;
-}
-
-.devadm-container .devadm-feedback-card {
-  max-width: 953px;
-  padding: 15px;
-  height: auto;
-  border-radius: 8px;
-  background-color: #f2f2f2;
-  border-left: 5px solid #f05221;
-  text-align: left;
-}
-
-.devadm-container .devadm-feedback-card.feedback {
-  border: 2px solid #78ff91;
-  background-color: #eafff3;
-  transition: all 0.3s ease;
-}
-
-.devadm-container .devadm-feedback-card.feedback:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(120, 255, 145, 0.5);
-}
-
-.devadm-container .devadm-feedback-card.denuncia {
-  border: 2px solid #ff5151;
-  background-color: #faefef;
-  transition: all 0.3s ease;
-}
-
-.devadm-container .devadm-feedback-card.denuncia:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
-}
-
-.devadm-container .devadm-feedback-card.inactive {
-  background-color: #e0e0e0;
-  border: 2px solid #999;
-  opacity: 0.7;
-}
-
-.devadm-container h3.devadm-feedback-name,
-.devadm-container .devadm-feedback-name {
-  color: #f05221;
-  font-family: 'Poppins', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: normal;
-  text-align: left;
-  margin-top: -10px;
-  margin-bottom: 10px;
-}
-
-.devadm-container .devadm-feedback-card h4 {
-  color: #333;
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 5px 0;
-  text-align: left;
-}
-
-.devadm-container .devadm-feedback-card p {
-  color: #555;
-  font-size: 14px;
-  font-weight: 400;
-  margin: 2px 0;
-  text-align: left;
+  background-color: #e74c3c;
 }
