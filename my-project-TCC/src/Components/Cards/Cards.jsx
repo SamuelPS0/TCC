@@ -270,9 +270,9 @@ const Cards = ({ filter = {} }) => {
     <div className="cards-container">
       {loading ? (
         <>
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
+          {Array.from({ length: 8 }, (_, index) => (
+            <SkeletonCard key={`skeleton-${index}`} />
+          ))}
         </>
       ) : filteredCards.length === 0 ? (
         <div className="cards-error">

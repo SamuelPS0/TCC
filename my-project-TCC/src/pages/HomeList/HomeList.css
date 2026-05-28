@@ -99,7 +99,7 @@
   border-radius: 14px;
   padding: 20px 18px;
   width: 100%;
-  max-width: 970px;
+  max-width: none;
   margin: 72px auto 0;
   position: relative;
   z-index: 3;
@@ -114,70 +114,71 @@
 }
 
 .homelist-rating-filter {
-  width: min(900px, 100%);
+  width: fit-content;
+  min-width: 260px;
   max-width: 100%;
   position: relative;
 }
 
 .homelist-rating-filter__icon {
-  width: 30px;
-  height: 30px;
+  width: 18px;
+  height: 18px;
   color: #d4af37;
   flex-shrink: 0;
 }
 
 .homelist-rating-filter__trigger {
   width: 100%;
-  min-height: 82px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 0 28px;
-  border: 2px solid #d8dbe2;
-  border-radius: 24px;
+  gap: 12px;
+  padding: 0 14px;
+  border: 1px solid #d8dbe2;
+  border-radius: 8px;
   background-color: #ffffff;
   color: #222222;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
-  font-size: 1.3rem;
+  font-size: 0.82rem;
   font-weight: 600;
 }
 
 .homelist-rating-filter__trigger-content {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 8px;
 }
 
 .homelist-rating-filter__chevron {
-  width: 25px;
-  height: 25px;
+  width: 16px;
+  height: 16px;
   color: #1f2937;
 }
 
 .homelist-rating-filter__menu {
-  margin-top: 16px;
+  margin-top: 8px;
   background-color: #fff;
-  border: 2px solid #d8dbe2;
-  border-radius: 24px;
+  border: 1px solid #d8dbe2;
+  border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
 }
 
 .homelist-rating-filter__option {
   width: 100%;
-  min-height: 74px;
+  min-height: 42px;
   border: 0;
   border-bottom: 1px solid #e5e7eb;
   background-color: #fff;
-  padding: 0 26px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
-  font-size: 1.15rem;
+  font-size: 0.82rem;
   color: #1f2937;
 }
 
@@ -193,13 +194,13 @@
 .homelist-rating-filter__option-content {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 8px;
 }
 
 .homelist-rating-filter__option-main-icon,
 .homelist-rating-filter__check {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   color: #d4af37;
 }
 
@@ -210,13 +211,13 @@
 .homelist-rating-filter__stars {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
   color: #d4af37;
 }
 
 .homelist-rating-filter__stars svg {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
 }
 
 @media (max-width: 1024px) {
@@ -301,23 +302,23 @@
   }
 
   .homelist-rating-filter {
-    width: 100%;
+    width: min(100%, 260px);
   }
 
   .homelist-rating-filter__trigger {
-    min-height: 64px;
-    border-radius: 16px;
-    padding: 0 16px;
-    font-size: 1rem;
+    min-height: 42px;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 0.78rem;
   }
 
   .homelist-rating-filter__menu {
-    border-radius: 16px;
+    border-radius: 10px;
   }
 
   .homelist-rating-filter__option {
-    min-height: 62px;
-    padding: 0 16px;
-    font-size: 0.98rem;
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 0.78rem;
   }
 }
