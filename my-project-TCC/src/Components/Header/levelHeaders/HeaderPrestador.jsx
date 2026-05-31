@@ -13,7 +13,7 @@ import { IoMdMenu } from "react-icons/io";
 // Importa o contexto de autenticação
 import { useAuth } from '../../AuthContext';
 
-export default function HeaderPrestador({ onSearch, initialFilters, perfil  }) {
+export default function HeaderPrestador({ onSearch, initialFilters }) {
   const [openProfile, setOpenProfile] = useState(false);
   const { logout } = useAuth(); // Função de logout
   const navigate = useNavigate(); // Para redirecionar
@@ -23,7 +23,6 @@ export default function HeaderPrestador({ onSearch, initialFilters, perfil  }) {
     navigate('/'); 
   };
 
-  const { user } = useAuth();
 
   return (
     <header className="headerprestador-header">

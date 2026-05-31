@@ -19,6 +19,8 @@ import GooglePlay from '../LandingPage/landingPageImages/googleplay.png';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter, FaApple, FaGooglePlay  } from 'react-icons/fa';
 import '../LandingPage/LandingPage.css';
 
+const CONTACT_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdGP9PZDXYMJVUacDK0O_-3uU-syLAvq3WLtg9W_3dzG3fShA/viewform?usp=sharing&ouid=102550909011925501329';
+
 
 export default function LandingPage() {
   const { user } = useAuth();
@@ -123,7 +125,7 @@ export default function LandingPage() {
         <div className="footer-col">
           <h4>Links</h4>
           <ul>
-            <li><Link to="#">Fale Conosco</Link></li>
+            <li><a href={CONTACT_FORM_URL} target="_blank" rel="noopener noreferrer">Fale Conosco</a></li>
             <li><Link to="/privacity">Termos de uso</Link></li>
             <li><Link to="/privacity">Políticas de Privacidade</Link></li>
           </ul>

@@ -171,3 +171,35 @@
   margin-top: 0.5rem;
   font-family: 'Montserrat', sans-serif;
 }
+
+
+.password-rules {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+  font-family: Poppins, sans-serif;
+}
+
+.password-rule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 999px;
+  background: #fff3f0;
+  color: #b3261e;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.password-rule svg {
+  flex-shrink: 0;
+}
+
+.password-rule--valid {
+  background: #eaf8ef;
+  color: #188038;
+  transform: translateY(-1px);
+}

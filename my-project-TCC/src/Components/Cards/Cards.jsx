@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { MdStars } from "react-icons/md";
 import { FaSearchLocation } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TfiFaceSad } from "react-icons/tfi";
+import SicranaImg from "../../pages/LandingPage/landingPageImages/peneira-de-mulher-flor-na-tigela-para-fazer-bolo.jpg";
 import "./Cards.css";
 
 const SkeletonCard = () => (
@@ -58,6 +59,12 @@ const getImageField = (obj = {}, possibleKeys = []) => {
 
 const normalizeText = (value = "") => value.toString().trim().toLowerCase();
 
+const isSicranaBolos = ({ servicoNome = "", prestadorNome = "" } = {}) => {
+  const texto = `${servicoNome} ${prestadorNome}`.toLowerCase();
+
+  return texto.includes("sicrana") || texto.includes("bolo");
+};
+
 const formatRating = (rating) => {
   if (rating === null || rating === undefined) return "Sem avaliações";
 
@@ -84,7 +91,6 @@ const isFeedbackValido = (feedback = {}) => {
 };
 
 const Cards = ({ filter = {} }) => {
-  const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -146,28 +152,31 @@ const Cards = ({ filter = {} }) => {
                 ? notas.reduce((total, nota) => total + nota, 0) / notas.length
                 : null;
 
+            const servicoNome = servico.nome || "Serviço não disponível";
+            const prestadorNome = prestador.nome || usuario.nome || "Prestador não disponível";
+            const imagemServicoBanco = getImageField(servico, [
+              "fotoServico",
+              "imagemServico",
+              "foto",
+              "imagem",
+            ]);
+            const imagemPerfilBanco =
+              getImageField(prestador, ["foto"]) ||
+              getImageField(usuario, ["foto"]);
+            const usarImagemFalsa = isSicranaBolos({ servicoNome, prestadorNome });
+
             return {
               servicoId: servico.id || null,
               prestadorId: prestador.id || null,
-              servicoNome: servico.nome || "Serviço não disponível",
+              servicoNome,
               servicoDescricao: servico.descricao || "Descrição não disponível",
               categoria: categoriaObj.nome || "Categoria não disponível",
               cidade: prestador.cidade || "Cidade não disponível",
               uf: prestador.uf || "UF não disponível",
-              prestadorNome:
-                prestador.nome || usuario.nome || "Prestador não disponível",
+              prestadorNome,
               contatoMidia: contato.link || null,
-              imagemPerfil:
-                getImageField(prestador, ["foto"]) ||
-                getImageField(usuario, ["foto"]) ||
-                null,
-              imagemServico:
-                getImageField(servico, [
-                  "fotoServico",
-                  "imagemServico",
-                  "foto",
-                  "imagem",
-                ]) || null,
+              imagemPerfil: usarImagemFalsa ? SicranaImg : imagemPerfilBanco || null,
+              imagemServico: usarImagemFalsa ? SicranaImg : imagemServicoBanco || null,
               avaliacaoMedia,
               totalAvaliacoes: notas.length,
               statusPrestador: getPrestadorStatus(prestador),

@@ -15,8 +15,7 @@ const DevCategory = () => {
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors }
+    reset
   } = useForm();
 
   // FUNÇÃO GET (Read)

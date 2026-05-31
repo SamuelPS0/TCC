@@ -23,12 +23,15 @@ import {
 import { MdStars } from "react-icons/md";
 import ProfileImg from "../../img/Ellipse.png";
 import InputImg from "../../img/crosant.png";
+import SicranaImg from "../../pages/LandingPage/landingPageImages/peneira-de-mulher-flor-na-tigela-para-fazer-bolo.jpg";
 import HeaderSwitcher from "../../Components/HeaderSwitcher";
 import Loading from "../../Components/Loading/Loading";
 import { useAuth } from "../../Components/AuthContext";
 import { toast } from "sonner";
 import "./Profile.css";
 import { breakLineEveryNChars } from "../../utils/formatFeedbackText";
+
+const REPORT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdGP9PZDXYMJVUacDK0O_-3uU-syLAvq3WLtg9W_3dzG3fShA/viewform?usp=sharing&ouid=102550909011925501329";
 
 const getContatoPrestadorId = (contato = {}) =>
   Number(contato.prestadorId ?? contato.prestador_id ?? contato.prestador?.id);
@@ -53,16 +56,6 @@ const getUsuarioLogadoId = (user = {}) => {
 
   const fromStorage = Number(localStorage.getItem("usuarioId"));
   return !Number.isNaN(fromStorage) && fromStorage > 0 ? fromStorage : null;
-};
-
-const formatNotaFeedback = (nota) => {
-  const notaNumerica = Number(nota);
-
-  if (!notaNumerica) {
-    return "Sem nota";
-  }
-
-  return "";
 };
 
 const formatTempoFeedback = (dataCadastro) => {
@@ -93,6 +86,12 @@ const formatTempoFeedback = (dataCadastro) => {
   return data.toLocaleDateString("pt-BR");
 };
 
+const isSicranaBolos = (dadosPrestador = {}) => {
+  const texto = `${dadosPrestador.servicoNome || ""} ${dadosPrestador.prestadorNome || ""}`.toLowerCase();
+
+  return texto.includes("sicrana") || texto.includes("bolo");
+};
+
 const isFeedbackAvaliavel = (feedback = {}) => {
   const tipo = String(feedback?.tipoFeedback ?? "").trim().toUpperCase();
   const status = String(feedback?.statusFeedback ?? "").trim().toUpperCase();
@@ -111,6 +110,7 @@ const Profile = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [nomesUsuarios, setNomesUsuarios] = useState({});
   const [contatos, setContatos] = useState([]);
+  const [feedbackEnviado, setFeedbackEnviado] = useState(false);
 
   const [showLoader, setShowLoader] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
@@ -282,10 +282,10 @@ const Profile = () => {
       temImagemServico: Boolean(dadosPrestador.imagemServico),
     });
 
-    if (prestadorId === 1) {
+    if (isSicranaBolos(dadosPrestador) || prestadorId === 1) {
       return {
-        perfil: ProfileImg,
-        servico: InputImg,
+        perfil: SicranaImg,
+        servico: SicranaImg,
       };
     }
 
@@ -298,9 +298,8 @@ const Profile = () => {
   const feedbacksAtivos = feedbacks.filter(isFeedbackAvaliavel);
 
   const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
-  const isPrimeiroPrestador = Number(dados?.prestadorId) === 1;
-  const hasImagemPerfil = isPrimeiroPrestador || Boolean(dados?.imagemPerfil);
-  const hasImagemServico = isPrimeiroPrestador || Boolean(dados?.imagemServico);
+  const hasImagemPerfil = true;
+  const hasImagemServico = true;
   const hasDescricaoLonga = (dados?.servicoDescricao || "").length > 90;
 
   const denunciaMotivos = [
@@ -322,6 +321,7 @@ const Profile = () => {
   const [titulo, setTitulo] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [nota, setNota] = useState(0);
+  const [enviando, setEnviando] = useState(false);
 
   const resetForm = () => {
     setTitulo("");
@@ -335,6 +335,8 @@ const Profile = () => {
   };
 
   const enviar = async () => {
+
+    if (enviando) return;
 
     const tituloTratado = titulo.trim();
     const mensagemTratada = mensagem.trim();
@@ -375,6 +377,7 @@ const Profile = () => {
     console.log("PAYLOAD:", payload);
 
     try {
+      setEnviando(true);
 
       await axios.post(
         "http://localhost:8080/api/v1/feedback",
@@ -386,6 +389,11 @@ const Profile = () => {
         toast.success("Feedback enviado com sucesso!");
 
         setFeedbacks((prev) => [...prev, payload]);
+        setFeedbackEnviado(true);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 700);
 
       } else {
 
@@ -402,6 +410,8 @@ const Profile = () => {
       console.error("ERRO AO ENVIAR:", error);
 
       alert("Erro ao enviar!");
+    } finally {
+      setEnviando(false);
     }
   };
 
@@ -475,7 +485,7 @@ const Profile = () => {
                         key={star}
                         type="button"
                         className="profile-rating-star"
-                        onClick={() => setNota(star)}
+                        onClick={() => !enviando && setNota(star)}
                         aria-label={`${star} estrela${star > 1 ? "s" : ""}`}
                         aria-checked={nota === star}
                         role="radio"
@@ -502,6 +512,7 @@ const Profile = () => {
                     placeholder="Título do feedback"
                     value={titulo}
                     onChange={(event) => setTitulo(event.target.value)}
+                    disabled={enviando}
                   />
                 </label>
               </>
@@ -515,6 +526,7 @@ const Profile = () => {
     className="profile-denuncia-select"
     value={titulo}
     onChange={(event) => setTitulo(event.target.value)}
+    disabled={enviando}
   >
                   <option value="">Selecione um motivo</option>
 
@@ -550,6 +562,7 @@ const Profile = () => {
                 }
                 value={mensagem}
                 onChange={(event) => setMensagem(event.target.value)}
+                disabled={enviando}
               />
             </label>
 
@@ -567,8 +580,12 @@ const Profile = () => {
               </div>
             )}
 
-            <button className="profile-modal-button" onClick={enviar}>
-              ENVIAR
+            <button
+              className="profile-modal-button"
+              onClick={enviar}
+              disabled={enviando || (isFeedback && feedbackEnviado)}
+            >
+              {enviando ? "ENVIANDO..." : "ENVIAR"}
             </button>
 
             <p className="profile-modal-footer-note">
@@ -660,11 +677,12 @@ const Profile = () => {
 
               <div className="profile-buttons">
                 <button
-                  onClick={() => setOpenFeedback(true)}
+                  onClick={() => !feedbackEnviado && setOpenFeedback(true)}
                   className="profile-feedback"
+                  disabled={feedbackEnviado}
                 >
                   <FaPaperclip className="profile-feedback-icon" />
-                  ENVIAR FEEDBACK
+                  {feedbackEnviado ? "FEEDBACK ENVIADO" : "ENVIAR FEEDBACK"}
                 </button>
 
                 <button
@@ -709,6 +727,7 @@ const Profile = () => {
                             className="feedback-report-button"
                             type="button"
                             aria-label="Denunciar feedback"
+                            onClick={() => window.open(REPORT_FORM_URL, "_blank", "noopener,noreferrer")}
                           >
                             <FaRegFlag />
                           </button>

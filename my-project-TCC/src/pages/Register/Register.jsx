@@ -1,20 +1,24 @@
-import axios from 'axios'
 import React, { useState } from 'react';
-import { useAuth } from '../../Components/AuthContext';
 import './Register.css';
-import accessLevels from '../../Components/accessLevels';
 import { Link, useNavigate } from 'react-router-dom';
 import LogoRegister from '../../img/DivulgAÍ-removebg-preview.png'; 
 import { useForm } from 'react-hook-form';
 import { FaRegEnvelope } from "react-icons/fa";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa6";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { IoPersonOutline } from "react-icons/io5";  
-import {toast } from 'sonner'
+
+const passwordRules = [
+  { label: 'Letra maiúscula', test: (value = '') => /[A-Z]/.test(value) },
+  { label: 'Letra minúscula', test: (value = '') => /[a-z]/.test(value) },
+  { label: 'Número', test: (value = '') => /\d/.test(value) },
+  { label: 'Acento', test: (value = '') => /[À-ÿ]/.test(value) },
+];
+
+const isStrongPassword = (value = '') => passwordRules.every((rule) => rule.test(value));
 
 export default function Register() {
   const navigate = useNavigate();
-  const { login } = useAuth();
-  
   const {
     register,
     handleSubmit,
@@ -28,7 +32,7 @@ export default function Register() {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
   
-  const password = watch('password');
+  const password = watch('password') || '';
   
   
     const onSubmit = (data) => {
@@ -92,13 +96,33 @@ export default function Register() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Digite sua senha"
-                {...register('password', { required: 'Sua senha é obrigatória' })}
+                {...register('password', {
+                  required: 'Sua senha é obrigatória',
+                  validate: (value) =>
+                    isStrongPassword(value) ||
+                    'A senha precisa cumprir todos os requisitos de segurança',
+                })}
               />
               {showPassword ? (
                 <FaEyeSlash className="register-eye-icon" onClick={togglePasswordVisibility} />
               ) : (
                 <FaEye className="register-eye-icon" onClick={togglePasswordVisibility} />
               )}
+            </div>
+            <div className="password-rules" aria-live="polite">
+              {passwordRules.map((rule) => {
+                const valid = rule.test(password);
+
+                return (
+                  <span
+                    key={rule.label}
+                    className={`password-rule ${valid ? 'password-rule--valid' : ''}`}
+                  >
+                    {valid ? <FaCheckCircle /> : <FaTimesCircle />}
+                    {rule.label}
+                  </span>
+                );
+              })}
             </div>
             {errors.password && <span className="register-error">{errors.password.message}</span>}
           </label>
