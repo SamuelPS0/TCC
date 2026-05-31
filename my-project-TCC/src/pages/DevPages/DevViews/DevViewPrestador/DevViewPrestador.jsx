@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import HeaderSwitcher from "../../../../Components/HeaderSwitcher";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { IoMdImage, IoIosCall } from "react-icons/io";
 import { FaMapMarkerAlt, FaList } from "react-icons/fa";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
+import { MdStars } from "react-icons/md";
 import Loading from "../../../../Components/Loading/Loading";
 import "./DevViewPrestador.css";
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
+import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
+import '../feedbackShared.css';
 
 const normalizeImageSrc = (value) => {
   if (typeof value !== "string") return null;
@@ -56,8 +59,10 @@ const getContatoLabel = (contato = {}) =>
 
 const DevViewPrestador = () => {
   const { prestadorId } = useParams();
+  const navigate = useNavigate();
   const [card, setCard] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [prestadoresInfo, setPrestadoresInfo] = useState({});
   const [feedbacks, setFeedbacks] = useState([]);
    const [nomesUsuarios, setNomesUsuarios] = useState({});
   const [prestador, setPrestador] = useState(null);
@@ -219,6 +224,13 @@ const editarStatusFeedback = async (feedback) => {
     cancelButtonColor: "#e74c3c",
     confirmButtonText: "Sim",
     cancelButtonText: "Cancelar",
+    customClass: {
+      popup: "swal-poppins-popup",
+      title: "swal-poppins-title",
+      htmlContainer: "swal-poppins-text",
+      confirmButton: "swal-poppins-confirm",
+      cancelButton: "swal-poppins-cancel",
+    },
   });
 
   if (!result.isConfirmed) return;
@@ -241,6 +253,18 @@ const editarStatusFeedback = async (feedback) => {
   } catch (error) {
     console.error("Erro ao atualizar status do feedback:", error);
     toast.error("Erro ao atualizar status do feedback!", { id: toastId });
+  }
+};
+
+const abrirDevViewUsuario = async (usuarioId) => {
+  if (!usuarioId) return;
+
+  try {
+    const { data } = await axios.get(`http://localhost:8080/api/v1/Usuario/${usuarioId}`);
+    navigate("/dev-view-client", { state: { usuario: data } });
+  } catch (error) {
+    console.error("Erro ao abrir DevView do usuário:", error);
+    toast.error("Não foi possível abrir o DevView do usuário.");
   }
 };
 
@@ -339,26 +363,41 @@ const editarStatusFeedback = async (feedback) => {
             feedbacks.map((fb) => (
               <div
                 key={fb.id}
-                className={`prestview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
+                className={`prestview-feedback-card devview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
-                <div className="feedback-status-row">
-                  <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
-                    <input
-                      type="checkbox"
-                      checked={fb.statusFeedback === "ATIVO"}
-                      onChange={() => editarStatusFeedback(fb)}
-                    />
-                    <span className="feedback-slider"></span>
-                  </label>
+                <div className="devview-feedback-header">
+                  <div className="devview-feedback-user">
+                    <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, nomesUsuarios))}</span>
+                    <div>
+                      <h3 className="devview-feedback-name">
+                        <button
+                          type="button"
+                          className="devview-feedback-name-link"
+                          onClick={() => abrirDevViewUsuario(fb.usuarioId)}
+                        >
+                          {getNomeFeedback(fb, nomesUsuarios)}
+                        </button>
+                      </h3>
+                      <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
+                    </div>
+                  </div>
+                  <div className="feedback-status-row">
+                    <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
+                      <input
+                        type="checkbox"
+                        checked={fb.statusFeedback === "ATIVO"}
+                        onChange={() => editarStatusFeedback(fb)}
+                      />
+                      <span className="feedback-slider"></span>
+                    </label>
+                  </div>
                 </div>
-                <h3 className="feedback-name">
-                  {nomesUsuarios[Number(fb.usuarioId)] || `Usuário #${fb.usuarioId}`}
-                </h3>
                 <h4>{fb.titulo}</h4>
+                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || `Prestador #${fb.prestadorId || ""}`}</Link></p>
                <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
-                {fb.nota !== undefined && <p><strong>Nota:</strong> {fb.nota}⭐</p>}
+                <p className="devview-feedback-note"><strong>Nota:</strong> {getNotaInteira(fb.nota) > 0 ? Array.from({ length: getNotaInteira(fb.nota) }, (_, index) => <MdStars key={index} className="devview-feedback-star" />) : formatNotaFeedback(fb.nota)}</p>
               </div>
             ))
           )}

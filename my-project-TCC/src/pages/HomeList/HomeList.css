@@ -3,7 +3,7 @@
 .homelist-page {
   min-height: 100vh;
   padding: 32px;
-  background-color: #cfcfcf;
+  background-color: #dddddd;
   margin-top: 10rem;
   font-family: "Poppins", sans-serif;
 }
@@ -36,10 +36,12 @@
   margin-top: 0;
   padding: 42px 38px 34px;
   overflow: hidden;
-  background-color: #eeeeee;
+  background-color: transparent;
 }
 
+/* ocultado conforme solicitado */
 .homelist-hero::before {
+  display:none;
   content: "";
   width: 390px;
   height: 390px;
@@ -52,6 +54,7 @@
 }
 
 .homelist-hero::after {
+  display:none;
   content: "";
   width: 430px;
   height: 430px;
@@ -65,34 +68,38 @@
 .homelist-hero__content {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(210px, 280px) minmax(420px, 1fr);
+  grid-template-columns: minmax(280px, 1fr) minmax(640px, 2fr);
   align-items: center;
-  gap: 42px;
+  gap: 52px;
   position: relative;
   z-index: 2;
 }
 
 .homelist-hero__text h1 {
-  max-width: 260px;
+  max-width: 100%;
   margin: 0 0 12px;
   color: #111111;
-  font-size: 1.42rem;
+  font-size: 2.2rem;
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.15;
 }
 
 .homelist-hero__text p {
-  max-width: 270px;
+  max-width: 90%;
   margin: 0;
   color: #222222;
-  font-size: 0.82rem;
+  font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.35;
 }
 
 .homelist-results {
+  background: #f9f9f9;
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  padding: 20px 18px;
   width: 100%;
-  max-width: 970px;
+  max-width: none;
   margin: 72px auto 0;
   position: relative;
   z-index: 3;
@@ -107,36 +114,110 @@
 }
 
 .homelist-rating-filter {
-  min-width: 230px;
-  height: 42px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 10px;
-  background-color: #ffffff;
-  border: 1px solid #cfcfcf;
-  border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
-  cursor: pointer;
+  width: fit-content;
+  min-width: 260px;
+  max-width: 100%;
+  position: relative;
 }
 
 .homelist-rating-filter__icon {
-  width: 23px;
-  height: 23px;
-  color: #111111;
+  width: 18px;
+  height: 18px;
+  color: #d4af37;
   flex-shrink: 0;
 }
 
-.homelist-rating-filter__select {
+.homelist-rating-filter__trigger {
   width: 100%;
-  border: none;
-  outline: none;
-  background-color: transparent;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+  border: 1px solid #d8dbe2;
+  border-radius: 8px;
+  background-color: #ffffff;
   color: #222222;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.homelist-rating-filter__trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.homelist-rating-filter__chevron {
+  width: 16px;
+  height: 16px;
+  color: #1f2937;
+}
+
+.homelist-rating-filter__menu {
+  margin-top: 8px;
+  background-color: #fff;
+  border: 1px solid #d8dbe2;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.homelist-rating-filter__option {
+  width: 100%;
+  min-height: 42px;
+  border: 0;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #fff;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.82rem;
+  color: #1f2937;
+}
+
+.homelist-rating-filter__option:last-child {
+  border-bottom: 0;
+}
+
+.homelist-rating-filter__option.is-selected {
+  background-color: #eef4ff;
+  color: #1d4ed8;
+}
+
+.homelist-rating-filter__option-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.homelist-rating-filter__option-main-icon,
+.homelist-rating-filter__check {
+  width: 16px;
+  height: 16px;
+  color: #d4af37;
+}
+
+.homelist-rating-filter__check {
+  color: #1d4ed8;
+}
+
+.homelist-rating-filter__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #d4af37;
+}
+
+.homelist-rating-filter__stars svg {
+  width: 16px;
+  height: 16px;
 }
 
 @media (max-width: 1024px) {
@@ -163,6 +244,10 @@
   }
 
   .homelist-results {
+  background: #f9f9f9;
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  padding: 20px 18px;
     margin-top: 48px;
   }
 }
@@ -192,6 +277,7 @@
 
   .homelist-hero::before,
   .homelist-hero::after {
+  display:none;
     display: none;
   }
 
@@ -204,6 +290,10 @@
   }
 
   .homelist-results {
+  background: #f9f9f9;
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  padding: 20px 18px;
     margin-top: 34px;
   }
 
@@ -212,6 +302,23 @@
   }
 
   .homelist-rating-filter {
-    width: 100%;
+    width: min(100%, 260px);
+  }
+
+  .homelist-rating-filter__trigger {
+    min-height: 42px;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 0.78rem;
+  }
+
+  .homelist-rating-filter__menu {
+    border-radius: 10px;
+  }
+
+  .homelist-rating-filter__option {
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 0.78rem;
   }
 }

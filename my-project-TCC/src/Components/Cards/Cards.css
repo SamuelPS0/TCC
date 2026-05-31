@@ -3,9 +3,9 @@
 .cards-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   align-items: start;
-  justify-content: center;
+  justify-content: start;
   gap: 24px 22px;
   margin: 0 auto;
 }
@@ -261,12 +261,6 @@
 
   100% {
     left: 100%;
-  }
-}
-
-@media (max-width: 1024px) {
-  .cards-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

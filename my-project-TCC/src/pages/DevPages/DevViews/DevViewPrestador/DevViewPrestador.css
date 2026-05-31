@@ -93,34 +93,21 @@ textarea.prestview-input {
 .feedback-title{
     margin-top: 50px;
 }
+
 .prestview-feedbacks {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 28px;
+    margin-top: 50px;
     width: 100%;
-    max-width: 920px;
-}
-
-.prestview-feedback-card {
     max-width: 953px;
     padding: 15px;
     height: auto;
     border-radius: 8px;
-    background-color: #f2f2f2;
+    background-color: #ffffff;
     border-left: 5px solid #f05221;
 }
-
-.prestview-feedback-card.denuncia {
-    border-left-color: #e74c3c;
-    transition: all 0.3s ease; /* animação suave para transform e sombra */
-}
-
-.prestview-feedback-card.denuncia:hover {
-    transform: translateY(-5px); /* levanta o card */
-    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5); /* sombra vermelha ao redor */
-}
-
-
 
 .prestview-feedback-card h4 {
     margin: 0 0 5px 0;
@@ -136,7 +123,7 @@ textarea.prestview-input {
 
 .prestview-feedback-card.feedback {
   border: 2px solid #78ff91;
-  background-color: #eafff3;
+  background-color: #ffffff;
   transition: all 0.3s ease;
 }
 
@@ -149,7 +136,13 @@ textarea.prestview-input {
 
 .prestview-feedback-card.denuncia {
   border: 2px solid #ff5151;
-  background-color: #faefef;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.prestview-feedback-card.denuncia:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
 }
 
 /* Botões */
@@ -198,18 +191,10 @@ textarea.prestview-input {
   box-shadow: 0 6px 15px rgba(0, 190, 73, 0.5);
   cursor: pointer;
 }
-.feedback-name {
-    font-size: 15px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  color: #f05221;
-  margin-bottom: 10px;
-  margin-top: -10px;
-}
 .feedback-status-row {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 6px;
+    margin-bottom: 0;
 }
 
 .feedback-switch {
@@ -258,18 +243,6 @@ textarea.prestview-input {
     border: 2px solid #999;
     opacity: 0.7;
 }
-.feedback-switch input:not(:checked) + .feedback-slider {
-    background-color: #e74c3c;
-}
-.prestview-feedback-card.inactive .feedback-slider {
-    background-color: #e74c3c !important;
-}
-.prestview-feedback-card.inactive {
-    background-color: #e0e0e0;
-    border: 2px solid #999;
-    opacity: 0.7;
-}
-
 .feedback-switch input:not(:checked) + .feedback-slider {
     background-color: #e74c3c;
 }

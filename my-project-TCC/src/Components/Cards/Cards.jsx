@@ -75,6 +75,14 @@ const getPrestadorStatus = (prestador = {}) =>
 
 const isPrestadorAtivo = (prestador = {}) => getPrestadorStatus(prestador) === "ATIVO";
 
+const isFeedbackValido = (feedback = {}) => {
+  const tipo = String(feedback?.tipoFeedback ?? "").trim().toUpperCase();
+  const status = String(feedback?.statusFeedback ?? "").trim().toUpperCase();
+  const nota = Number(feedback?.nota);
+
+  return tipo === "FEEDBACK" && status === "ATIVO" && !Number.isNaN(nota) && nota > 0;
+};
+
 const Cards = ({ filter = {} }) => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
@@ -102,12 +110,7 @@ const Cards = ({ filter = {} }) => {
           ])
         );
 
-        const feedbacksAtivos = feedbacks.filter(
-          (feedback) =>
-            String(feedback?.tipoFeedback || "").toUpperCase() === "FEEDBACK" &&
-            String(feedback?.statusFeedback || "").toUpperCase() === "ATIVO" &&
-            Number.isFinite(Number(feedback?.nota))
-        );
+        const feedbacksAtivos = feedbacks.filter(isFeedbackValido);
 
         const notasByPrestadorId = feedbacksAtivos.reduce((acc, feedback) => {
           const prestadorId = Number(
@@ -168,6 +171,7 @@ const Cards = ({ filter = {} }) => {
               avaliacaoMedia,
               totalAvaliacoes: notas.length,
               statusPrestador: getPrestadorStatus(prestador),
+              contador: Number(servico.contador ?? 0),
             };
           });
 
@@ -182,54 +186,6 @@ const Cards = ({ filter = {} }) => {
 
     fetchCards();
   }, []);
-
-
-  const incrementServiceViewCounter = async (card) => {
-    const servicoId = Number(card?.servicoId);
-
-    if (!servicoId) return;
-
-    const contadorAtual = Number(card?.contadorVisualizacoes ?? card?.contador ?? 0);
-    const proximoContador = Number.isFinite(contadorAtual) ? contadorAtual + 1 : 1;
-
-    try {
-      await axios.patch(`http://localhost:8080/api/v1/servico/${servicoId}`, {
-        contador: proximoContador,
-      });
-    } catch (error) {
-      console.error("Erro ao atualizar contador por PATCH:", error);
-
-      try {
-        await axios.put(`http://localhost:8080/api/v1/servico/${servicoId}`, {
-          contador: proximoContador,
-        });
-      } catch (putError) {
-        console.error("Erro ao atualizar contador por PUT:", putError);
-      }
-    }
-
-    setCards((prevCards) =>
-      prevCards.map((prevCard) =>
-        Number(prevCard.servicoId) === servicoId
-          ? {
-              ...prevCard,
-              contador: proximoContador,
-              contadorVisualizacoes: proximoContador,
-            }
-          : prevCard
-      )
-    );
-  };
-
-  const handleCardClick = async (event, card) => {
-    event.preventDefault();
-
-    await incrementServiceViewCounter(card);
-
-    navigate("/profile", {
-      state: { perfil: card },
-    });
-  };
 
   const filteredCards = useMemo(() => {
     const [cityName, cityUF] = city ? city.split(" - ") : [null, null];
@@ -262,9 +218,9 @@ const Cards = ({ filter = {} }) => {
     <div className="cards-container">
       {loading ? (
         <>
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
+          {Array.from({ length: 8 }, (_, index) => (
+            <SkeletonCard key={`skeleton-${index}`} />
+          ))}
         </>
       ) : filteredCards.length === 0 ? (
         <div className="cards-error">
@@ -282,7 +238,6 @@ const Cards = ({ filter = {} }) => {
             state={{ perfil: card }}
             key={`${card.prestadorId}-${card.servicoNome}`}
             className="cards-link"
-            onClick={(event) => handleCardClick(event, card)}
           >
             <article className="cards">
               <div className="cards-image-wrapper">

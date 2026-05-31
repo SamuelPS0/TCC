@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import HeaderSwitcher from '../../../../Components/HeaderSwitcher';
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from 'sonner';
 import axios from 'axios';
 import Swal from "sweetalert2";
+import { MdStars } from "react-icons/md";
+import { FaRegFlag } from "react-icons/fa";
 import Loading from '../../../../Components/Loading/Loading';
 import { breakLineEveryNChars } from '../../../../utils/formatFeedbackText';
+import { getNomeFeedback, getInicialFeedback, formatNotaFeedback, formatTempoFeedback, getNotaInteira } from '../../../../utils/devviewFeedback';
+import '../feedbackShared.css';
 import "../DevViewPrestador/DevViewPrestador.css";
 import './DevViewClient.css';
 
 const DevViewClient = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { usuario } = location.state || {};
 
   const [nivel, setNivel] = useState(usuario?.nivelAcesso || '');
@@ -19,6 +24,7 @@ const DevViewClient = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [prestadoresInfo, setPrestadoresInfo] = useState({});
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
@@ -29,6 +35,9 @@ const DevViewClient = () => {
     if (!usuario?.id) return;
 
     const fetchFeedbacks = async () => {
+      const prestadoresRes = await axios.get("http://localhost:8080/api/v1/prestador");
+      const prestadoresMap = Object.fromEntries((prestadoresRes.data || []).map((p) => [Number(p.id), p]));
+      setPrestadoresInfo(prestadoresMap);
       try {
         const res = await axios.get("http://localhost:8080/api/v1/feedback");
 
@@ -82,6 +91,13 @@ const editarStatusFeedback = async (feedback) => {
     cancelButtonColor: "#e74c3c",
     confirmButtonText: "Sim",
     cancelButtonText: "Cancelar",
+    customClass: {
+      popup: "swal-poppins-popup",
+      title: "swal-poppins-title",
+      htmlContainer: "swal-poppins-text",
+      confirmButton: "swal-poppins-confirm",
+      cancelButton: "swal-poppins-cancel",
+    },
   });
 
   if (!result.isConfirmed) return;
@@ -106,6 +122,18 @@ const editarStatusFeedback = async (feedback) => {
     toast.error("Erro ao atualizar status do feedback!", { id: toastId });
   }
 };
+
+  const abrirDevViewUsuario = async (usuarioId) => {
+    if (!usuarioId) return;
+
+    try {
+      const { data } = await axios.get(`http://localhost:8080/api/v1/Usuario/${usuarioId}`);
+      navigate('/dev-view-client', { state: { usuario: data } });
+    } catch (error) {
+      console.error("Erro ao abrir DevView do usuário:", error);
+      toast.error("Não foi possível abrir o DevView do usuário.");
+    }
+  };
 
   const editarStatus = async (id, novoStatus) => {
     const toastId = toast.loading('Atualizando status do usuário...');
@@ -177,26 +205,41 @@ const editarStatusFeedback = async (feedback) => {
             feedbacks.map((fb) => (
               <div
                 key={fb.id}
-                className={`prestview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
+                className={`prestview-feedback-card devview-feedback-card ${fb.tipoFeedback === "FEEDBACK" ? "feedback" : "denuncia"} ${fb.statusFeedback === "INATIVO" ? "inactive" : ""}`}
               >
-                <div className="feedback-status-row">
-                  <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
-                    <input
-                      type="checkbox"
-                      checked={fb.statusFeedback === "ATIVO"}
-                      onChange={() => editarStatusFeedback(fb)}
-                    />
-                    <span className="feedback-slider"></span>
-                  </label>
+                <div className="devview-feedback-header">
+                  <div className="devview-feedback-user">
+                  <span className="devview-feedback-avatar">{getInicialFeedback(getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome }))}</span>
+                  <div>
+                    <h3 className="devview-feedback-name">
+                      <button
+                        type="button"
+                        className="devview-feedback-name-link"
+                        onClick={() => abrirDevViewUsuario(fb.usuarioId)}
+                      >
+                        {getNomeFeedback(fb, { [Number(usuario.id)]: usuario.nome })}
+                      </button>
+                    </h3>
+                    <p className="devview-feedback-time">{formatTempoFeedback(fb.dataCadastro)}</p>
+                  </div>
                 </div>
-                <h3 className="feedback-name">
-                  {usuario.nome || `Usuário #${fb.usuarioId}`}
-                </h3>
+                  <div className="feedback-status-row">
+                    <label className="feedback-switch" title={fb.statusFeedback === "ATIVO" ? "Desativar feedback" : "Ativar feedback"}>
+                      <input
+                        type="checkbox"
+                        checked={fb.statusFeedback === "ATIVO"}
+                        onChange={() => editarStatusFeedback(fb)}
+                      />
+                      <span className="feedback-slider"></span>
+                    </label>
+                  </div>
+                </div>
                 <h4>{fb.titulo}</h4>
+                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || `Prestador #${fb.prestadorId || ""}`}</Link></p>
                 <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
-                {fb.nota !== undefined && <p><strong>Nota:</strong> {fb.nota}⭐</p>}
+                <p className="devview-feedback-note"><strong>Nota:</strong> {getNotaInteira(fb.nota) > 0 ? Array.from({ length: getNotaInteira(fb.nota) }, (_, index) => <MdStars key={index} className="devview-feedback-star" />) : formatNotaFeedback(fb.nota)}</p>
               </div>
             ))
           )}

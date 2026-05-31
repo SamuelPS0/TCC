@@ -16,7 +16,11 @@ import {
   FaExclamationTriangle,
   FaRegCommentDots,
   FaLock,
+  FaCheckCircle,
+  FaRegFlag
 } from "react-icons/fa";
+
+import { MdStars } from "react-icons/md";
 import ProfileImg from "../../img/Ellipse.png";
 import InputImg from "../../img/crosant.png";
 import HeaderSwitcher from "../../Components/HeaderSwitcher";
@@ -31,6 +35,71 @@ const getContatoPrestadorId = (contato = {}) =>
 
 const contatoEstaAtivo = (contato = {}) =>
   String(contato.statusContato ?? contato.status_contato ?? "ATIVO").toUpperCase() === "ATIVO";
+
+const getNomeFeedback = (feedback = {}, nomesUsuarios = {}) =>
+  feedback.nomeUsuario ||
+  nomesUsuarios[Number(feedback.usuarioId)] ||
+  `Usuário #${feedback.usuarioId || ""}`.trim();
+
+const getInicialFeedback = (nome = "") =>
+  nome.trim().charAt(0).toUpperCase() || "?";
+
+const getUsuarioLogadoId = (user = {}) => {
+  const userId = Number(user?.id ?? user?.usuarioId ?? user?.usuario?.id);
+
+  if (!Number.isNaN(userId) && userId > 0) {
+    return userId;
+  }
+
+  const fromStorage = Number(localStorage.getItem("usuarioId"));
+  return !Number.isNaN(fromStorage) && fromStorage > 0 ? fromStorage : null;
+};
+
+const formatNotaFeedback = (nota) => {
+  const notaNumerica = Number(nota);
+
+  if (!notaNumerica) {
+    return "Sem nota";
+  }
+
+  return "";
+};
+
+const formatTempoFeedback = (dataCadastro) => {
+  if (!dataCadastro) {
+    return "Agora";
+  }
+
+  const data = new Date(dataCadastro);
+
+  if (Number.isNaN(data.getTime())) {
+    return "Agora";
+  }
+
+  const diferencaMinutos = Math.max(
+    0,
+    Math.floor((Date.now() - data.getTime()) / 60000)
+  );
+
+  if (diferencaMinutos < 1) return "Agora";
+  if (diferencaMinutos < 60) return `Há ${diferencaMinutos} min`;
+
+  const diferencaHoras = Math.floor(diferencaMinutos / 60);
+  if (diferencaHoras < 24) return `Há ${diferencaHoras} h`;
+
+  const diferencaDias = Math.floor(diferencaHoras / 24);
+  if (diferencaDias < 30) return `Há ${diferencaDias} d`;
+
+  return data.toLocaleDateString("pt-BR");
+};
+
+const isFeedbackAvaliavel = (feedback = {}) => {
+  const tipo = String(feedback?.tipoFeedback ?? "").trim().toUpperCase();
+  const status = String(feedback?.statusFeedback ?? "").trim().toUpperCase();
+  const nota = Number(feedback?.nota);
+
+  return tipo === "FEEDBACK" && status === "ATIVO" && !Number.isNaN(nota) && nota > 0;
+};
 
 const Profile = () => {
   const location = useLocation();
@@ -85,8 +154,7 @@ const Profile = () => {
         const feedbacksPrestador = res.data.filter(
           (f) =>
             Number(f.prestadorId) === Number(dados?.prestadorId) &&
-            f.tipoFeedback === "FEEDBACK" &&
-            f.statusFeedback === "ATIVO"
+            isFeedbackAvaliavel(f)
         );
 
         const idsUsuarios = [
@@ -227,9 +295,7 @@ const Profile = () => {
     };
   };
 
-  const feedbacksAtivos = feedbacks.filter(
-    (fb) => fb.statusFeedback?.toUpperCase() === "ATIVO"
-  );
+  const feedbacksAtivos = feedbacks.filter(isFeedbackAvaliavel);
 
   const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
   const isPrimeiroPrestador = Number(dados?.prestadorId) === 1;
@@ -246,64 +312,100 @@ const Profile = () => {
     "Outro motivo",
   ];
 
-  const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
-    const isFeedback = tipo === "FEEDBACK";
+ const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
 
-    const [titulo, setTitulo] = useState("");
-    const [mensagem, setMensagem] = useState("");
-    const [nota, setNota] = useState(0);
+  const tipoNormalizado = String(tipo).toUpperCase();
 
-    const resetForm = () => {
-      setTitulo("");
-      setMensagem("");
-      setNota(0);
+  const isFeedback = tipoNormalizado === "FEEDBACK";
+  const isDenuncia = tipoNormalizado === "DENUNCIA";
+
+  const [titulo, setTitulo] = useState("");
+  const [mensagem, setMensagem] = useState("");
+  const [nota, setNota] = useState(0);
+
+  const resetForm = () => {
+    setTitulo("");
+    setMensagem("");
+    setNota(0);
+  };
+
+  const fecharModal = () => {
+    resetForm();
+    onClose();
+  };
+
+  const enviar = async () => {
+
+    const tituloTratado = titulo.trim();
+    const mensagemTratada = mensagem.trim();
+
+    if (
+      !tituloTratado ||
+      !mensagemTratada ||
+      (isFeedback && !nota)
+    ) {
+      alert("Preencha todos os campos obrigatórios!");
+      return;
+    }
+
+    const usuarioId = getUsuarioLogadoId(user);
+
+    if (!usuarioId) {
+      toast.error("Não foi possível identificar o usuário logado.");
+      return;
+    }
+
+    const payload = {
+      titulo: tituloTratado,
+      descricao: mensagemTratada,
+      tipoFeedback: isFeedback ? "FEEDBACK" : "DENUNCIA",
+      usuarioId: usuarioId,
+      nomeUsuario: user?.nome || user?.usuario?.nome || "Usuário",
+      prestadorId: dados.prestadorId,
+      dataCadastro: new Date().toISOString(),
+      
+      statusFeedback: "ATIVO",
+
+      nota: isFeedback ? nota : 0,
     };
 
-    const fecharModal = () => {
+    console.log("TIPO RECEBIDO:", tipo);
+    console.log("É FEEDBACK?", isFeedback);
+    console.log("É DENUNCIA?", isDenuncia);
+    console.log("PAYLOAD:", payload);
+
+    try {
+
+      await axios.post(
+        "http://localhost:8080/api/v1/feedback",
+        payload
+      );
+
+      if (isFeedback) {
+
+        toast.success("Feedback enviado com sucesso!");
+
+        setFeedbacks((prev) => [...prev, payload]);
+
+      } else {
+
+        toast.success(
+          "Denúncia enviada. Ela será revisada pelos administradores."
+        );
+      }
+
       resetForm();
       onClose();
-    };
 
-    const enviar = async () => {
-      const tituloTratado = titulo.trim();
-      const mensagemTratada = mensagem.trim();
+    } catch (error) {
 
-      if (!tituloTratado || !mensagemTratada || (isFeedback && !nota)) {
-        alert("Preencha todos os campos obrigatórios!");
-        return;
-      }
+      console.error("ERRO AO ENVIAR:", error);
 
-      const payload = {
-        titulo: tituloTratado,
-        descricao: mensagemTratada,
-        tipoFeedback: tipo,
-        usuarioId: user?.id,
-        nomeUsuario: user?.nome,
-        prestadorId: dados.prestadorId,
-        dataCadastro: new Date().toISOString(),
-        statusFeedback: "ATIVO",
-        ...(isFeedback ? { nota } : {}),
-      };
+      alert("Erro ao enviar!");
+    }
+  };
 
-      try {
-        await axios.post("http://localhost:8080/api/v1/feedback", payload);
-
-        if (isFeedback) {
-          toast.success("Feedback enviado com sucesso!");
-          setFeedbacks((prev) => [...prev, payload]);
-        } else {
-          toast.success("Denúncia enviada. Ela será revisada pelos administradores.");
-        }
-
-        resetForm();
-        onClose();
-      } catch (error) {
-        console.error(error);
-        alert("Erro ao enviar!");
-      }
-    };
-
-    if (!isOpen) return null;
+  if (!isOpen) return null;
 
     return (
       <div
@@ -576,19 +678,50 @@ const Profile = () => {
 
               {feedbacksAtivos.length > 0 ? (
                 <div className="profile-feedback-card">
-                  {feedbacksAtivos.map((fb, index) => (
-                    <div className="feedback-card-lenght" key={index}>
-                      <h3 className="feedback-name">
-                        {fb.nomeUsuario || nomesUsuarios[Number(fb.usuarioId)] || ""}
-                      </h3>
+                  {feedbacksAtivos.map((fb, index) => {
+                    const nomeFeedback = getNomeFeedback(fb, nomesUsuarios);
 
-                      <h2>{fb.titulo}</h2>
+                    return (
+                      <article className="feedback-card-lenght" key={fb.id || index}>
+                        <div className="feedback-card-header">
+                          <div className="feedback-card-user">
+                            <div className="feedback-avatar" aria-hidden="true">
+                              {getInicialFeedback(nomeFeedback)}
+                            </div>
 
-                      <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
-                        {breakLineEveryNChars(fb.descricao, 70)}
-                      </p>
-                    </div>
-                  ))}
+                            <div className="feedback-user-info">
+                              <h3 className="feedback-name">
+                                {nomeFeedback}
+                                <FaCheckCircle className="feedback-verified-icon" />
+                              </h3>
+
+                              <div className="feedback-meta">
+                                <span className="profile-feedback-stars">{Array.from({ length: Math.min(5, Math.max(0, Math.round(Number(fb.nota) || 0))) }, (_, index) => (
+                                  <MdStars key={index} className="profile-feedback-star-icon" />
+                                ))}</span>
+                                <span aria-hidden="true">•</span>
+                                <span>{formatTempoFeedback(fb.dataCadastro)}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <button
+                            className="feedback-report-button"
+                            type="button"
+                            aria-label="Denunciar feedback"
+                          >
+                            <FaRegFlag />
+                          </button>
+                        </div>
+
+                        <h2>{fb.titulo}</h2>
+
+                        <p>
+                          {breakLineEveryNChars(fb.descricao, 110)}
+                        </p>
+                      </article>
+                    );
+                  })}
                 </div>
               ) : (
                 <p style={{ marginTop: "20px" }}>Sem feedbacks ativos.</p>
