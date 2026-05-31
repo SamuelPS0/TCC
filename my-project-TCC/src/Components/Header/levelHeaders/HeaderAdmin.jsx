@@ -5,7 +5,6 @@ import SearchBar from '../../SearchBar/SearchBar';
 import LogoLP from '../../../img/logoSemFundo.png';
 
 import { CiLogout } from "react-icons/ci";
-
 // Importa o contexto de autenticação
 import { useAuth } from '../../AuthContext';
 
@@ -17,6 +16,7 @@ export default function HeaderAdmin({ onSearch, initialFilters }) {
     logout();
     navigate('/'); 
   };
+
 
   return (
     <header className="headeradmin-header">

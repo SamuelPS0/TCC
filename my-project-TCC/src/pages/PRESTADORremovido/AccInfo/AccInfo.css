@@ -252,3 +252,53 @@ select option {
 .invisible-accinfo {
   color: transparent;
 }
+
+
+.password-rules-accinfo {
+  width: 820px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.password-rule-accinfo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 999px;
+  background: #fff3f0;
+  color: #b3261e;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.password-rule-accinfo--valid {
+  background: #eaf8ef;
+  color: #188038;
+  transform: translateY(-1px);
+}
+
+.password-error-accinfo {
+  display: block;
+  margin-top: 0.7rem;
+  color: #b3261e;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.forms-button-accinfo:disabled {
+  background-color: #bdbdbd;
+  color: #f7f7f7;
+  cursor: not-allowed;
+  border: none;
+}
+
+.forms-button-accinfo:disabled:hover {
+  background-color: #bdbdbd;
+  color: #f7f7f7;
+  border: none;
+}

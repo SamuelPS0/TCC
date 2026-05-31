@@ -19,6 +19,8 @@ import GooglePlay from '../LandingPage/landingPageImages/googleplay.png';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter, FaApple, FaGooglePlay  } from 'react-icons/fa';
 import '../LandingPage/LandingPage.css';
 
+const CONTACT_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdGP9PZDXYMJVUacDK0O_-3uU-syLAvq3WLtg9W_3dzG3fShA/viewform?usp=sharing&ouid=102550909011925501329';
+
 
 export default function LandingPage() {
   const { user } = useAuth();
@@ -37,17 +39,6 @@ export default function LandingPage() {
             ENCONTRE OS MELHORES PROFISSIONAIS<br />DA <span>GASTRONOMIA</span> NA SUA REGIÃO!
           </h1>
           <div style={{ position: 'fixed', top: 10, right: 10, zIndex: 9999 }}>
-  <Link to="/dev-routes">
-    <button style={{
-      padding: '10px',
-      background: 'red',
-      color: '#fff',
-      border: 'none',
-      cursor: 'pointer'
-    }}>
-      DEV
-    </button>
-  </Link>
 </div>
           <h3 className="lp-first-section-h3">
             Com a <span>DivulgAí</span>, os melhores sabores da sua região<br /> estão a apenas um clique. Experimente agora!
@@ -123,7 +114,7 @@ export default function LandingPage() {
         <div className="footer-col">
           <h4>Links</h4>
           <ul>
-            <li><Link to="#">Fale Conosco</Link></li>
+            <li><a href={CONTACT_FORM_URL} target="_blank" rel="noopener noreferrer">Fale Conosco</a></li>
             <li><Link to="/privacity">Termos de uso</Link></li>
             <li><Link to="/privacity">Políticas de Privacidade</Link></li>
           </ul>
@@ -134,7 +125,6 @@ export default function LandingPage() {
           <p>Rua Exemplo 123, São Paulo - SP</p>
           <p>contato@divulgai.com</p>
           <p>(11) 90000-0000</p>
-          <li><Link to="/">Fale conosco</Link></li>
         </div>
       </div>
 

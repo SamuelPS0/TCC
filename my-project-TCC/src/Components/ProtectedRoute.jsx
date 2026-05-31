@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import accessLevels from '../Components/accessLevels';
 
 const ProtectedRoute = ({ children, requiredLevel }) => {
   const { user } = useAuth();

@@ -56,6 +56,9 @@ const isAtivo = (status) => normalizeStatus(status, "INATIVO") === "ATIVO";
 const getContatoLabel = (contato = {}) =>
   contato.tipoContato ?? contato.tipo_contato ?? contato.tipo ?? contato.label ?? "Contato";
 
+const getPrestadorNome = (prestador = {}) =>
+  prestador.nome || prestador.usuario?.nome || prestador.usuario_nome || "Prestador sem nome";
+
 
 const DevViewPrestador = () => {
   const { prestadorId } = useParams();
@@ -103,6 +106,12 @@ const DevViewPrestador = () => {
           (s) => getPrestadorId(s) === Number(prestadorData.id)
         );
         const usuarioPrestador = prestadorData.usuario || servico?.prestador?.usuario || {};
+        setPrestadoresInfo({
+          [Number(prestadorData.id)]: {
+            ...prestadorData,
+            nome: getPrestadorNome(prestadorData),
+          },
+        });
 
         // 3. Buscar contatos ativos
         const contatosRes = await axios.get("http://localhost:8080/api/v1/contato");
@@ -393,7 +402,7 @@ const abrirDevViewUsuario = async (usuarioId) => {
                   </div>
                 </div>
                 <h4>{fb.titulo}</h4>
-                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || `Prestador #${fb.prestadorId || ""}`}</Link></p>
+                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || "Prestador sem nome"}</Link></p>
                <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>

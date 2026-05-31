@@ -4,7 +4,6 @@ import AppStore from '../LandingPage/landingPageImages/appstore.png';
 import GooglePlay from '../LandingPage/landingPageImages/googleplay.png';
 import LpImage5 from '../LandingPage/landingPageImages/fotosemfundo.png';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../Components/AuthContext';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter, FaApple, FaGooglePlay  } from 'react-icons/fa';
 import './Privacity.css'
 
@@ -69,7 +68,6 @@ const sections = [
 
 const Privacity = () => {
   const [open, setOpen] = useState({ terms: true, privacy: true })
-
   const toggle = (id) => setOpen(prev => ({ ...prev, [id]: !prev[id] }))
 
   return (
@@ -87,6 +85,7 @@ const Privacity = () => {
           <article key={sec.id} className="policy-card">
             <button
               className="policy-toggle"
+              onClick={() => toggle(sec.id)}
             >
               <h2>{sec.title}</h2>
             </button>

@@ -6,7 +6,7 @@ import LogoLP from '../../../img/logoSemFundo.png';
 import SearchBar from '../../SearchBar/SearchBar';
 
 export default function HeaderCliente({ onSearch, initialFilters }) {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   function handleLogout() {
