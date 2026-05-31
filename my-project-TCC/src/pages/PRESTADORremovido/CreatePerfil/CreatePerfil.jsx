@@ -19,9 +19,9 @@ const CreatePerfil = () => {
   const [bairro, setBairro] = useState('');
   const [cidade, setCidade] = useState('');
   const [uf, setUf] = useState('');
-  const [categoriaId, setCategoriaId] = useState(1); // exemplo fixo
+  const [categoriaId] = useState(1); // exemplo fixo
   const [nomeServico, setNomeServico] = useState('');
-  const [imagem1, setImagem1] = useState(null);
+  const [imagem1] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

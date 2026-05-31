@@ -12,7 +12,18 @@ import {
   FaBirthdayCake,
   FaVenusMars,
   FaMapMarkedAlt,
+  FaCheckCircle,
+  FaTimesCircle,
 } from "react-icons/fa"; // Ícones usados nos inputs do formulário
+
+const passwordRules = [
+  { label: 'Letra maiúscula', test: (value = '') => /[A-Z]/.test(value) },
+  { label: 'Letra minúscula', test: (value = '') => /[a-z]/.test(value) },
+  { label: 'Número', test: (value = '') => /\d/.test(value) },
+  { label: 'Acento', test: (value = '') => /[À-ÿ]/.test(value) },
+];
+
+const isStrongPassword = (value = '') => passwordRules.every((rule) => rule.test(value));
 
 export default function AccInfo() {
   // Estado que guarda os valores do formulário
@@ -42,9 +53,17 @@ export default function AccInfo() {
   // Alterna a visibilidade da senha (mostrar/ocultar)
   const togglePasswordVisibility = () => setShowPassword((v) => !v);
 
+  const senhaFoiPreenchida = formData.senha.trim().length > 0;
+  const senhaValida = !senhaFoiPreenchida || isStrongPassword(formData.senha);
+
   // Função chamada quando o formulário é enviado
   const handleSubmit = (e) => {
     e.preventDefault(); // Previne o comportamento padrão de recarregar a página
+
+    if (!senhaValida) {
+      return;
+    }
+
     console.log("Dados enviados:", formData); // Aqui pode salvar os dados (localStorage)
 
     navigate("/"); // Navega para a rota inicial após enviar
@@ -165,6 +184,26 @@ export default function AccInfo() {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
+            <div className="password-rules-accinfo" aria-live="polite">
+              {passwordRules.map((rule) => {
+                const valid = rule.test(formData.senha);
+
+                return (
+                  <span
+                    key={rule.label}
+                    className={`password-rule-accinfo ${valid ? 'password-rule-accinfo--valid' : ''}`}
+                  >
+                    {valid ? <FaCheckCircle /> : <FaTimesCircle />}
+                    {rule.label}
+                  </span>
+                );
+              })}
+            </div>
+            {senhaFoiPreenchida && !senhaValida && (
+              <span className="password-error-accinfo">
+                Para trocar a senha, cumpra todos os requisitos de segurança.
+              </span>
+            )}
           </div>
 
           {/* Inputs para data de nascimento e gênero lado a lado */}
@@ -248,7 +287,7 @@ export default function AccInfo() {
 
           {/* Botão para enviar o formulário */}
           <div className="input-block-accinfo">
-            <button type="submit" className="forms-button-accinfo">
+            <button type="submit" className="forms-button-accinfo" disabled={!senhaValida}>
               Enviar
             </button>
           </div>

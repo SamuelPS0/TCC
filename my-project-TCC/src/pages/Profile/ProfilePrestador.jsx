@@ -99,7 +99,7 @@ const ProfilePrestador = () => {
 
   const [OpenModal, setOpenModal] = useState(false);
   const [OpenDenunciaModal, setOpenDenunciaModal] = useState(false);
-  const [feedbacks, setFeedbacks] = useState([]);
+  const [feedbacks] = useState([]);
 
     useEffect(() => {
     if (openTarget === 'denuncias') {

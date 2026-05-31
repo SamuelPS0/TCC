@@ -36,7 +36,10 @@ const DevViewClient = () => {
 
     const fetchFeedbacks = async () => {
       const prestadoresRes = await axios.get("http://localhost:8080/api/v1/prestador");
-      const prestadoresMap = Object.fromEntries((prestadoresRes.data || []).map((p) => [Number(p.id), p]));
+      const prestadoresMap = Object.fromEntries((prestadoresRes.data || []).map((p) => [
+        Number(p.id),
+        { ...p, nome: p.nome || p.usuario?.nome || p.usuario_nome || "Prestador sem nome" },
+      ]));
       setPrestadoresInfo(prestadoresMap);
       try {
         const res = await axios.get("http://localhost:8080/api/v1/feedback");
@@ -235,7 +238,7 @@ const editarStatusFeedback = async (feedback) => {
                   </div>
                 </div>
                 <h4>{fb.titulo}</h4>
-                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || `Prestador #${fb.prestadorId || ""}`}</Link></p>
+                <p className="devview-feedback-target">Para: <Link to={`/dev-view-prestador/${Number(fb.prestadorId)}`}>{prestadoresInfo[Number(fb.prestadorId)]?.nome || "Prestador sem nome"}</Link></p>
                 <p style={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
                   {breakLineEveryNChars(fb.descricao, 70)}
                 </p>
