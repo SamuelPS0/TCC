@@ -16,6 +16,8 @@ const SkeletonCard = () => (
   </div>
 );
 
+const API_BASE_URL = "http://localhost:8080/api/v1";
+
 const DESCRIPTION_LIMIT = 88;
 
 const truncateDescription = (description = "") => {
@@ -100,9 +102,9 @@ const Cards = ({ filter = {} }) => {
     const fetchCards = async () => {
       try {
         const [servicosRes, contatosRes, feedbacksRes] = await Promise.all([
-          axios.get("http://localhost:8080/api/v1/servico"),
-          axios.get("http://localhost:8080/api/v1/contato"),
-          axios.get("http://localhost:8080/api/v1/feedback"),
+          axios.get(`${API_BASE_URL}/servico`),
+          axios.get(`${API_BASE_URL}/contato`),
+          axios.get(`${API_BASE_URL}/feedback`),
         ]);
 
         const servicos = servicosRes.data || [];
@@ -180,7 +182,6 @@ const Cards = ({ filter = {} }) => {
               avaliacaoMedia,
               totalAvaliacoes: notas.length,
               statusPrestador: getPrestadorStatus(prestador),
-              contador: Number(servico.contador ?? 0),
             };
           });
 
@@ -195,6 +196,20 @@ const Cards = ({ filter = {} }) => {
 
     fetchCards();
   }, []);
+
+  const handleCardClick = async (event, card) => {
+    event.preventDefault();
+
+    if (card.servicoId) {
+      try {
+        await axios.patch(`${API_BASE_URL}/servico/${card.servicoId}/contador`);
+      } catch (error) {
+        console.error("Erro ao incrementar contador do serviço:", error);
+      }
+    }
+
+    navigate("/profile", { state: { perfil: card } });
+  };
 
   const filteredCards = useMemo(() => {
     const [cityName, cityUF] = city ? city.split(" - ") : [null, null];
@@ -247,6 +262,7 @@ const Cards = ({ filter = {} }) => {
             state={{ perfil: card }}
             key={`${card.prestadorId}-${card.servicoNome}`}
             className="cards-link"
+            onClick={(event) => handleCardClick(event, card)}
           >
             <article className="cards">
               <div className="cards-image-wrapper">
