@@ -1,20 +1,15 @@
-import React, { useState } from 'react';
-import './headeradmin.css';
+import React from 'react';
+import './HeaderAdmin.css';
 import { Link, useNavigate } from 'react-router-dom';
 import SearchBar from '../../SearchBar/SearchBar';
 import LogoLP from '../../../img/logoSemFundo.png';
 
-import { IoPersonCircleOutline } from "react-icons/io5";
-import { MdOutlineShield } from "react-icons/md";
-import { FaRegAngry, FaRegClipboard } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
-import { IoMdMenu } from "react-icons/io";
 
 // Importa o contexto de autenticação
 import { useAuth } from '../../AuthContext';
 
-export default function HeaderAdmin({ onSearch, initialFilters, perfil  }) {
-  const [openProfile, setOpenProfile] = useState(false);
+export default function HeaderAdmin({ onSearch, initialFilters }) {
   const { logout } = useAuth(); // Função de logout
   const navigate = useNavigate(); // Para redirecionar
 
@@ -22,8 +17,6 @@ export default function HeaderAdmin({ onSearch, initialFilters, perfil  }) {
     logout();
     navigate('/'); 
   };
-
-  const { user } = useAuth();
 
   return (
     <header className="headeradmin-header">
