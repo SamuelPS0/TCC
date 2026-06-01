@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { MdStars } from "react-icons/md";
 import { FaSearchLocation } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TfiFaceSad } from "react-icons/tfi";
 import SicranaImg from "../../pages/LandingPage/landingPageImages/peneira-de-mulher-flor-na-tigela-para-fazer-bolo.jpg";
 import "./Cards.css";
@@ -93,6 +93,8 @@ const isFeedbackValido = (feedback = {}) => {
 };
 
 const Cards = ({ filter = {} }) => {
+  const navigate = useNavigate();
+
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
