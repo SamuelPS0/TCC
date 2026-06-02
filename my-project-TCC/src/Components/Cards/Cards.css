@@ -3,7 +3,7 @@
 .cards-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   align-items: start;
   justify-content: start;
   gap: 24px 22px;
@@ -24,7 +24,7 @@
   background-color: #ffffff;
   border: 1px solid #d7d7d7;
   border-radius: 13px;
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 3px 7px rgba(7, 3, 3, 0.18);
   box-sizing: border-box;
   cursor: pointer;
   transition:
