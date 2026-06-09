@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './Register.css';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'sonner';
 import LogoRegister from '../../img/DivulgAÍ-removebg-preview.png'; 
 import { useForm } from 'react-hook-form';
 import { FaRegEnvelope } from "react-icons/fa";
@@ -35,18 +37,28 @@ export default function Register() {
   const password = watch('password') || '';
   
   
-    const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    try {
+      const now = new Date();
+      const dataFormatada = now.toISOString().slice(0, 19);
       const payload = {
         nome: data.name,
         email: data.email,
         senha: data.password,
         nivelAcesso: "CLIENTE",
+        dataCadastro: dataFormatada,
+        statusUsuario: true,
       };
 
-      localStorage.setItem('registerData', JSON.stringify(payload));
+      await axios.post('http://localhost:8080/api/v1/Usuario', payload);
 
-      navigate('/security-questions');
-    };
+      toast.success('Usuário criado com sucesso!');
+      navigate('/login');
+    } catch (error) {
+      console.error('Erro ao cadastrar usuário:', error.response?.data || error.message);
+      toast.error('Erro ao finalizar cadastro');
+    }
+  };
 
 
   return (

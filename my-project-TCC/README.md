@@ -7,9 +7,9 @@ Este projeto é uma **aplicação web** desenvolvida para conectar usuários a *
 ## 🚀 Funcionalidades
 
 - 🔍 **Busca dinâmica de prestadores** com filtros por categoria e localização.  
-- 👤 **Cadastro de usuários** com perguntas de segurança.  
+- 👤 **Cadastro de usuários** direto pelo formulário de cadastro.  
 - 🔐 **Login seguro** com validações de e-mail e senha.  
-- 🔄 **Recuperação e redefinição de senha** via perguntas de segurança.  
+- 🔄 **Recuperação e redefinição de senha** sem perguntas de segurança.  
 - ⭐ **Avaliação e feedback de prestadores**.  
 - ⚠️ **Registro de ocorrências** (somente visível para administradores).  
 - ⚙️ **Gerenciamento de conta** e edição de informações pessoais.  
@@ -45,17 +45,12 @@ Página inicial com navegação principal e atalhos para as principais seções 
 
 ### 🧾 Cadastro
 Formulário com validação de campos obrigatórios.  
-Botão **“Cadastre-se”** que redireciona o usuário às perguntas de segurança.
+Botão **“Cadastre-se”** que cria o usuário diretamente no sistema.
 
-### 🔒 Perguntas de Segurança
-Etapa obrigatória após o cadastro.  
-Perguntas:
-- Qual o nome completo da sua mãe?  
-- Qual o nome do seu melhor amigo(a) de infância?
 
 ### 🔑 Login e Redefinição de Senha
 Login com verificação de formato de e-mail e comprimento da senha.  
-Opção **“Esqueci minha senha”** com validação das perguntas de segurança.
+Opção **“Esqueci minha senha”** para redefinir a senha sem perguntas de segurança.
 
 ### 🔍 Busca de Prestadores
 Barra de pesquisa dinâmica.  

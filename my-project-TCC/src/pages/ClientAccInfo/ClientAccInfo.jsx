@@ -14,8 +14,6 @@ function ClientAccInfo() {
     nome: '',
     email: '',
     senha: '',
-    ps_01: '',
-    ps_02: ''
   });
 
   const [originalData, setOriginalData] = useState({});
@@ -44,8 +42,6 @@ function ClientAccInfo() {
               nome: usuarioLogado.nome || '',
               email: usuarioLogado.email || '',
               senha: usuarioLogado.senha || '',
-              ps_01: usuarioLogado.ps_01 || '',
-              ps_02: usuarioLogado.ps_02 || ''
             };
 
             setFormData(data);
@@ -80,9 +76,18 @@ function ClientAccInfo() {
         return;
       }
 
+      const payload = {
+        nome: formData.nome,
+        email: formData.email,
+        senha: formData.senha,
+        nivelAcesso: usuarioLogado.nivelAcesso,
+        dataCadastro: usuarioLogado.dataCadastro,
+        statusUsuario: usuarioLogado.statusUsuario,
+      };
+
       await axios.put(
         `http://localhost:8080/api/v1/Usuario/${usuarioLogado.id}`,
-        { ...usuarioLogado, ...formData }
+        payload
       );
 
       toast.success('Informações alteradas com sucesso!', { id: toastId });
@@ -147,50 +152,6 @@ function ClientAccInfo() {
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
-                </div>
-
-               {/* READONLY */}
-<div className='clientinfo-security-row no-margin'>
-  <div className='clientinfo-security-column'>
-    <input
-      className='clientinfo-input clientinfo-readonly'
-      type="text"
-      placeholder="Qual nome completo da sua mãe?"
-      readOnly
-    />
-  </div>
-
-  <div className='clientinfo-security-column'>
-    <input
-      className='clientinfo-input clientinfo-readonly info-2'
-      type="text"
-      placeholder="Qual nome do seu melhor amigo(a) de infância?"
-      readOnly
-    />
-  </div>
-</div>
-
-                {/* PS */}
-                <div className='clientinfo-security-row'>
-                  <div className='clientinfo-security-column'>
-                    <input
-                      className='clientinfo-input'
-                      type="text"
-                      name="ps_01"
-                      value={formData.ps_01}
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  <div className='clientinfo-security-column'>
-                    <input
-                      className='clientinfo-input'
-                      type="text"
-                      name="ps_02"
-                      value={formData.ps_02}
-                      onChange={handleChange}
-                    />
-                  </div>
                 </div>
 
                 <button
