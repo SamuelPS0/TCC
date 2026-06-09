@@ -12,7 +12,6 @@ import SobreNos from '../pages/SobreNos/SobreNos';
 import AccInfo from '../pages/PRESTADORremovido/AccInfo/AccInfo';
 import CreatePerfil from '../pages/PRESTADORremovido/CreatePerfil/CreatePerfil'
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
-import SecurityQuestions from '../pages/SecurityQuestions/SecurityQuestions';
 import ClientAccInfo from '../pages/ClientAccInfo/ClientAccInfo';
 import DevHub from '../pages/DevPages/DevHub/DevHub';
 import DevCategory from '../pages/DevPages/DevCategory/DevCategory';
@@ -76,15 +75,6 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute requiredLevel={accessLevels.PRESTADOR}>
             <PerfilPrestador />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/security-questions"
-        element={
-          <ProtectedRoute requiredLevel={accessLevels.CLIENTE}>
-            <SecurityQuestions />
           </ProtectedRoute>
         }
       />

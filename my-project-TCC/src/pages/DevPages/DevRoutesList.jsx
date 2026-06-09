@@ -9,7 +9,7 @@ export default function DevRoutesList() {
 
     // protegidas
     '/acc-info', '/create-perfil', '/profile',
-    '/profileprestador', '/security-questions',
+    '/profileprestador',
 
     // dev
     '/dev-hub', '/dev-category', '/dev-user',

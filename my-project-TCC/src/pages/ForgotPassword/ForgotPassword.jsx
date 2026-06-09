@@ -3,24 +3,15 @@ import './ForgotPassword.css';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import AccountSecurity from '../../Components/AccountSecurity/AccountSecurity';
 import Login from '../../Components/Login/Login';
 import { useAuth } from '../../Components/AuthContext';
 import accessLevels from '../../Components/accessLevels';
-
-const normalizeSecurityAnswer = (value = '') => String(value ?? '').toLowerCase().replace(/\s/g, '');
-
-const securityErrorMessage = 'As informações digitadas não correspondem aos dados cadastrados em nosso sistema.';
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [usuarios, setUsuarios] = useState([]);
   const [loginData, setLoginData] = useState({ email: '', senha: '' });
-  const [securityData, setSecurityData] = useState({
-    ps_01: '',
-    ps_02: '',
-  });
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [updatingPassword, setUpdatingPassword] = useState(false);
 
@@ -44,7 +35,6 @@ export default function ForgotPassword() {
 
   const email = loginData.email.trim();
   const novaSenha = loginData.senha;
-  const emailPreenchido = email.length > 0;
 
   const usuarioEncontrado = useMemo(() => {
     const emailNormalizado = email.toLowerCase();
@@ -56,44 +46,17 @@ export default function ForgotPassword() {
     return usuarios.find((usuario) => usuario.email?.toLowerCase().trim() === emailNormalizado) || null;
   }, [email, usuarios]);
 
-  const validationState = useMemo(() => {
-    const ps01Preenchida = securityData.ps_01.length > 0;
-    const ps02Preenchida = securityData.ps_02.length > 0;
-    const podeValidarRespostas = emailPreenchido && !loadingUsers;
-    const primeiraRespostaCorreta =
-      Boolean(usuarioEncontrado) &&
-      normalizeSecurityAnswer(securityData.ps_01) === normalizeSecurityAnswer(usuarioEncontrado.ps_01);
-    const segundaRespostaCorreta =
-      Boolean(usuarioEncontrado) &&
-      normalizeSecurityAnswer(securityData.ps_02) === normalizeSecurityAnswer(usuarioEncontrado.ps_02);
-
-    return {
-      primeiraRespostaCorreta,
-      segundaRespostaCorreta,
-      respostasValidas: primeiraRespostaCorreta && segundaRespostaCorreta,
-      errors: {
-        ps_01: ps01Preenchida && podeValidarRespostas && !primeiraRespostaCorreta ? securityErrorMessage : '',
-        ps_02: ps02Preenchida && podeValidarRespostas && !segundaRespostaCorreta ? securityErrorMessage : '',
-      },
-    };
-  }, [emailPreenchido, loadingUsers, securityData, usuarioEncontrado]);
-
   const handleReset = async (formData = {}) => {
     const emailInformado = (formData.email || email).trim();
     const senhaInformada = formData.senha || novaSenha;
 
-    if (!emailInformado || !securityData.ps_01 || !securityData.ps_02 || !senhaInformada) {
+    if (!emailInformado || !senhaInformada) {
       toast.error('Preencha todos os campos');
       return;
     }
 
     if (!usuarioEncontrado) {
       toast.error('Usuário não encontrado');
-      return;
-    }
-
-    if (!validationState.respostasValidas) {
-      toast.error(securityErrorMessage);
       return;
     }
 
@@ -105,8 +68,6 @@ export default function ForgotPassword() {
         email: usuarioEncontrado.email,
         senha: senhaInformada,
         nivelAcesso: usuarioEncontrado.nivelAcesso,
-        ps_01: usuarioEncontrado.ps_01,
-        ps_02: usuarioEncontrado.ps_02,
         dataCadastro: usuarioEncontrado.dataCadastro,
         statusUsuario: usuarioEncontrado.statusUsuario,
       };
@@ -151,11 +112,8 @@ export default function ForgotPassword() {
         onDataChange={setLoginData}
         onSubmit={handleReset}
         isSubmitting={updatingPassword}
-        passwordDisabled={!validationState.respostasValidas}
-        buttonDisabled={loadingUsers || !validationState.respostasValidas}
+        buttonDisabled={loadingUsers}
       />
-
-      <AccountSecurity onChange={setSecurityData} errors={validationState.errors} />
     </div>
   );
 }
