@@ -10,7 +10,31 @@
 .clientinfo-sidemenu{
     margin-top: -55px;
 }
+/* Requisitos da senha */
 
+.clientinfo-password-rules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.clientinfo-password-rule {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #d9534f;
+    transition: color 0.2s ease;
+}
+
+.clientinfo-password-rule svg {
+    font-size: 14px;
+}
+
+.clientinfo-password-rule--valid {
+    color: #28a745;
+}
 /* CONTAINER PRINCIPAL */
 .clientinfo-inputs-container{
     width: 800px;

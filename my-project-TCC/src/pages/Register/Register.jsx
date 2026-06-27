@@ -12,7 +12,8 @@ const passwordRules = [
   { label: 'Letra maiúscula', test: (value = '') => /[A-Z]/.test(value) },
   { label: 'Letra minúscula', test: (value = '') => /[a-z]/.test(value) },
   { label: 'Número', test: (value = '') => /\d/.test(value) },
-  { label: 'Acento', test: (value = '') => /[À-ÿ]/.test(value) },
+  // Alterado de 'Acento' para 'Pontuação' com a regex correspondente a caracteres especiais
+  { label: 'Pontuação', test: (value = '') => /[!@#$%^&*(),.?":{}|<>_+\-=\[\]\\`;']/ .test(value) },
 ];
 
 const isStrongPassword = (value = '') => passwordRules.every((rule) => rule.test(value));
@@ -34,20 +35,17 @@ export default function Register() {
   
   const password = watch('password') || '';
   
-  
-    const onSubmit = (data) => {
-      const payload = {
-        nome: data.name,
-        email: data.email,
-        senha: data.password,
-        nivelAcesso: "CLIENTE",
-      };
-
-      localStorage.setItem('registerData', JSON.stringify(payload));
-
-      navigate('/security-questions');
+  const onSubmit = (data) => {
+    const payload = {
+      nome: data.name,
+      email: data.email,
+      senha: data.password,
+      nivelAcesso: "CLIENTE",
     };
 
+    localStorage.setItem('registerData', JSON.stringify(payload));
+    navigate('/security-questions');
+  };
 
   return (
     <div className='register-container'>
