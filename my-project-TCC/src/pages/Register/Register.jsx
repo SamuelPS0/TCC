@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import './Register.css';
 import { Link, useNavigate } from 'react-router-dom';
-import LogoRegister from '../../img/DivulgAÍ-removebg-preview.png'; 
+import LogoRegister from '../../img/DivulgAÍ-removebg-preview.png';
 import { useForm } from 'react-hook-form';
 import { FaRegEnvelope } from "react-icons/fa";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa6";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { IoPersonOutline } from "react-icons/io5";  
+import { IoPersonOutline } from "react-icons/io5";
 
 const passwordRules = [
   { label: 'Letra maiúscula', test: (value = '') => /[A-Z]/.test(value) },
   { label: 'Letra minúscula', test: (value = '') => /[a-z]/.test(value) },
   { label: 'Número', test: (value = '') => /\d/.test(value) },
   // Alterado de 'Acento' para 'Pontuação' com a regex correspondente a caracteres especiais
-  { label: 'Pontuação', test: (value = '') => /[!@#$%^&*(),.?":{}|<>_+\-=\[\]\\`;']/ .test(value) },
+  { label: 'Pontuação', test: (value = '') => /[!@#$%^&*(),.?":{}|<>_+\-=\[\]\\`;']/.test(value) },
 ];
 
 const isStrongPassword = (value = '') => passwordRules.every((rule) => rule.test(value));
@@ -26,25 +26,48 @@ export default function Register() {
     watch,
     formState: { errors }
   } = useForm();
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
-  
+
   const password = watch('password') || '';
-  
-  const onSubmit = (data) => {
+
+  const onSubmit = async (data) => {
     const payload = {
       nome: data.name,
-      email: data.email,
-      senha: data.password,
+      username: data.email,
+      password: data.password,
       nivelAcesso: "CLIENTE",
     };
 
-    localStorage.setItem('registerData', JSON.stringify(payload));
-    navigate('/security-questions');
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/usuario/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao cadastrar usuário");
+      }
+
+      const usuarioCriado = await response.json();
+
+      console.log("Usuário criado:", usuarioCriado);
+
+      alert("Cadastro realizado com sucesso!");
+
+      navigate("/"); // volta para login
+
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro ao cadastrar usuário");
+    }
   };
 
   return (

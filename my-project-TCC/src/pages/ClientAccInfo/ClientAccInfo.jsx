@@ -75,20 +75,15 @@ function ClientAccInfo() {
     if (!user?.email) return;
 
     axios
-      .get('http://localhost:8080/api/v1/Usuario')
+      .get('http://localhost:8080/api/v1/usuario/me')
       .then((response) => {
-        const usuarioLogado = response.data.find(
-          (u) => u.email === user.email
-        );
-
-        if (!usuarioLogado) return;
+        const usuarioLogado = response.data;
 
         const data = {
+          id: usuarioLogado.id,
           nome: usuarioLogado.nome || '',
-          email: usuarioLogado.email || '',
-          senha: usuarioLogado.senha || '',
-          ps_01: usuarioLogado.ps_01 || '',
-          ps_02: usuarioLogado.ps_02 || ''
+          email: usuarioLogado.username || '',
+          senha: '', // nunca exponha senha real
         };
 
         setFormData(data);
@@ -122,46 +117,33 @@ function ClientAccInfo() {
     const toastId = toast.loading('Atualizando informações...');
 
     try {
-      const response = await axios.get(
-        'http://localhost:8080/api/v1/Usuario'
-      );
-
-      const usuarioLogado = response.data.find(
-        (u) => u.email === user.email
-      );
-
-      if (!usuarioLogado) {
-        toast.error('Usuário não encontrado.', {
-          id: toastId
-        });
-        return;
-      }
-
       const payload = {
-        ...usuarioLogado,
-        ...formData,
-
-        // garante que o email nunca seja alterado
-        email: usuarioLogado.email,
-
-        // normaliza as respostas
-        ps_01: normalizeSecurityAnswer(formData.ps_01),
-        ps_02: normalizeSecurityAnswer(formData.ps_02)
+        nome: formData.nome,
+        username: formData.email,
+        password: formData.senha,
       };
 
       await axios.put(
-        `http://localhost:8080/api/v1/Usuario/${usuarioLogado.id}`,
-        payload
+        `http://localhost:8080/api/v1/usuario/${formData.id}`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
       );
 
-      setOriginalData(payload);
+      setOriginalData(formData);
 
       toast.success('Informações alteradas com sucesso!', {
-        id: toastId
+        id: toastId,
       });
-    } catch {
+
+    } catch (error) {
+      console.error(error);
       toast.error('Erro ao salvar alterações.', {
-        id: toastId
+        id: toastId,
       });
     }
   };
@@ -244,29 +226,28 @@ function ClientAccInfo() {
                 </div>
 
                 <div
-  style={{
-    marginTop: 10,
-    marginBottom: 20
-  }}
->
-  <div className="clientinfo-password-rules">
-    {passwordRules.map((rule) => {
-      const valid = rule.test(formData.senha);
+                  style={{
+                    marginTop: 10,
+                    marginBottom: 20
+                  }}
+                >
+                  <div className="clientinfo-password-rules">
+                    {passwordRules.map((rule) => {
+                      const valid = rule.test(formData.senha);
 
-      return (
-        <span
-          key={rule.label}
-          className={`clientinfo-password-rule ${
-            valid ? 'clientinfo-password-rule--valid' : ''
-          }`}
-        >
-          {valid ? <FaCheckCircle /> : <FaTimesCircle />}
-          {rule.label}
-        </span>
-      );
-    })}
-  </div>
-</div>
+                      return (
+                        <span
+                          key={rule.label}
+                          className={`clientinfo-password-rule ${valid ? 'clientinfo-password-rule--valid' : ''
+                            }`}
+                        >
+                          {valid ? <FaCheckCircle /> : <FaTimesCircle />}
+                          {rule.label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
 
                 <div className="clientinfo-security-row">
 

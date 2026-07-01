@@ -24,6 +24,7 @@ const CONTACT_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdGP9PZDXYMJV
 
 export default function LandingPage() {
   const { user } = useAuth();
+  console.log(user);
 
   return (
     <div className="lp">

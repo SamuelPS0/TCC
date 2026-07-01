@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';import axios from 'axios';
+import React, { useEffect, useState } from 'react'; import axios from 'axios';
 import LogoLogin from '../../img/DivulgAÍ-removebg-preview.png';
 import './Login.css';
 import { toast } from 'sonner';
@@ -29,7 +29,7 @@ export default function Login({
     handleSubmit,
     watch,
     formState: { errors },
-    } = useForm({
+  } = useForm({
     defaultValues: {
       email: '',
       senha: '',
@@ -39,7 +39,7 @@ export default function Login({
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-   const email = watch('email');
+  const email = watch('email');
   const senha = watch('senha');
   const submitLoading = loading || isSubmitting;
 
@@ -52,58 +52,64 @@ export default function Login({
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const onSubmit = async (dataLogin) => {
-       if (customSubmit) {
-      await customSubmit(dataLogin);
-      return;
-    }
-
     setLoading(true);
-    try {
-      const response = await axios.get('http://localhost:8080/api/v1/Usuario');
-      const usuarios = response.data;
 
-      const usuarioEncontrado = usuarios.find(
-        (u) =>
-          u.email.toLowerCase().trim() === dataLogin.email.toLowerCase().trim() &&
-          u.senha === dataLogin.senha
+    try {
+      // 1️⃣ LOGIN (Spring Security)
+      const params = new URLSearchParams();
+      params.append("username", dataLogin.email);
+      params.append("password", dataLogin.senha);
+
+      await axios.post(
+        "http://localhost:8080/api/v1/login",
+        params,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          withCredentials: true,
+        }
       );
 
+      // 2️⃣ BUSCAR USUÁRIO LOGADO
+      const responseUser = await axios.get(
+        "http://localhost:8080/api/v1/usuario/me",
+        {
+          withCredentials: true,
+        }
+      );
 
-      if (!usuarioEncontrado) {
-        toast.error('Email ou senha incorretos.');
-        return;
-      }
+      const usuario = responseUser.data;
 
-      if (usuarioEncontrado.statusUsuario === false) {
-        toast.error('O usuario está inativo em nosso site, tente novamente mais tarde.');
-        return;
-      }
+      console.log("Usuário logado:", usuario);
 
-      const level = usuarioEncontrado.nivelAcesso || accessLevels.CLIENTE;
-
+      // 3️⃣ SALVAR NO CONTEXTO
       login({
-        id: usuarioEncontrado.id,
-        email: usuarioEncontrado.email,
-        accessLevel: level,
+        id: usuario.id,
+        email: usuario.username,
+        accessLevel: usuario.nivelAcesso,
+        nome: usuario.nome,
       });
 
-      localStorage.setItem('userLevel', level);
-      console.log('Usuário logado com sucesso:', {
-        id: usuarioEncontrado.id,
-        email: usuarioEncontrado.email,
-        accessLevel: level,
-      });
+      localStorage.setItem("user", JSON.stringify(usuario));
 
+      toast.success("Login realizado com sucesso!");
+      navigate("/");
 
-      navigate('/');
     } catch (error) {
-      console.error('Erro ao autenticar:', error.response?.data || error.message);
-      toast.error('Erro ao conectar com o servidor.');
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        toast.error("Usuário ou senha inválidos");
+      } else {
+        toast.error("Erro ao conectar com o servidor");
+      }
     } finally {
       setLoading(false);
     }
   };
-  
+
+
 
   return (
     <div className="login-wrapper">
@@ -124,7 +130,7 @@ export default function Login({
         </label>
 
         <label className="login-form">
-           <div className="password-margin">{passwordLabel}</div>
+          <div className="password-margin">{passwordLabel}</div>
           <div className="input-icon-wrapper">
             <FaLock className="input-icon" />
             <input
