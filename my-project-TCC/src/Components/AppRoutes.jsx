@@ -12,6 +12,7 @@ import SobreNos from '../pages/SobreNos/SobreNos';
 import AccInfo from '../pages/PRESTADORremovido/AccInfo/AccInfo';
 import CreatePerfil from '../pages/PRESTADORremovido/CreatePerfil/CreatePerfil'
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
+import NewPassword from '../pages/NewPassword/NewPassword';
 import SecurityQuestions from '../pages/SecurityQuestions/SecurityQuestions';
 import ClientAccInfo from '../pages/ClientAccInfo/ClientAccInfo';
 import DevHub from '../pages/DevPages/DevHub/DevHub';
@@ -36,6 +37,7 @@ const AppRoutes = () => {
       <Route path="/home-list" element={<HomeList />} />
       <Route path="/client-accinfo" element={<ClientAccInfo />} />
       <Route path="/privacity" element={<Privacity />} />
+      <Route path="new-password" element={<NewPassword />} />
       <Route path="/unauthorized" element={<h1>Você não tem permissão para acessar esta página.</h1>} />
 
       <Route path='/cards' element={<Cards />} />
