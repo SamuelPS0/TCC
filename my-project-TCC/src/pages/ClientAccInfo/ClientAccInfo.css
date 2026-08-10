@@ -1,31 +1,354 @@
-.clientinfo-page{
+.clientinfo-page {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
+    min-height: 100vh;
     height: auto;
     background: #F6F6F6;
 }
 
-.clientinfo-sidemenu{
+.clientinfo-sidemenu {
     margin-top: -55px;
 }
-/* Requisitos da senha */
+
+/* ============================================================
+   CONTAINER PRINCIPAL
+============================================================ */
+
+.clientinfo-inputs-container {
+    width: 800px;
+    margin-top: 100px;
+    margin-left: 60px;
+}
+
+.cic {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* ============================================================
+   TÍTULOS
+============================================================ */
+
+.clientinfo-container h1 {
+    color: #000;
+    font-family: Montserrat, sans-serif;
+    font-size: 50px;
+    font-weight: 600;
+    margin-top: 100px;
+    margin-bottom: 15px;
+}
+
+.clientinfo-container h3 {
+    color: #AFAFAF;
+    font-family: Montserrat, sans-serif;
+    font-size: 50px;
+    font-weight: 300;
+    margin-top: 0;
+    margin-bottom: 80px;
+    line-height: 1.05;
+}
+
+/* ============================================================
+   LABELS
+============================================================ */
+
+.clientinfo-label {
+    color: #000;
+    font-family: Montserrat, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+/* ============================================================
+   INPUT PADRÃO
+============================================================ */
+
+.clientinfo-input {
+    width: 100%;
+    height: 75px;
+
+    border-radius: 5px;
+    border: 1px solid #B2ADAD;
+
+    background: #FFF;
+
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    color: #424242;
+
+    font-size: 16px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+
+    padding-left: 15px;
+    padding-right: 15px;
+
+    margin-bottom: 30px;
+
+    box-sizing: border-box;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.clientinfo-input:focus {
+    border-color: #F05221;
+
+    box-shadow:
+        0px 4px 4px rgba(0, 0, 0, 0.20),
+        0 0 0 2px rgba(240, 82, 33, 0.12);
+}
+
+/* ============================================================
+   PLACEHOLDER
+============================================================ */
+
+.clientinfo-input::placeholder {
+    color: #7C7C7C;
+    font-size: 16px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+}
+
+.clientinfo-input.info-2::placeholder {
+    font-size: 15px;
+}
+
+/* ============================================================
+   INPUT NÃO EDITÁVEL / EMAIL
+============================================================ */
+
+.clientinfo-input[readonly],
+.clientinfo-input:disabled {
+    background: #EAEAEA;
+
+    border: 1px solid #C2C2C2;
+
+    color: #2E2E2E;
+
+    font-family: Poppins, sans-serif;
+    font-weight: 600;
+
+    cursor: not-allowed;
+
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.12);
+}
+
+.clientinfo-input[readonly]:focus,
+.clientinfo-input:disabled:focus {
+    border-color: #C2C2C2;
+
+    box-shadow:
+        0px 2px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================================================
+   TEXTO ABAIXO DO EMAIL
+============================================================ */
+
+.clientinfo-input-help {
+    display: block;
+
+    margin-top: -20px;
+    margin-bottom: 30px;
+
+    color: #8A8A8A;
+
+    font-family: Montserrat, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/* ============================================================
+   ÍCONES DOS CAMPOS
+============================================================ */
+
+.clientinfo-field-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.clientinfo-field-icon {
+    position: absolute;
+
+    left: 17px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #777;
+
+    font-size: 18px;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+.clientinfo-input-with-icon {
+    padding-left: 50px !important;
+}
+
+/* ============================================================
+   SENHA
+============================================================ */
+
+.clientinfo-password-wrapper {
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+}
+
+.clientinfo-password-input {
+    width: 100%;
+
+    padding-left: 50px;
+    padding-right: 60px;
+
+    box-sizing: border-box;
+}
+
+/* Ícone de cadeado */
+
+.clientinfo-password-icon {
+    position: absolute;
+
+    left: 17px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #777;
+
+    font-size: 18px;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+/* ============================================================
+   BOTÃO MOSTRAR/OCULTAR SENHA
+============================================================ */
+
+.clientinfo-password-toggle {
+    position: absolute;
+
+    right: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    color: #5A5A5A;
+
+    font-size: 24px;
+
+    border-radius: 5px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.clientinfo-password-toggle:hover {
+    background-color: #EEEEEE;
+    color: #F05221;
+}
+
+.clientinfo-password-toggle:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ============================================================
+   REQUISITOS DA SENHA
+============================================================ */
+
+.clientinfo-password-rules-container {
+    width: 100%;
+
+    margin-top: -15px;
+    margin-bottom: 30px;
+
+    padding: 15px 18px;
+
+    box-sizing: border-box;
+
+    background: #FFFFFF;
+
+    border: 1px solid #DEDEDE;
+
+    border-radius: 5px;
+
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.10);
+}
+
+.clientinfo-password-rules-title {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #555;
+
+    font-family: Montserrat, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+}
 
 .clientinfo-password-rules {
     display: flex;
     flex-wrap: wrap;
+
     gap: 8px;
+
     margin-top: 10px;
 }
 
 .clientinfo-password-rule {
     display: flex;
     align-items: center;
+
     gap: 6px;
+
+    padding: 6px 9px;
+
+    border-radius: 5px;
+
+    background: #F2F2F2;
+
     font-size: 13px;
+
     color: #d9534f;
-    transition: color 0.2s ease;
+
+    font-family: Montserrat, sans-serif;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .clientinfo-password-rule svg {
@@ -34,144 +357,363 @@
 
 .clientinfo-password-rule--valid {
     color: #28a745;
-}
-/* CONTAINER PRINCIPAL */
-.clientinfo-inputs-container{
-    width: 800px;
-    margin-top: 100px;
-    margin-left: 60px;
+    background: #EDF8F0;
 }
 
-.cic{
+/* ============================================================
+   INFORMAÇÕES DA CONTA
+============================================================ */
+
+.clientinfo-account-info {
     width: 100%;
-    padding: 20px;
+
+    display: flex;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
 }
 
-/* INPUT PADRÃO */
-.clientinfo-input{
+.clientinfo-account-info-item {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 15px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #D6D6D6;
+
+    border-radius: 5px;
+
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.10);
+}
+
+.clientinfo-account-info-item span {
+    color: #858585;
+
+    font-family: Montserrat, sans-serif;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    margin-bottom: 5px;
+}
+
+.clientinfo-account-info-item strong {
+    color: #333;
+
+    font-family: Montserrat, sans-serif;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+/* ============================================================
+   BOTÃO SALVAR
+============================================================ */
+
+.clientinfo-save-button {
     width: 100%;
     height: 75px;
+
     border-radius: 5px;
+
     border: 1px solid #B2ADAD;
-    background: #FFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    color: #424242;
+
+    background-color: #F05221;
+
+    color: white;
+
     font-size: 16px;
-    font-family: Montserrat;
-    font-weight: 500;
-    padding-left: 15px;
-    margin-bottom: 30px;
+
+    font-family: Montserrat, sans-serif;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    margin-bottom: 15px;
+
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
     box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
 }
 
-/* INPUTS NÃO EDITÁVEIS */
-.clientinfo-input[readonly]{
-    background: #EAEAEA;
-    border: 1px solid #C2C2C2;
-    color: #2E2E2E;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-}
-.clientinfo-input.info-2::placeholder{
-    font-size: 15px;
+.clientinfo-save-button:hover:not(:disabled) {
+    background-color: #D94316;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.20);
 }
 
-/* AUMENTAR DISTÂNCIA DOS READONLY */
-.clientinfo-security-row.no-margin{
+.clientinfo-save-button:active:not(:disabled) {
+    transform: translateY(0);
+
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.20);
+}
+
+.clientinfo-save-button:disabled {
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   BOTÃO SALVANDO
+============================================================ */
+
+.clientinfo-save-button--loading {
+    background-color: #D94316;
+
+    opacity: 0.85;
+}
+
+/* ============================================================
+   BOTÃO APÓS SALVAR
+============================================================ */
+
+.clientinfo-save-button--success {
+    background-color: #28A745;
+
+    border-color: #28A745;
+}
+
+.clientinfo-save-button--success:hover {
+    background-color: #28A745;
+}
+
+/* ============================================================
+   SPINNER DO BOTÃO
+============================================================ */
+
+.clientinfo-button-spinner {
+    width: 18px;
+    height: 18px;
+
+    border: 2px solid rgba(255, 255, 255, 0.35);
+
+    border-top-color: #FFFFFF;
+
+    border-radius: 50%;
+
+    animation: clientinfo-spin 0.7s linear infinite;
+}
+
+@keyframes clientinfo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================================
+   MENSAGEM DE SUCESSO
+============================================================ */
+
+.clientinfo-success-message {
+    width: 100%;
+
+    min-height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-bottom: 30px;
+
+    padding: 10px 15px;
+
+    box-sizing: border-box;
+
+    border-radius: 5px;
+
+    background: #EDF8F0;
+
+    border: 1px solid #BEE5C8;
+
+    color: #218838;
+
+    font-family: Montserrat, sans-serif;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    animation: clientinfo-success-in 0.25s ease;
+}
+
+.clientinfo-success-message svg {
+    font-size: 16px;
+
+    flex-shrink: 0;
+}
+
+@keyframes clientinfo-success-in {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+.clientinfo-loader {
+    opacity: 1;
+
+    transition: opacity 0.5s ease;
+}
+
+.clientinfo-loader--fadeout {
+    opacity: 0;
+}
+
+/* ============================================================
+   SECURITY ROW
+============================================================ */
+
+.clientinfo-security-row {
+    width: 100%;
+
+    display: flex;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.clientinfo-security-column {
+    flex: 1;
+}
+
+.clientinfo-security-row.no-margin {
     margin-top: 40px;
     margin-bottom: 10px;
 }
 
-/* ROW (PS E READONLY) */
-.clientinfo-security-row{
-    width: 100%;
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
+/* ============================================================
+   RESPONSIVIDADE
+============================================================ */
+
+@media (max-width: 1000px) {
+
+    .clientinfo-inputs-container {
+        width: 90%;
+        margin-left: 0;
+    }
+
+    .clientinfo-container h1 {
+        font-size: 40px;
+    }
+
+    .clientinfo-container h3 {
+        font-size: 35px;
+    }
 }
 
-.clientinfo-security-column{
-    flex: 1;
+@media (max-width: 700px) {
+
+    .clientinfo-page {
+        align-items: flex-start;
+    }
+
+    .clientinfo-inputs-container {
+        width: 95%;
+
+        margin-top: 50px;
+        margin-left: 0;
+    }
+
+    .clientinfo-container h1 {
+        font-size: 32px;
+
+        margin-top: 40px;
+    }
+
+    .clientinfo-container h3 {
+        font-size: 24px;
+
+        margin-bottom: 50px;
+    }
+
+    .clientinfo-label {
+        font-size: 17px;
+    }
+
+    .clientinfo-input {
+        height: 65px;
+    }
+
+    .clientinfo-save-button {
+        height: 65px;
+    }
+
+    .clientinfo-account-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .clientinfo-password-rules {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .clientinfo-password-rule {
+        width: fit-content;
+    }
 }
 
-/* SENHA */
-.clientinfo-password-wrapper{
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
+@media (max-width: 450px) {
 
-.clientinfo-password-input{
-    width: 100%;
-    padding-right: 60px;
-    
-    box-sizing: border-box;
-}
+    .clientinfo-inputs-container {
+        width: 100%;
 
-/* ÍCONE DO OLHO AJUSTADO */
-.clientinfo-password-toggle{
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    align-items: center;
-    background: transparent;
-    cursor: pointer;
-    color: #5A5A5A;
-    font-size: 26px;
-}
+        margin-top: 20px;
+    }
 
-/* TEXTOS */
-.clientinfo-container h1{
-    color: #000;
-    font-family: Montserrat;
-    font-size: 50px;
-    font-weight: 600;
-    margin-top: 100px;
-}
+    .cic {
+        padding: 15px;
+    }
 
-.clientinfo-container h3{
-    color: #AFAFAF;
-    font-family: Montserrat;
-    font-size: 50px;
-    font-weight: 300;
-    margin-bottom: 80px;
-}
+    .clientinfo-container h1 {
+        font-size: 27px;
+    }
 
-.clientinfo-label{
-    color: #000;
-    font-family: Montserrat;
-    font-size: 20px;
-    font-weight: 400;
-    margin-bottom: 5px;
-}
+    .clientinfo-container h3 {
+        font-size: 20px;
+    }
 
-.clientinfo-input::placeholder{
-    color: #7C7C7C;
-    font-size: 16px;
-    font-family: Montserrat;
-    font-weight: 500;
-}
+    .clientinfo-input {
+        height: 60px;
+        font-size: 14px;
+    }
 
-/* BOTÃO */
-.clientinfo-save-button {
-    width: 100%;
-    height: 75px;
-    border-radius: 5px;
-    border: 1px solid #B2ADAD;
-    background-color: #F05221;
-    color: white;
-    font-size: 16px;
-    font-family: Montserrat;
-    font-weight: 800;
-    cursor: pointer;
-    margin-bottom: 30px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    box-sizing: border-box;
-}
-
-.clientinfo-save-button:hover {
-    background-color: #F05221;
+    .clientinfo-input::placeholder {
+        font-size: 14px;
+    }
 }
