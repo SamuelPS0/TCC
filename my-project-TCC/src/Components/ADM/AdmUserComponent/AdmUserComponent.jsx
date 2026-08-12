@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdmUserComponent.css';
 import axios from 'axios';
+
 import {
   getUsuarioEmail,
   normalizeStatusUsuario,
   usuarioService
 } from '../../../services/usuarioService';
+
 import { toast } from 'sonner';
 import { FaEye } from 'react-icons/fa';
 
@@ -14,7 +16,8 @@ const AdmUserComponent = ({ termoBusca }) => {
   const [usuarios, setUsuarios] = useState([]);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [statusPrestadorPorUsuarioId, setStatusPrestadorPorUsuarioId] = useState({});
+  const [statusPrestadorPorUsuarioId, setStatusPrestadorPorUsuarioId] =
+    useState({});
 
   const navigate = useNavigate();
 
@@ -29,11 +32,38 @@ const AdmUserComponent = ({ termoBusca }) => {
   };
 
   // =========================================================
+  // NORMALIZA NÍVEL DE ACESSO
+  // =========================================================
+
+  const normalizeNivelAcesso = (nivel) => {
+    const nivelNormalizado = String(nivel ?? '')
+      .trim()
+      .toUpperCase();
+
+    if (nivelNormalizado === 'ADMIN') {
+      return 'ADMIN';
+    }
+
+    if (nivelNormalizado === 'PRESTADOR') {
+      return 'PRESTADOR';
+    }
+
+    if (
+      nivelNormalizado === 'USER' ||
+      nivelNormalizado === 'CLIENTE'
+    ) {
+      return 'CLIENTE';
+    }
+
+    return nivelNormalizado;
+  };
+
+  // =========================================================
   // OBTÉM STATUS QUE SERÁ EXIBIDO NA TABELA
   // =========================================================
 
   const getStatusExibicao = (usuario) => {
-    const nivel = normalizeStatus(usuario?.nivelAcesso);
+    const nivel = normalizeNivelAcesso(usuario?.nivelAcesso);
 
     /*
      * Prestadores possuem um status próprio.
@@ -87,10 +117,13 @@ const AdmUserComponent = ({ termoBusca }) => {
     console.log('========================================');
 
     try {
-      const [respostaUsuarios, respostaPrestadores] = await Promise.all([
-        usuarioService.listarTodos(),
-        axios.get('http://localhost:8080/api/v1/prestador')
-      ]);
+      const [respostaUsuarios, respostaPrestadores] =
+        await Promise.all([
+          usuarioService.listarTodos(),
+          axios.get(
+            'http://localhost:8080/api/v1/prestador'
+          )
+        ]);
 
       console.log(
         '[AdmUserComponent] Resposta usuários:',
@@ -102,11 +135,15 @@ const AdmUserComponent = ({ termoBusca }) => {
         respostaPrestadores.data
       );
 
-      const usuariosData = Array.isArray(respostaUsuarios.data)
+      const usuariosData = Array.isArray(
+        respostaUsuarios.data
+      )
         ? respostaUsuarios.data
         : [];
 
-      const prestadoresData = Array.isArray(respostaPrestadores.data)
+      const prestadoresData = Array.isArray(
+        respostaPrestadores.data
+      )
         ? respostaPrestadores.data
         : [];
 
@@ -114,48 +151,69 @@ const AdmUserComponent = ({ termoBusca }) => {
       // MAPEAR STATUS DOS PRESTADORES
       // =====================================================
 
-      const statusPorUsuario = prestadoresData.reduce(
-        (acc, prestador) => {
-          const usuarioId = Number(
-            prestador?.usuario?.id ??
-            prestador?.usuario_id ??
-            prestador?.usuarioId
-          );
-
-          if (!Number.isNaN(usuarioId) && usuarioId > 0) {
-            acc[usuarioId] = normalizeStatus(
-              prestador?.statusPrestador,
-              'EM_ANALISE'
+      const statusPorUsuario =
+        prestadoresData.reduce(
+          (acc, prestador) => {
+            const usuarioId = Number(
+              prestador?.usuario?.id ??
+                prestador?.usuario_id ??
+                prestador?.usuarioId
             );
-          }
 
-          return acc;
-        },
-        {}
-      );
+            if (
+              !Number.isNaN(usuarioId) &&
+              usuarioId > 0
+            ) {
+              acc[usuarioId] = normalizeStatus(
+                prestador?.statusPrestador,
+                'EM_ANALISE'
+              );
+            }
+
+            return acc;
+          },
+          {}
+        );
 
       console.log(
         '[AdmUserComponent] Status dos prestadores por usuário:',
         statusPorUsuario
       );
 
-      setStatusPrestadorPorUsuarioId(statusPorUsuario);
+      setStatusPrestadorPorUsuarioId(
+        statusPorUsuario
+      );
 
       // =====================================================
       // NORMALIZAR USUÁRIOS
       // =====================================================
 
-      const usuariosNormalizados = usuariosData.map((usuario) => ({
-        ...usuario,
-        id: Number(usuario.id),
-        nome: usuario.nome || 'Usuário sem nome',
-        username: usuario.username || usuario.email || '',
-        nivelAcesso: normalizeStatus(usuario.nivelAcesso),
-        statusUsuario: normalizeStatusUsuario(
-          usuario.statusUsuario,
-          'INATIVO'
-        )
-      }));
+      const usuariosNormalizados =
+        usuariosData.map((usuario) => ({
+          ...usuario,
+
+          id: Number(usuario.id),
+
+          nome:
+            usuario.nome ||
+            'Usuário sem nome',
+
+          username:
+            usuario.username ||
+            usuario.email ||
+            '',
+
+          nivelAcesso:
+            normalizeNivelAcesso(
+              usuario.nivelAcesso
+            ),
+
+          statusUsuario:
+            normalizeStatusUsuario(
+              usuario.statusUsuario,
+              'INATIVO'
+            )
+        }));
 
       console.log(
         '[AdmUserComponent] Usuários normalizados:',
@@ -163,9 +221,13 @@ const AdmUserComponent = ({ termoBusca }) => {
       );
 
       setUsuarios(usuariosNormalizados);
-      setUsuariosFiltrados(usuariosNormalizados);
+      setUsuariosFiltrados(
+        usuariosNormalizados
+      );
 
-      toast.success('Usuários carregados');
+      toast.success(
+        'Usuários carregados'
+      );
     } catch (error) {
       console.error(
         '[AdmUserComponent] Erro ao carregar usuários:',
@@ -182,7 +244,9 @@ const AdmUserComponent = ({ termoBusca }) => {
         error?.response?.status
       );
 
-      toast.warning('Falha ao carregar usuários');
+      toast.warning(
+        'Falha ao carregar usuários'
+      );
     }
   };
 
@@ -217,14 +281,19 @@ const AdmUserComponent = ({ termoBusca }) => {
 
     let lista = [...usuarios];
 
+    // =====================================================
     // ORDEM ALFABÉTICA
+    // =====================================================
+
     if (tipo === 'ordem') {
       if (valor === 'A-Z') {
         lista.sort((a, b) =>
           a.nome.localeCompare(
             b.nome,
             'pt-BR',
-            { sensitivity: 'base' }
+            {
+              sensitivity: 'base'
+            }
           )
         );
       }
@@ -234,52 +303,68 @@ const AdmUserComponent = ({ termoBusca }) => {
           b.nome.localeCompare(
             a.nome,
             'pt-BR',
-            { sensitivity: 'base' }
+            {
+              sensitivity: 'base'
+            }
           )
         );
       }
     }
 
+    // =====================================================
     // NÍVEL DE ACESSO
+    // =====================================================
+
     if (tipo === 'nivel') {
       lista = lista.filter(
         (usuario) =>
-          normalizeStatus(usuario.nivelAcesso) ===
-          normalizeStatus(valor)
+          normalizeNivelAcesso(
+            usuario.nivelAcesso
+          ) ===
+          normalizeNivelAcesso(valor)
       );
     }
 
+    // =====================================================
     // STATUS
+    // =====================================================
+
     if (tipo === 'status') {
       if (valor === 'ATIVO') {
         lista = lista.filter(
           (usuario) =>
-            getStatusExibicao(usuario) === 'ATIVO'
+            getStatusExibicao(usuario) ===
+            'ATIVO'
         );
       }
 
       if (valor === 'INATIVO') {
         lista = lista.filter(
           (usuario) =>
-            getStatusExibicao(usuario) === 'INATIVO'
+            getStatusExibicao(usuario) ===
+            'INATIVO'
         );
       }
 
       if (valor === 'EM ANÁLISE') {
         lista = lista.filter(
           (usuario) =>
-            getStatusExibicao(usuario) === 'EM_ANALISE'
+            getStatusExibicao(usuario) ===
+            'EM_ANALISE'
         );
       }
     }
 
-    /*
-     * Independente do filtro escolhido,
-     * usuários em análise sempre ficam no topo.
-     */
+    // =====================================================
+    // USUÁRIOS EM ANÁLISE SEMPRE NO TOPO
+    // =====================================================
+
     lista.sort((a, b) => {
-      const aAnalise = usuarioEmAnalise(a);
-      const bAnalise = usuarioEmAnalise(b);
+      const aAnalise =
+        usuarioEmAnalise(a);
+
+      const bAnalise =
+        usuarioEmAnalise(b);
 
       if (aAnalise && !bAnalise) {
         return -1;
@@ -306,19 +391,34 @@ const AdmUserComponent = ({ termoBusca }) => {
   // =========================================================
 
   const limparFiltros = () => {
-    console.log('[AdmUserComponent] Limpando filtros');
+    console.log(
+      '[AdmUserComponent] Limpando filtros'
+    );
 
-    const listaOrdenada = [...usuarios].sort((a, b) => {
-      const aAnalise = usuarioEmAnalise(a);
-      const bAnalise = usuarioEmAnalise(b);
+    const listaOrdenada = [...usuarios].sort(
+      (a, b) => {
+        const aAnalise =
+          usuarioEmAnalise(a);
 
-      if (aAnalise && !bAnalise) return -1;
-      if (!aAnalise && bAnalise) return 1;
+        const bAnalise =
+          usuarioEmAnalise(b);
 
-      return 0;
-    });
+        if (aAnalise && !bAnalise) {
+          return -1;
+        }
 
-    setUsuariosFiltrados(listaOrdenada);
+        if (!aAnalise && bAnalise) {
+          return 1;
+        }
+
+        return 0;
+      }
+    );
+
+    setUsuariosFiltrados(
+      listaOrdenada
+    );
+
     setOpenDropdown(null);
   };
 
@@ -332,18 +432,37 @@ const AdmUserComponent = ({ termoBusca }) => {
       usuario
     );
 
-    const nivel = normalizeStatus(usuario.nivelAcesso);
+    const nivel =
+      normalizeNivelAcesso(
+        usuario?.nivelAcesso
+      );
 
+    console.log(
+      '[AdmUserComponent] Nível normalizado:',
+      nivel
+    );
+
+    // =====================================================
     // ADMIN
+    // =====================================================
+
     if (nivel === 'ADMIN') {
-      navigate('/dev-view-adm', {
-        state: { usuario }
-      });
+      navigate(
+        '/dev-view-adm',
+        {
+          state: {
+            usuario
+          }
+        }
+      );
 
       return;
     }
 
+    // =====================================================
     // PRESTADOR
+    // =====================================================
+
     if (nivel === 'PRESTADOR') {
       try {
         console.log(
@@ -351,22 +470,26 @@ const AdmUserComponent = ({ termoBusca }) => {
           usuario.id
         );
 
-        const res = await axios.get(
-          'http://localhost:8080/api/v1/prestador'
-        );
+        const res =
+          await axios.get(
+            'http://localhost:8080/api/v1/prestador'
+          );
 
-        const prestadores = Array.isArray(res.data)
-          ? res.data
-          : [];
+        const prestadores =
+          Array.isArray(res.data)
+            ? res.data
+            : [];
 
-        const prestador = prestadores.find(
-          (p) =>
-            Number(
-              p?.usuario?.id ??
-              p?.usuario_id ??
-              p?.usuarioId
-            ) === Number(usuario.id)
-        );
+        const prestador =
+          prestadores.find(
+            (p) =>
+              Number(
+                p?.usuario?.id ??
+                  p?.usuario_id ??
+                  p?.usuarioId
+              ) ===
+              Number(usuario.id)
+          );
 
         console.log(
           '[AdmUserComponent] Prestador encontrado:',
@@ -396,73 +519,131 @@ const AdmUserComponent = ({ termoBusca }) => {
       return;
     }
 
+    // =====================================================
     // CLIENTE
+    // =====================================================
+
     if (nivel === 'CLIENTE') {
-      navigate('/dev-view-client', {
-        state: { usuario }
-      });
+      console.log(
+        '[AdmUserComponent] Abrindo visualização do cliente:',
+        usuario.id
+      );
+
+      navigate(
+        `/dev-view-client/${usuario.id}`
+      );
 
       return;
     }
 
+    // =====================================================
+    // NÍVEL DESCONHECIDO
+    // =====================================================
+
     toast.warning(
-      `Nível de acesso não reconhecido: ${nivel}`
+      `Nível de acesso não reconhecido: ${
+        usuario?.nivelAcesso ?? 'não informado'
+      }`
     );
   };
 
   // =========================================================
-  // BUSCA POR NOME
+  // BUSCA POR NOME / EMAIL
   // =========================================================
 
   useEffect(() => {
-    const termo = String(termoBusca || '')
+    const termo = String(
+      termoBusca || ''
+    )
       .trim()
       .toLowerCase();
 
     if (termo === '') {
-      const listaOrdenada = [...usuarios].sort((a, b) => {
-        const aAnalise = usuarioEmAnalise(a);
-        const bAnalise = usuarioEmAnalise(b);
+      const listaOrdenada =
+        [...usuarios].sort(
+          (a, b) => {
+            const aAnalise =
+              usuarioEmAnalise(a);
 
-        if (aAnalise && !bAnalise) return -1;
-        if (!aAnalise && bAnalise) return 1;
+            const bAnalise =
+              usuarioEmAnalise(b);
 
-        return 0;
-      });
+            if (
+              aAnalise &&
+              !bAnalise
+            ) {
+              return -1;
+            }
 
-      setUsuariosFiltrados(listaOrdenada);
+            if (
+              !aAnalise &&
+              bAnalise
+            ) {
+              return 1;
+            }
+
+            return 0;
+          }
+        );
+
+      setUsuariosFiltrados(
+        listaOrdenada
+      );
 
       return;
     }
 
-    const filtrados = usuarios.filter((usuario) => {
-      const nome = String(usuario.nome || '')
-        .toLowerCase();
+    const filtrados =
+      usuarios.filter(
+        (usuario) => {
+          const nome =
+            String(
+              usuario.nome || ''
+            ).toLowerCase();
 
-      const email = getUsuarioEmail(usuario)
-        .toLowerCase();
+          const email =
+            getUsuarioEmail(
+              usuario
+            ).toLowerCase();
 
-      return (
-        nome.includes(termo) ||
-        email.includes(termo)
+          return (
+            nome.includes(termo) ||
+            email.includes(termo)
+          );
+        }
       );
-    });
 
-    /*
-     * Mesmo durante a busca, usuários em análise
-     * continuam aparecendo primeiro.
-     */
+    // =====================================================
+    // EM ANÁLISE PRIMEIRO
+    // =====================================================
+
     filtrados.sort((a, b) => {
-      const aAnalise = usuarioEmAnalise(a);
-      const bAnalise = usuarioEmAnalise(b);
+      const aAnalise =
+        usuarioEmAnalise(a);
 
-      if (aAnalise && !bAnalise) return -1;
-      if (!aAnalise && bAnalise) return 1;
+      const bAnalise =
+        usuarioEmAnalise(b);
+
+      if (
+        aAnalise &&
+        !bAnalise
+      ) {
+        return -1;
+      }
+
+      if (
+        !aAnalise &&
+        bAnalise
+      ) {
+        return 1;
+      }
 
       return 0;
     });
 
-    setUsuariosFiltrados(filtrados);
+    setUsuariosFiltrados(
+      filtrados
+    );
   }, [
     termoBusca,
     usuarios,
@@ -484,18 +665,25 @@ const AdmUserComponent = ({ termoBusca }) => {
         <div className="auc-dropdown">
           <button
             onClick={() =>
-              toggleDropdown('ordem')
+              toggleDropdown(
+                'ordem'
+              )
             }
             className="auc-ordem"
           >
             ORDEM
           </button>
 
-          {openDropdown === 'ordem' && (
+          {openDropdown ===
+            'ordem' && (
             <div className="auc-menu">
+
               <div
                 onClick={() =>
-                  aplicarFiltro('ordem', 'A-Z')
+                  aplicarFiltro(
+                    'ordem',
+                    'A-Z'
+                  )
                 }
               >
                 A - Z
@@ -503,11 +691,15 @@ const AdmUserComponent = ({ termoBusca }) => {
 
               <div
                 onClick={() =>
-                  aplicarFiltro('ordem', 'Z-A')
+                  aplicarFiltro(
+                    'ordem',
+                    'Z-A'
+                  )
                 }
               >
                 Z - A
               </div>
+
             </div>
           )}
         </div>
@@ -515,17 +707,22 @@ const AdmUserComponent = ({ termoBusca }) => {
         {/* NÍVEL DE ACESSO */}
 
         <div className="auc-dropdown">
+
           <button
             onClick={() =>
-              toggleDropdown('nivel')
+              toggleDropdown(
+                'nivel'
+              )
             }
             className="auc-status"
           >
             NÍVEL DE ACESSO
           </button>
 
-          {openDropdown === 'nivel' && (
+          {openDropdown ===
+            'nivel' && (
             <div className="auc-menu">
+
               <div
                 onClick={() =>
                   aplicarFiltro(
@@ -558,6 +755,7 @@ const AdmUserComponent = ({ termoBusca }) => {
               >
                 CLIENTE
               </div>
+
             </div>
           )}
         </div>
@@ -565,17 +763,22 @@ const AdmUserComponent = ({ termoBusca }) => {
         {/* STATUS */}
 
         <div className="auc-dropdown">
+
           <button
             onClick={() =>
-              toggleDropdown('status')
+              toggleDropdown(
+                'status'
+              )
             }
             className="auc-btn"
           >
             STATUS
           </button>
 
-          {openDropdown === 'status' && (
+          {openDropdown ===
+            'status' && (
             <div className="auc-menu">
+
               <div
                 onClick={() =>
                   aplicarFiltro(
@@ -608,6 +811,7 @@ const AdmUserComponent = ({ termoBusca }) => {
               >
                 EM ANÁLISE
               </div>
+
             </div>
           )}
         </div>
@@ -620,6 +824,7 @@ const AdmUserComponent = ({ termoBusca }) => {
         >
           LIMPAR
         </button>
+
       </div>
 
       {/* ================= TABELA ================= */}
@@ -628,7 +833,10 @@ const AdmUserComponent = ({ termoBusca }) => {
 
         <div className="auc-table">
 
+          {/* CABEÇALHO */}
+
           <div className="auc-header">
+
             <div className="auc-col id">
               ID
             </div>
@@ -652,9 +860,13 @@ const AdmUserComponent = ({ termoBusca }) => {
             <div className="auc-col acoes">
               Ações
             </div>
+
           </div>
 
-          {usuariosFiltrados.length === 0 ? (
+          {/* USUÁRIOS */}
+
+          {usuariosFiltrados.length ===
+          0 ? (
 
             <div className="auc-empty">
               Nenhum usuário encontrado.
@@ -666,10 +878,13 @@ const AdmUserComponent = ({ termoBusca }) => {
               (usuario, index) => {
 
                 const status =
-                  getStatusExibicao(usuario);
+                  getStatusExibicao(
+                    usuario
+                  );
 
                 const emAnalise =
-                  status === 'EM_ANALISE';
+                  status ===
+                  'EM_ANALISE';
 
                 return (
                   <div
@@ -699,6 +914,7 @@ const AdmUserComponent = ({ termoBusca }) => {
                           : ''
                       }`}
                     >
+
                       {emAnalise && (
                         <span
                           className="auc-alert-icon"
@@ -711,6 +927,7 @@ const AdmUserComponent = ({ termoBusca }) => {
                       <span>
                         {usuario.nome}
                       </span>
+
                     </div>
 
                     {/* EMAIL */}
@@ -724,20 +941,25 @@ const AdmUserComponent = ({ termoBusca }) => {
                     {/* NÍVEL */}
 
                     <div className="auc-col nivel">
-                      {usuario.nivelAcesso}
+                      {normalizeNivelAcesso(
+                        usuario.nivelAcesso
+                      )}
                     </div>
 
                     {/* STATUS */}
 
                     <div
                       className={`auc-col status ${
-                        status === 'ATIVO'
+                        status ===
+                        'ATIVO'
                           ? 'ativo'
-                          : status === 'EM_ANALISE'
+                          : status ===
+                            'EM_ANALISE'
                           ? 'analise'
                           : 'inativo'
                       }`}
                     >
+
                       {status ===
                       'EM_ANALISE'
                         ? 'Em análise'
@@ -745,6 +967,7 @@ const AdmUserComponent = ({ termoBusca }) => {
                           'ATIVO'
                         ? 'Ativo'
                         : 'Inativo'}
+
                     </div>
 
                     {/* AÇÕES */}

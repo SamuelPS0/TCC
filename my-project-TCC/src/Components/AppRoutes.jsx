@@ -119,14 +119,14 @@ const AppRoutes = () => {
         }
       />
 
-                        <Route
-        path="/dev-view-client"
-        element={
-          <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
-            <DevViewClient />
-          </ProtectedRoute>
-        }
-      />
+<Route
+  path="/dev-view-client/:usuarioId"
+  element={
+    <ProtectedRoute requiredLevel={accessLevels.ADMIN}>
+      <DevViewClient />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
           path="/dev-view-prestador/:prestadorId"

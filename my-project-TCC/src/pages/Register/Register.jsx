@@ -12,9 +12,7 @@ const passwordRules = [
   { label: 'Letra maiúscula', test: (value = '') => /[A-Z]/.test(value) },
   { label: 'Letra minúscula', test: (value = '') => /[a-z]/.test(value) },
   { label: 'Número', test: (value = '') => /\d/.test(value) },
-  // Alterado de 'Acento' para 'Pontuação' com a regex correspondente a caracteres especiais
-  { label: 'Pontuação', test: (value = '') => /[!@#$%^&*(),.?":{}|<>_+\-=\[\]\\`;']/.test(value) },
-];
+  { label: 'Pontuação', test: (value = '') => /[^A-Za-z0-9]/.test(value) },];
 
 const isStrongPassword = (value = '') => passwordRules.every((rule) => rule.test(value));
 

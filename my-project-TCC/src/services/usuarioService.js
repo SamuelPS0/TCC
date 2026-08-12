@@ -33,6 +33,63 @@ export const normalizeStatusUsuario = (
   return fallback;
 };
 
+/*
+ * O backend utiliza USER.
+ * O frontend utiliza CLIENTE.
+ */
+export const normalizeNivelAcessoUsuario = (
+  nivel,
+  fallback = ''
+) => {
+  const normalized = String(
+    nivel ?? fallback
+  )
+    .trim()
+    .toUpperCase();
+
+  if (normalized === 'USER') {
+    return 'CLIENTE';
+  }
+
+  if (normalized === 'CLIENTE') {
+    return 'CLIENTE';
+  }
+
+  if (normalized === 'ADMIN') {
+    return 'ADMIN';
+  }
+
+  return fallback;
+};
+
+/*
+ * Converte o nível usado visualmente pelo frontend
+ * para o nível esperado pelo backend.
+ */
+export const nivelAcessoParaBackend = (
+  nivel
+) => {
+  const normalized = String(
+    nivel ?? ''
+  )
+    .trim()
+    .toUpperCase();
+
+  if (normalized === 'CLIENTE') {
+    return 'USER';
+  }
+
+  if (normalized === 'USER') {
+    return 'USER';
+  }
+
+  if (normalized === 'ADMIN') {
+    return 'ADMIN';
+  }
+
+  return normalized;
+};
+
 export const getUsuarioEmail = (
   usuario = {}
 ) => {

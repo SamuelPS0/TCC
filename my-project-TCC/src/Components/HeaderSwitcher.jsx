@@ -8,9 +8,13 @@ import HeaderAdmin from './Header/levelHeaders/HeaderAdmin';
 import Header0 from './Header/levelHeaders/Header0';
 
 export default function HeaderSwitcher(props) {
-  const { user } = useAuth();
+  const { user, authReady } = useAuth();
   const location = useLocation();
 
+
+  if (!authReady) {
+    return null;
+  }
 
   if (!user || user.accessLevel === accessLevels.GUEST) {
     // Se quiser o Header0 só na landing '/', pode usar:
@@ -25,7 +29,7 @@ export default function HeaderSwitcher(props) {
     case accessLevels.ADMIN:
       return <HeaderAdmin {...props} />;
     case accessLevels.PRESTADOR:
-      return <HeaderPrestador {...props} />;
+      return <HeaderCliente {...props} />;
     case accessLevels.CLIENTE:
       return <HeaderCliente {...props} />;
     default:

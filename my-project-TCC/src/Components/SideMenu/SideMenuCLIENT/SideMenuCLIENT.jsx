@@ -24,7 +24,7 @@ export default function SideMenuCLIENT() {
           id='smclient-firstli'
           className={`smclient-li ${location.pathname === '/client-accinfo' && !hoverOther ? 'active' : ''}`}
         >
-          <Link to='/client-acc-info' className='smclient-link'>
+          <Link to='/client-accinfo' className='smclient-link'>
             <IoShieldOutline className='smclient-icon' />Informações da conta
           </Link>
         </li>

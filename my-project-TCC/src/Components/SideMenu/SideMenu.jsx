@@ -16,7 +16,7 @@ export default function SideMenu() {
   // Definição dos itens do menu, com caminho, texto e ícone
   const menuItems = [
     { path: '/create-perfil', label: 'Perfil', icon: <IoPersonCircle className='icon' /> },
-    { path: '/acc-info', label: 'Informações da conta', icon: <IoShieldOutline className='icon' /> },
+    { path: '/client-accinfo', label: 'Informações da conta', icon: <IoShieldOutline className='icon' /> },
     { path: '/', label: 'Voltar à tela inicial', icon: <IoMdArrowBack className='icon' /> },
     { path: '/login', label: 'Sair', icon: <CiLogout className='icon' /> }, // redireciona para a página de registro/logout
   ];

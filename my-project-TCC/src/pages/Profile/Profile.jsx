@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { usuarioService } from "../../services/usuarioService";
 import { useLocation } from "react-router-dom";
+
 import {
   FaInstagram,
   FaFacebook,
@@ -17,27 +19,39 @@ import {
   FaRegCommentDots,
   FaLock,
   FaCheckCircle,
-  FaRegFlag
+  FaRegFlag,
 } from "react-icons/fa";
 
 import { MdStars } from "react-icons/md";
+
 import ProfileImg from "../../img/Ellipse.png";
 import InputImg from "../../img/crosant.png";
 import SicranaImg from "../../pages/LandingPage/landingPageImages/peneira-de-mulher-flor-na-tigela-para-fazer-bolo.jpg";
+
 import HeaderSwitcher from "../../Components/HeaderSwitcher";
 import Loading from "../../Components/Loading/Loading";
 import { useAuth } from "../../Components/AuthContext";
 import { toast } from "sonner";
+
 import "./Profile.css";
 import { breakLineEveryNChars } from "../../utils/formatFeedbackText";
 
-const REPORT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdGP9PZDXYMJVUacDK0O_-3uU-syLAvq3WLtg9W_3dzG3fShA/viewform?usp=sharing&ouid=102550909011925501329";
+const REPORT_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdGP9PZDXYMJVUacDK0O_-3uU-syLAvq3WLtg9W_3dzG3fShA/viewform?usp=sharing&ouid=102550909011925501329";
 
 const getContatoPrestadorId = (contato = {}) =>
-  Number(contato.prestadorId ?? contato.prestador_id ?? contato.prestador?.id);
+  Number(
+    contato.prestadorId ??
+      contato.prestador_id ??
+      contato.prestador?.id
+  );
 
 const contatoEstaAtivo = (contato = {}) =>
-  String(contato.statusContato ?? contato.status_contato ?? "ATIVO").toUpperCase() === "ATIVO";
+  String(
+    contato.statusContato ??
+      contato.status_contato ??
+      "ATIVO"
+  ).toUpperCase() === "ATIVO";
 
 const getNomeFeedback = (feedback = {}, nomesUsuarios = {}) =>
   feedback.nomeUsuario ||
@@ -48,14 +62,23 @@ const getInicialFeedback = (nome = "") =>
   nome.trim().charAt(0).toUpperCase() || "?";
 
 const getUsuarioLogadoId = (user = {}) => {
-  const userId = Number(user?.id ?? user?.usuarioId ?? user?.usuario?.id);
+  const userId = Number(
+    user?.id ??
+      user?.usuarioId ??
+      user?.usuario?.id
+  );
 
   if (!Number.isNaN(userId) && userId > 0) {
     return userId;
   }
 
-  const fromStorage = Number(localStorage.getItem("usuarioId"));
-  return !Number.isNaN(fromStorage) && fromStorage > 0 ? fromStorage : null;
+  const fromStorage = Number(
+    localStorage.getItem("usuarioId")
+  );
+
+  return !Number.isNaN(fromStorage) && fromStorage > 0
+    ? fromStorage
+    : null;
 };
 
 const formatTempoFeedback = (dataCadastro) => {
@@ -71,52 +94,100 @@ const formatTempoFeedback = (dataCadastro) => {
 
   const diferencaMinutos = Math.max(
     0,
-    Math.floor((Date.now() - data.getTime()) / 60000)
+    Math.floor(
+      (Date.now() - data.getTime()) / 60000
+    )
   );
 
   if (diferencaMinutos < 1) return "Agora";
-  if (diferencaMinutos < 60) return `Há ${diferencaMinutos} min`;
+  if (diferencaMinutos < 60)
+    return `Há ${diferencaMinutos} min`;
 
-  const diferencaHoras = Math.floor(diferencaMinutos / 60);
-  if (diferencaHoras < 24) return `Há ${diferencaHoras} h`;
+  const diferencaHoras = Math.floor(
+    diferencaMinutos / 60
+  );
 
-  const diferencaDias = Math.floor(diferencaHoras / 24);
-  if (diferencaDias < 30) return `Há ${diferencaDias} d`;
+  if (diferencaHoras < 24)
+    return `Há ${diferencaHoras} h`;
+
+  const diferencaDias = Math.floor(
+    diferencaHoras / 24
+  );
+
+  if (diferencaDias < 30)
+    return `Há ${diferencaDias} d`;
 
   return data.toLocaleDateString("pt-BR");
 };
 
 const isSicranaBolos = (dadosPrestador = {}) => {
-  const texto = `${dadosPrestador.servicoNome || ""} ${dadosPrestador.prestadorNome || ""}`.toLowerCase();
+  const texto = `
+    ${dadosPrestador.servicoNome || ""}
+    ${dadosPrestador.prestadorNome || ""}
+  `.toLowerCase();
 
-  return texto.includes("sicrana") || texto.includes("bolo");
+  return (
+    texto.includes("sicrana") ||
+    texto.includes("bolo")
+  );
 };
 
 const isFeedbackAvaliavel = (feedback = {}) => {
-  const tipo = String(feedback?.tipoFeedback ?? "").trim().toUpperCase();
-  const status = String(feedback?.statusFeedback ?? "").trim().toUpperCase();
+  const tipo = String(
+    feedback?.tipoFeedback ?? ""
+  )
+    .trim()
+    .toUpperCase();
+
+  const status = String(
+    feedback?.statusFeedback ?? ""
+  )
+    .trim()
+    .toUpperCase();
+
   const nota = Number(feedback?.nota);
 
-  return tipo === "FEEDBACK" && status === "ATIVO" && !Number.isNaN(nota) && nota > 0;
+  return (
+    tipo === "FEEDBACK" &&
+    status === "ATIVO" &&
+    !Number.isNaN(nota) &&
+    nota > 0
+  );
 };
 
 const Profile = () => {
   const location = useLocation();
   const dados = location.state?.perfil;
+
   const { user } = useAuth();
 
-  const [openFeedback, setOpenFeedback] = useState(false);
-  const [openDenuncia, setOpenDenuncia] = useState(false);
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [nomesUsuarios, setNomesUsuarios] = useState({});
-  const [contatos, setContatos] = useState([]);
-  const [feedbackEnviado, setFeedbackEnviado] = useState(false);
+  const [openFeedback, setOpenFeedback] =
+    useState(false);
 
-  const [showLoader, setShowLoader] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
+  const [openDenuncia, setOpenDenuncia] =
+    useState(false);
+
+  const [feedbacks, setFeedbacks] = useState([]);
+
+  const [nomesUsuarios, setNomesUsuarios] =
+    useState({});
+
+  const [contatos, setContatos] = useState([]);
+
+  const [feedbackEnviado, setFeedbackEnviado] =
+    useState(false);
+
+  const [showLoader, setShowLoader] =
+    useState(true);
+
+  const [fadeOut, setFadeOut] =
+    useState(false);
 
   useEffect(() => {
-    console.log("🔎 Dados recebidos do card:", dados);
+    console.log(
+      "🔎 Dados recebidos do card:",
+      dados
+    );
   }, [dados]);
 
   useEffect(() => {
@@ -133,15 +204,31 @@ const Profile = () => {
 
   const buscarNomeUsuarioPorId = async (usuarioId) => {
     try {
-      console.log("Buscando usuário:", usuarioId);
+      console.log(
+        "Buscando usuário:",
+        usuarioId
+      );
 
-      const res = await axios.get(`http://localhost:8080/api/v1/Usuario/${usuarioId}`);
+      const res =
+        await usuarioService.buscarPorId(
+          usuarioId
+        );
 
-      console.log("Resposta da API:", res.data);
+      console.log(
+        "Resposta da API:",
+        res.data
+      );
 
-      return res.data?.nome || `Usuário #${usuarioId}`;
+      return (
+        res.data?.nome ||
+        `Usuário #${usuarioId}`
+      );
     } catch (error) {
-      console.error(`Erro ao buscar usuário ${usuarioId}:`, error);
+      console.error(
+        `Erro ao buscar usuário ${usuarioId}:`,
+        error
+      );
+
       return `Usuário #${usuarioId}`;
     }
   };
@@ -149,29 +236,50 @@ const Profile = () => {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/v1/feedback");
-
-        const feedbacksPrestador = res.data.filter(
-          (f) =>
-            Number(f.prestadorId) === Number(dados?.prestadorId) &&
-            isFeedbackAvaliavel(f)
+        const res = await axios.get(
+          "http://localhost:8080/api/v1/feedback"
         );
+
+        const feedbacksPrestador =
+          res.data.filter(
+            (f) =>
+              Number(f.prestadorId) ===
+                Number(dados?.prestadorId) &&
+              isFeedbackAvaliavel(f)
+          );
 
         const idsUsuarios = [
-          ...new Set(feedbacksPrestador.map((f) => f.usuarioId).filter(Boolean)),
+          ...new Set(
+            feedbacksPrestador
+              .map((f) => f.usuarioId)
+              .filter(Boolean)
+          ),
         ];
 
-        const nomesArray = await Promise.all(
-          idsUsuarios.map(async (id) => [
-            Number(id),
-            await buscarNomeUsuarioPorId(id),
-          ])
+        const nomesArray =
+          await Promise.all(
+            idsUsuarios.map(
+              async (id) => [
+                Number(id),
+                await buscarNomeUsuarioPorId(
+                  id
+                ),
+              ]
+            )
+          );
+
+        setNomesUsuarios(
+          Object.fromEntries(nomesArray)
         );
 
-        setNomesUsuarios(Object.fromEntries(nomesArray));
-        setFeedbacks(feedbacksPrestador);
+        setFeedbacks(
+          feedbacksPrestador
+        );
       } catch (error) {
-        console.error("Erro ao buscar feedbacks:", error);
+        console.error(
+          "Erro ao buscar feedbacks:",
+          error
+        );
       }
     };
 
@@ -180,7 +288,9 @@ const Profile = () => {
     }
   }, [dados]);
 
-  const normalizeContatoTipo = (contato = {}) =>
+  const normalizeContatoTipo = (
+    contato = {}
+  ) =>
     String(
       contato.tipoContato ??
         contato.tipo_contato ??
@@ -191,8 +301,11 @@ const Profile = () => {
       .trim()
       .toLowerCase();
 
-  const getContatoInfo = (contato = {}) => {
-    const tipo = normalizeContatoTipo(contato);
+  const getContatoInfo = (
+    contato = {}
+  ) => {
+    const tipo =
+      normalizeContatoTipo(contato);
 
     if (tipo === "instagram") {
       return {
@@ -220,21 +333,40 @@ const Profile = () => {
 
     return {
       Icon: FaLink,
-      label: contato.label || contato.tipoContato || contato.tipo_contato || "Link",
+      label:
+        contato.label ||
+        contato.tipoContato ||
+        contato.tipo_contato ||
+        "Link",
       className: "",
     };
   };
 
-  const getContatoHref = (contato = {}) => {
-    const link = contato.link ?? contato.value ?? contato.url ?? contato;
+  const getContatoHref = (
+    contato = {}
+  ) => {
+    const link =
+      contato.link ??
+      contato.value ??
+      contato.url ??
+      contato;
 
-    if (typeof link !== "string") return "#";
+    if (typeof link !== "string")
+      return "#";
 
     const trimmedLink = link.trim();
 
-    if (!trimmedLink) return "#";
+    if (!trimmedLink)
+      return "#";
 
-    if (/^(https?:)?\/\//i.test(trimmedLink) || /^(mailto:|tel:)/i.test(trimmedLink)) {
+    if (
+      /^(https?:)?\/\//i.test(
+        trimmedLink
+      ) ||
+      /^(mailto:|tel:)/i.test(
+        trimmedLink
+      )
+    ) {
       return trimmedLink;
     }
 
@@ -244,17 +376,31 @@ const Profile = () => {
   useEffect(() => {
     const fetchContatos = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/v1/contato");
-
-        const contatosPrestador = (res.data || []).filter(
-          (contato) =>
-            getContatoPrestadorId(contato) === Number(dados?.prestadorId) &&
-            contatoEstaAtivo(contato)
+        const res = await axios.get(
+          "http://localhost:8080/api/v1/contato"
         );
 
-        setContatos(contatosPrestador);
+        const contatosPrestador =
+          (res.data || []).filter(
+            (contato) =>
+              getContatoPrestadorId(
+                contato
+              ) ===
+                Number(
+                  dados?.prestadorId
+                ) &&
+              contatoEstaAtivo(contato)
+          );
+
+        setContatos(
+          contatosPrestador
+        );
       } catch (error) {
-        console.error("Erro ao buscar contatos do prestador:", error);
+        console.error(
+          "Erro ao buscar contatos do prestador:",
+          error
+        );
+
         setContatos([]);
       }
     };
@@ -266,7 +412,9 @@ const Profile = () => {
     }
   }, [dados?.prestadorId]);
 
-  const getFotosPrestador = (dadosPrestador) => {
+  const getFotosPrestador = (
+    dadosPrestador
+  ) => {
     if (!dadosPrestador) {
       return {
         perfil: "",
@@ -274,15 +422,31 @@ const Profile = () => {
       };
     }
 
-    const prestadorId = Number(dadosPrestador.prestadorId);
+    const prestadorId = Number(
+      dadosPrestador.prestadorId
+    );
 
-    console.debug("[Profile] Selecionando fotos do prestador:", {
-      prestadorId,
-      temImagemPerfil: Boolean(dadosPrestador.imagemPerfil),
-      temImagemServico: Boolean(dadosPrestador.imagemServico),
-    });
+    console.debug(
+      "[Profile] Selecionando fotos do prestador:",
+      {
+        prestadorId,
+        temImagemPerfil:
+          Boolean(
+            dadosPrestador.imagemPerfil
+          ),
+        temImagemServico:
+          Boolean(
+            dadosPrestador.imagemServico
+          ),
+      }
+    );
 
-    if (isSicranaBolos(dadosPrestador) || prestadorId === 1) {
+    if (
+      isSicranaBolos(
+        dadosPrestador
+      ) ||
+      prestadorId === 1
+    ) {
       return {
         perfil: SicranaImg,
         servico: SicranaImg,
@@ -290,17 +454,34 @@ const Profile = () => {
     }
 
     return {
-      perfil: dadosPrestador.imagemPerfil || ProfileImg,
-      servico: dadosPrestador.imagemServico || InputImg,
+      perfil:
+        dadosPrestador.imagemPerfil ||
+        ProfileImg,
+
+      servico:
+        dadosPrestador.imagemServico ||
+        InputImg,
     };
   };
 
-  const feedbacksAtivos = feedbacks.filter(isFeedbackAvaliavel);
+  const feedbacksAtivos =
+    feedbacks.filter(
+      isFeedbackAvaliavel
+    );
 
-  const fotos = dados ? getFotosPrestador(dados) : { perfil: "", servico: "" };
+  const fotos = dados
+    ? getFotosPrestador(dados)
+    : {
+        perfil: "",
+        servico: "",
+      };
+
   const hasImagemPerfil = true;
   const hasImagemServico = true;
-  const hasDescricaoLonga = (dados?.servicoDescricao || "").length > 90;
+
+  const hasDescricaoLonga =
+    (dados?.servicoDescricao || "")
+      .length > 90;
 
   const denunciaMotivos = [
     "Comentário ofensivo",
@@ -311,117 +492,179 @@ const Profile = () => {
     "Outro motivo",
   ];
 
- const FeedbackDenunciaModal = ({ isOpen, onClose, tipo }) => {
+  const FeedbackDenunciaModal = ({
+    isOpen,
+    onClose,
+    tipo,
+  }) => {
+    const tipoNormalizado =
+      String(tipo).toUpperCase();
 
-  const tipoNormalizado = String(tipo).toUpperCase();
+    const isFeedback =
+      tipoNormalizado === "FEEDBACK";
 
-  const isFeedback = tipoNormalizado === "FEEDBACK";
-  const isDenuncia = tipoNormalizado === "DENUNCIA";
+    const isDenuncia =
+      tipoNormalizado === "DENUNCIA";
 
-  const [titulo, setTitulo] = useState("");
-  const [mensagem, setMensagem] = useState("");
-  const [nota, setNota] = useState(0);
-  const [enviando, setEnviando] = useState(false);
+    const [titulo, setTitulo] =
+      useState("");
 
-  const resetForm = () => {
-    setTitulo("");
-    setMensagem("");
-    setNota(0);
-  };
+    const [mensagem, setMensagem] =
+      useState("");
 
-  const fecharModal = () => {
-    resetForm();
-    onClose();
-  };
+    const [nota, setNota] =
+      useState(0);
 
-  const enviar = async () => {
+    const [enviando, setEnviando] =
+      useState(false);
 
-    if (enviando) return;
-
-    const tituloTratado = titulo.trim();
-    const mensagemTratada = mensagem.trim();
-
-    if (
-      !tituloTratado ||
-      !mensagemTratada ||
-      (isFeedback && !nota)
-    ) {
-      alert("Preencha todos os campos obrigatórios!");
-      return;
-    }
-
-    const usuarioId = getUsuarioLogadoId(user);
-
-    if (!usuarioId) {
-      toast.error("Não foi possível identificar o usuário logado.");
-      return;
-    }
-
-    const payload = {
-      titulo: tituloTratado,
-      descricao: mensagemTratada,
-      tipoFeedback: isFeedback ? "FEEDBACK" : "DENUNCIA",
-      usuarioId: usuarioId,
-      nomeUsuario: user?.nome || user?.usuario?.nome || "Usuário",
-      prestadorId: dados.prestadorId,
-      dataCadastro: new Date().toISOString(),
-      
-      statusFeedback: "ATIVO",
-
-      nota: isFeedback ? nota : 0,
+    const resetForm = () => {
+      setTitulo("");
+      setMensagem("");
+      setNota(0);
     };
 
-    console.log("TIPO RECEBIDO:", tipo);
-    console.log("É FEEDBACK?", isFeedback);
-    console.log("É DENUNCIA?", isDenuncia);
-    console.log("PAYLOAD:", payload);
+    const fecharModal = () => {
+      resetForm();
+      onClose();
+    };
 
-    try {
-      setEnviando(true);
+    const enviar = async () => {
+      if (enviando) return;
 
-      await axios.post(
-        "http://localhost:8080/api/v1/feedback",
+      const tituloTratado =
+        titulo.trim();
+
+      const mensagemTratada =
+        mensagem.trim();
+
+      if (
+        !tituloTratado ||
+        !mensagemTratada ||
+        (isFeedback && !nota)
+      ) {
+        alert(
+          "Preencha todos os campos obrigatórios!"
+        );
+        return;
+      }
+
+      const usuarioId =
+        getUsuarioLogadoId(user);
+
+      if (!usuarioId) {
+        toast.error(
+          "Não foi possível identificar o usuário logado."
+        );
+        return;
+      }
+
+      const payload = {
+        titulo: tituloTratado,
+
+        descricao:
+          mensagemTratada,
+
+        tipoFeedback:
+          isFeedback
+            ? "FEEDBACK"
+            : "DENUNCIA",
+
+        usuarioId,
+
+        nomeUsuario:
+          user?.nome ||
+          user?.usuario?.nome ||
+          "Usuário",
+
+        prestadorId:
+          dados.prestadorId,
+
+        dataCadastro:
+          new Date().toISOString(),
+
+        statusFeedback:
+          "ATIVO",
+
+        nota:
+          isFeedback
+            ? nota
+            : 0,
+      };
+
+      console.log(
+        "TIPO RECEBIDO:",
+        tipo
+      );
+
+      console.log(
+        "É FEEDBACK?",
+        isFeedback
+      );
+
+      console.log(
+        "É DENUNCIA?",
+        isDenuncia
+      );
+
+      console.log(
+        "PAYLOAD:",
         payload
       );
 
-      if (isFeedback) {
+      try {
+        setEnviando(true);
 
-        toast.success("Feedback enviado com sucesso!");
-
-        setFeedbacks((prev) => [...prev, payload]);
-        setFeedbackEnviado(true);
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 700);
-
-      } else {
-
-        toast.success(
-          "Denúncia enviada. Ela será revisada pelos administradores."
+        await axios.post(
+          "http://localhost:8080/api/v1/feedback",
+          payload
         );
+
+        if (isFeedback) {
+          toast.success(
+            "Feedback enviado com sucesso!"
+          );
+
+          setFeedbacks(
+            (prev) => [
+              ...prev,
+              payload,
+            ]
+          );
+
+          setFeedbackEnviado(true);
+
+         
+          toast.success(
+            "Denúncia enviada. Ela será revisada pelos administradores."
+          );
+        }
+
+        resetForm();
+        onClose();
+      } catch (error) {
+        console.error(
+          "ERRO AO ENVIAR:",
+          error
+        );
+
+        alert(
+          "Erro ao enviar!"
+        );
+      } finally {
+        setEnviando(false);
       }
+    };
 
-      resetForm();
-      onClose();
-
-    } catch (error) {
-
-      console.error("ERRO AO ENVIAR:", error);
-
-      alert("Erro ao enviar!");
-    } finally {
-      setEnviando(false);
-    }
-  };
-
-  if (!isOpen) return null;
+    if (!isOpen) return null;
 
     return (
       <div
         className="profile-modal"
         onClick={(event) =>
-          event.target.className === "profile-modal" && fecharModal()
+          event.target.className ===
+            "profile-modal" &&
+          fecharModal()
         }
       >
         <div
@@ -442,26 +685,41 @@ const Profile = () => {
 
           <div
             className={`profile-modal-content ${
-              isFeedback ? "profile-modal-feedback" : "profile-modal-denuncia"
+              isFeedback
+                ? "profile-modal-feedback"
+                : "profile-modal-denuncia"
             }`}
           >
-            <div className="profile-modal-icon-wrapper" aria-hidden="true">
-              {isFeedback ? <FaRegCommentDots /> : <FaExclamationTriangle />}
+            <div
+              className="profile-modal-icon-wrapper"
+              aria-hidden="true"
+            >
+              {isFeedback ? (
+                <FaRegCommentDots />
+              ) : (
+                <FaExclamationTriangle />
+              )}
             </div>
 
-            <h1>{isFeedback ? "Registrar Feedback" : "Registrar denúncia"}</h1>
+            <h1>
+              {isFeedback
+                ? "Registrar Feedback"
+                : "Registrar denúncia"}
+            </h1>
 
             <p className="profile-modal-subtitle">
               {isFeedback ? (
                 <>
                   Sua opinião faz a diferença!
                   <br />
-                  Compartilhe sua experiência e ajude outras pessoas a descobrirem
-                  talentos da culinária.
+                  Compartilhe sua experiência e
+                  ajude outras pessoas a
+                  descobrirem talentos da culinária.
                 </>
               ) : (
                 <>
-                  Nos ajude a manter a plataforma segura e confiável.
+                  Nos ajude a manter a plataforma
+                  segura e confiável.
                   <br />
                   Nos informe abaixo o que aconteceu.
                 </>
@@ -480,28 +738,53 @@ const Profile = () => {
                     role="radiogroup"
                     aria-label="Nota do feedback"
                   >
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        className="profile-rating-star"
-                        onClick={() => !enviando && setNota(star)}
-                        aria-label={`${star} estrela${star > 1 ? "s" : ""}`}
-                        aria-checked={nota === star}
-                        role="radio"
-                      >
-                        {nota >= star ? <FaStar /> : <FaRegStar />}
-                      </button>
-                    ))}
+                    {[1, 2, 3, 4, 5].map(
+                      (star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          className="profile-rating-star"
+                          onClick={() =>
+                            !enviando &&
+                            setNota(star)
+                          }
+                          aria-label={`${star} estrela${
+                            star > 1
+                              ? "s"
+                              : ""
+                          }`}
+                          aria-checked={
+                            nota === star
+                          }
+                          role="radio"
+                        >
+                          {nota >= star ? (
+                            <FaStar />
+                          ) : (
+                            <FaRegStar />
+                          )}
+                        </button>
+                      )
+                    )}
                   </div>
 
                   <div className="profile-rating-labels">
-                    <span>1 - Ruim</span>
-                    <span>3 - Regular</span>
-                    <span>5 - Excelente</span>
+                    <span>
+                      1 - Ruim
+                    </span>
+
+                    <span>
+                      3 - Regular
+                    </span>
+
+                    <span>
+                      5 - Excelente
+                    </span>
                   </div>
 
-                  <small>Clique em uma estrela para avaliar</small>
+                  <small>
+                    Clique em uma estrela para avaliar
+                  </small>
                 </div>
 
                 <label className="profile-modal-field profile-modal-field--input">
@@ -511,30 +794,46 @@ const Profile = () => {
                     type="text"
                     placeholder="Título do feedback"
                     value={titulo}
-                    onChange={(event) => setTitulo(event.target.value)}
+                    onChange={(event) =>
+                      setTitulo(
+                        event.target.value
+                      )
+                    }
                     disabled={enviando}
                   />
                 </label>
               </>
             ) : (
               <label className="profile-denuncia-select-label">
-  <span className="profile-required-label">
-    Motivo da denúncia <strong>*</strong>
-  </span>
+                <span className="profile-required-label">
+                  Motivo da denúncia{" "}
+                  <strong>*</strong>
+                </span>
 
-  <select
-    className="profile-denuncia-select"
-    value={titulo}
-    onChange={(event) => setTitulo(event.target.value)}
-    disabled={enviando}
-  >
-                  <option value="">Selecione um motivo</option>
+                <select
+                  className="profile-denuncia-select"
+                  value={titulo}
+                  onChange={(event) =>
+                    setTitulo(
+                      event.target.value
+                    )
+                  }
+                  disabled={enviando}
+                >
+                  <option value="">
+                    Selecione um motivo
+                  </option>
 
-                  {denunciaMotivos.map((motivo) => (
-                    <option key={motivo} value={motivo}>
-                      {motivo}
-                    </option>
-                  ))}
+                  {denunciaMotivos.map(
+                    (motivo) => (
+                      <option
+                        key={motivo}
+                        value={motivo}
+                      >
+                        {motivo}
+                      </option>
+                    )
+                  )}
                 </select>
               </label>
             )}
@@ -550,8 +849,9 @@ const Profile = () => {
                 <FaPen className="profile-modal-field-icon profile-modal-field-icon--textarea" />
               ) : (
                 <span className="profile-required-label">
-  Descreva o ocorrido <strong>*</strong>
-</span>
+                  Descreva o ocorrido{" "}
+                  <strong>*</strong>
+                </span>
               )}
 
               <textarea
@@ -561,7 +861,11 @@ const Profile = () => {
                     : "Conte-nos com mais detalhes o que ocorreu..."
                 }
                 value={mensagem}
-                onChange={(event) => setMensagem(event.target.value)}
+                onChange={(event) =>
+                  setMensagem(
+                    event.target.value
+                  )
+                }
                 disabled={enviando}
               />
             </label>
@@ -571,10 +875,14 @@ const Profile = () => {
                 <FaShieldAlt className="profile-denuncia-confidential-icon" />
 
                 <div>
-                  <strong>Sua denúncia é confidencial</strong>
+                  <strong>
+                    Sua denúncia é confidencial
+                  </strong>
+
                   <p>
-                    Todas as informações serão analisadas com atenção e tratadas
-                    com total sigilo.
+                    Todas as informações serão
+                    analisadas com atenção e
+                    tratadas com total sigilo.
                   </p>
                 </div>
               </div>
@@ -583,9 +891,15 @@ const Profile = () => {
             <button
               className="profile-modal-button"
               onClick={enviar}
-              disabled={enviando || (isFeedback && feedbackEnviado)}
+              disabled={
+                enviando ||
+                (isFeedback &&
+                  feedbackEnviado)
+              }
             >
-              {enviando ? "ENVIANDO..." : "ENVIAR"}
+              {enviando
+                ? "ENVIANDO..."
+                : "ENVIAR"}
             </button>
 
             <p className="profile-modal-footer-note">
@@ -603,7 +917,9 @@ const Profile = () => {
 
   return (
     <>
-      {showLoader && <Loading fadeOut={fadeOut} />}
+      {showLoader && (
+        <Loading fadeOut={fadeOut} />
+      )}
 
       {!showLoader && (
         <>
@@ -613,7 +929,9 @@ const Profile = () => {
             <div className="profile-positioning">
               <div
                 className={`profile-main ${
-                  hasDescricaoLonga ? "profile-main-long-description" : ""
+                  hasDescricaoLonga
+                    ? "profile-main-long-description"
+                    : ""
                 }`}
               >
                 <div className="profile-header-container">
@@ -625,39 +943,60 @@ const Profile = () => {
                         className="profile-image"
                       />
                     ) : (
-                      <p>Imagem não encontrada</p>
+                      <p>
+                        Imagem não encontrada
+                      </p>
                     )}
                   </div>
 
-                  <h1 className="profile-h1">{dados.servicoNome}</h1>
-                  <h3 className="profile-h3">{dados.servicoDescricao}</h3>
+                  <h1 className="profile-h1">
+                    {dados.servicoNome}
+                  </h1>
+
+                  <h3 className="profile-h3">
+                    {dados.servicoDescricao}
+                  </h3>
                 </div>
 
                 <div className="profile-main-container-footer">
-                  <p className="profile-meiocontato">Meios de contato</p>
+                  <p className="profile-meiocontato">
+                    Meios de contato
+                  </p>
                 </div>
 
                 <div className="profile-main-container-footer-p2">
                   {contatos.length > 0 ? (
-                    contatos.map((contato, index) => {
-                      const { Icon, label, className } = getContatoInfo(contato);
+                    contatos.map(
+                      (contato, index) => {
+                        const {
+                          Icon,
+                          label,
+                          className,
+                        } =
+                          getContatoInfo(
+                            contato
+                          );
 
-                      return (
-                        <a
-                          key={`${label}-${index}`}
-                          href={getContatoHref(contato)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`contact-link ${className}`}
-                        >
-                          <Icon className="contact-icon" />
-                          {label}
-                        </a>
-                      );
-                    })
+                        return (
+                          <a
+                            key={`${label}-${index}`}
+                            href={getContatoHref(
+                              contato
+                            )}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`contact-link ${className}`}
+                          >
+                            <Icon className="contact-icon" />
+                            {label}
+                          </a>
+                        );
+                      }
+                    )
                   ) : (
                     <span className="contact-text">
-                      Nenhum meio de contato cadastrado.
+                      Nenhum meio de contato
+                      cadastrado.
                     </span>
                   )}
                 </div>
@@ -671,90 +1010,172 @@ const Profile = () => {
                     className="profile-image-2"
                   />
                 ) : (
-                  <p>Imagem não encontrada</p>
+                  <p>
+                    Imagem não encontrada
+                  </p>
                 )}
               </div>
 
               <div className="profile-buttons">
                 <button
-                  onClick={() => !feedbackEnviado && setOpenFeedback(true)}
+                  onClick={() =>
+                    !feedbackEnviado &&
+                    setOpenFeedback(true)
+                  }
                   className="profile-feedback"
                   disabled={feedbackEnviado}
                 >
                   <FaPaperclip className="profile-feedback-icon" />
-                  {feedbackEnviado ? "FEEDBACK ENVIADO" : "ENVIAR FEEDBACK"}
+
+                  {feedbackEnviado
+                    ? "FEEDBACK ENVIADO"
+                    : "ENVIAR FEEDBACK"}
                 </button>
 
                 <button
-                  onClick={() => setOpenDenuncia(true)}
+                  onClick={() =>
+                    setOpenDenuncia(true)
+                  }
                   className="profile-denuncia"
                 >
                   <FaRegAngry className="profile-denuncia-icon" />
+
                   ENVIAR DENÚNCIA
                 </button>
               </div>
 
               {feedbacksAtivos.length > 0 ? (
                 <div className="profile-feedback-card">
-                  {feedbacksAtivos.map((fb, index) => {
-                    const nomeFeedback = getNomeFeedback(fb, nomesUsuarios);
+                  {feedbacksAtivos.map(
+                    (fb, index) => {
+                      const nomeFeedback =
+                        getNomeFeedback(
+                          fb,
+                          nomesUsuarios
+                        );
 
-                    return (
-                      <article className="feedback-card-lenght" key={fb.id || index}>
-                        <div className="feedback-card-header">
-                          <div className="feedback-card-user">
-                            <div className="feedback-avatar" aria-hidden="true">
-                              {getInicialFeedback(nomeFeedback)}
-                            </div>
+                      return (
+                        <article
+                          className="feedback-card-lenght"
+                          key={
+                            fb.id ||
+                            index
+                          }
+                        >
+                          <div className="feedback-card-header">
+                            <div className="feedback-card-user">
+                              <div
+                                className="feedback-avatar"
+                                aria-hidden="true"
+                              >
+                                {getInicialFeedback(
+                                  nomeFeedback
+                                )}
+                              </div>
 
-                            <div className="feedback-user-info">
-                              <h3 className="feedback-name">
-                                {nomeFeedback}
-                                <FaCheckCircle className="feedback-verified-icon" />
-                              </h3>
+                              <div className="feedback-user-info">
+                                <h3 className="feedback-name">
+                                  {nomeFeedback}
 
-                              <div className="feedback-meta">
-                                <span className="profile-feedback-stars">{Array.from({ length: Math.min(5, Math.max(0, Math.round(Number(fb.nota) || 0))) }, (_, index) => (
-                                  <MdStars key={index} className="profile-feedback-star-icon" />
-                                ))}</span>
-                                <span aria-hidden="true">•</span>
-                                <span>{formatTempoFeedback(fb.dataCadastro)}</span>
+                                  <FaCheckCircle className="feedback-verified-icon" />
+                                </h3>
+
+                                <div className="feedback-meta">
+                                  <span className="profile-feedback-stars">
+                                    {Array.from(
+                                      {
+                                        length:
+                                          Math.min(
+                                            5,
+                                            Math.max(
+                                              0,
+                                              Math.round(
+                                                Number(
+                                                  fb.nota
+                                                ) ||
+                                                  0
+                                              )
+                                            )
+                                          ),
+                                      },
+                                      (_, index) => (
+                                        <MdStars
+                                          key={
+                                            index
+                                          }
+                                          className="profile-feedback-star-icon"
+                                        />
+                                      )
+                                    )}
+                                  </span>
+
+                                  <span aria-hidden="true">
+                                    •
+                                  </span>
+
+                                  <span>
+                                    {formatTempoFeedback(
+                                      fb.dataCadastro
+                                    )}
+                                  </span>
+                                </div>
                               </div>
                             </div>
+
+                            <button
+                              className="feedback-report-button"
+                              type="button"
+                              aria-label="Denunciar feedback"
+                              onClick={() =>
+                                window.open(
+                                  REPORT_FORM_URL,
+                                  "_blank",
+                                  "noopener,noreferrer"
+                                )
+                              }
+                            >
+                              <FaRegFlag />
+                            </button>
                           </div>
 
-                          <button
-                            className="feedback-report-button"
-                            type="button"
-                            aria-label="Denunciar feedback"
-                            onClick={() => window.open(REPORT_FORM_URL, "_blank", "noopener,noreferrer")}
-                          >
-                            <FaRegFlag />
-                          </button>
-                        </div>
+                          <h2>
+                            {fb.titulo}
+                          </h2>
 
-                        <h2>{fb.titulo}</h2>
-
-                        <p>
-                          {breakLineEveryNChars(fb.descricao, 110)}
-                        </p>
-                      </article>
-                    );
-                  })}
+                          <p>
+                            {breakLineEveryNChars(
+                              fb.descricao,
+                              110
+                            )}
+                          </p>
+                        </article>
+                      );
+                    }
+                  )}
                 </div>
               ) : (
-                <p style={{ marginTop: "20px" }}>Sem feedbacks ativos.</p>
+                <p
+                  style={{
+                    marginTop: "20px",
+                  }}
+                >
+                  Sem feedbacks ativos.
+                </p>
               )}
 
               <FeedbackDenunciaModal
                 isOpen={openFeedback}
-                onClose={() => setOpenFeedback(false)}
+                onClose={() =>
+                  setOpenFeedback(false)
+                }
                 tipo="FEEDBACK"
               />
 
               <FeedbackDenunciaModal
                 isOpen={openDenuncia}
-                onClose={() => setOpenDenuncia(false)}
+                onClose={() =>
+                  setOpenDenuncia(false)
+                }
                 tipo="DENUNCIA"
               />
             </div>

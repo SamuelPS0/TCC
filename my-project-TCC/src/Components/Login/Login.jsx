@@ -100,17 +100,7 @@ export default function Login({
 
       const usuario = responseUser.data;
 
-      login({
-        id: usuario.id,
-        email: usuario.username,
-        accessLevel: usuario.nivelAcesso,
-        nome: usuario.nome,
-      });
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(usuario)
-      );
+      login(usuario);
 
       toast.success("Login realizado com sucesso!");
 
