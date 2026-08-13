@@ -1,12 +1,7 @@
 // LandingPage.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../Components/AuthContext';
-import HeaderCliente from '../../Components/Header/levelHeaders/HeaderCliente';
-import HeaderPrestador from '../../Components/Header/levelHeaders/HeaderPrestador';
-import HeaderAdmin from '../../Components/Header/levelHeaders/HeaderAdmin';
-import Header0 from '../../Components/Header/levelHeaders/Header0';
-import accessLevels from '../../Components/accessLevels';
+import HeaderSwitcher from '../../Components/HeaderSwitcher';
 import SearchBar from '../../Components/SearchBar/SearchBar';
 import LogoFundoBranco from '../../img/logoParaFundoBranco.png';
 import LpImage1 from '../LandingPage/landingPageImages/4.png';
@@ -23,16 +18,9 @@ const CONTACT_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdGP9PZDXYMJV
 
 
 export default function LandingPage() {
-  const { user } = useAuth();
-  console.log(user);
-
   return (
     <div className="lp">
-      {user?.accessLevel === accessLevels.CLIENTE && <HeaderCliente />}
-      {user?.accessLevel === accessLevels.PRESTADOR && <HeaderPrestador />}
-      {user?.accessLevel === accessLevels.ADMIN && <HeaderAdmin />}
-      {user?.accessLevel === accessLevels.GUEST && <Header0 />}
-      {!user && <Header0 />}
+      <HeaderSwitcher />
 
       <main>
         <section className="lp-section">

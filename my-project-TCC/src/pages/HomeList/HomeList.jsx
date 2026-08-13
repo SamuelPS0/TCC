@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import { FaCheck, FaChevronDown, FaRegStar, FaStar } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import HeaderSwitcher from "../../Components/HeaderSwitcher";
@@ -33,6 +33,7 @@ const HomeList = () => {
   const location = useLocation();
   const [minRating, setMinRating] = useState("");
   const [isRatingDropdownOpen, setIsRatingDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const params = useMemo(
     () => new URLSearchParams(location.search),
@@ -41,6 +42,7 @@ const HomeList = () => {
 
   const category = params.get("category") || "";
   const city = params.get("location") || "";
+  
   const selectedRatingOption =
     ratingFilterOptions.find((option) => option.value === minRating) ||
     ratingFilterOptions[0];
@@ -49,6 +51,19 @@ const HomeList = () => {
     setMinRating(value);
     setIsRatingDropdownOpen(false);
   };
+
+  // Fecha o dropdown ao clicar fora do componente (comportamento nativo esperado)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsRatingDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const renderStars = (filledCount = 0) =>
     Array.from({ length: 5 }).map((_, index) =>
@@ -62,7 +77,7 @@ const HomeList = () => {
   return (
     <main className="homelist-page">
       <div className="homelist-shell">
-                <HeaderSwitcher />
+        <HeaderSwitcher />
 
         <section className="homelist-hero" aria-label="Busca de prestadores">
           <div className="homelist-hero__content">
@@ -70,7 +85,7 @@ const HomeList = () => {
               <h1>Encontre os melhores prestadores da sua região</h1>
               <p>Compare avaliações, descubra serviços e escolha com confiança.</p>
             </div>
-                        <HomeListSearchBar
+            <HomeListSearchBar
               initialCategory={category}
               initialLocation={city}
             />
@@ -79,19 +94,22 @@ const HomeList = () => {
 
         <section className="homelist-results" aria-label="Lista de prestadores">
           <div className="homelist-filters">
-            <div className="homelist-rating-filter">
+            <div className="homelist-rating-filter" ref={dropdownRef}>
               <button
                 type="button"
                 className="homelist-rating-filter__trigger"
                 onClick={() => setIsRatingDropdownOpen((prev) => !prev)}
                 aria-label="Filtrar por avaliação média"
                 aria-expanded={isRatingDropdownOpen}
+                aria-haspopup="listbox"
               >
                 <span className="homelist-rating-filter__trigger-content">
                   <FaRegStar className="homelist-rating-filter__icon" />
                   <span>{selectedRatingOption.label}</span>
                 </span>
-                <FaChevronDown className="homelist-rating-filter__chevron" />
+                <FaChevronDown 
+                  className={`homelist-rating-filter__chevron ${isRatingDropdownOpen ? "is-open" : ""}`} 
+                />
               </button>
 
               {isRatingDropdownOpen && (
@@ -104,6 +122,8 @@ const HomeList = () => {
                       <button
                         key={option.label}
                         type="button"
+                        role="option"
+                        aria-selected={isSelected}
                         className={`homelist-rating-filter__option ${isSelected ? "is-selected" : ""}`}
                         onClick={() => handleSelectRatingOption(option.value)}
                       >
@@ -129,7 +149,7 @@ const HomeList = () => {
           <Cards
             filter={{
               category,
-              city,
+            city,
               minRating,
             }}
           />

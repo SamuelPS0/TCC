@@ -22,15 +22,65 @@ const getUsuarioId = (userData = {}) => {
   return !Number.isNaN(id) && id > 0 ? id : null;
 };
 
+const getAuthorityValue = (authority) => {
+  if (typeof authority === 'string') return authority;
+
+  return (
+    authority?.authority ??
+    authority?.name ??
+    authority?.role ??
+    authority?.nivelAcesso ??
+    ''
+  );
+};
+
+const getRawAccessLevel = (userData = {}) => {
+  const directAccessLevel =
+    userData.accessLevel ??
+    userData.nivelAcesso ??
+    userData.role ??
+    userData.tipoUsuario ??
+    userData.usuario?.accessLevel ??
+    userData.usuario?.nivelAcesso ??
+    userData.usuario?.role ??
+    userData.usuario?.tipoUsuario;
+
+  if (directAccessLevel) return directAccessLevel;
+
+  const authorities = userData.authorities ?? userData.roles ?? userData.perfis;
+
+  if (Array.isArray(authorities)) {
+    return authorities.map(getAuthorityValue).find(Boolean);
+  }
+
+  return getAuthorityValue(authorities);
+};
+
 const normalizeAccessLevel = (value) => {
   const normalized = String(value ?? '')
     .trim()
     .toUpperCase()
     .replace(/^ROLE_/, '');
 
-  if (normalized === accessLevels.ADMIN) return accessLevels.ADMIN;
-  if (normalized === accessLevels.PRESTADOR) return accessLevels.PRESTADOR;
-  if (normalized === accessLevels.CLIENTE || normalized === 'USER' || normalized === 'USUARIO') {
+  if (normalized === accessLevels.ADMIN || normalized === 'ADM') {
+    return accessLevels.ADMIN;
+  }
+
+  if (
+    normalized === accessLevels.PRESTADOR ||
+    normalized === 'PROVIDER' ||
+    normalized === 'PRESTADOR_SERVICO' ||
+    normalized === 'PRESTADOR_DE_SERVICO'
+  ) {
+    return accessLevels.PRESTADOR;
+  }
+
+  if (
+    normalized === accessLevels.CLIENTE ||
+    normalized === 'CLIENTE' ||
+    normalized === 'USER' ||
+    normalized === 'USUARIO'
+  ) {
     return accessLevels.CLIENTE;
   }
 
@@ -40,7 +90,7 @@ const normalizeAccessLevel = (value) => {
 const normalizeAuthUser = (userData) => {
   if (!userData) return guestUser;
 
-  const rawAccessLevel = userData.accessLevel ?? userData.nivelAcesso;
+  const rawAccessLevel = getRawAccessLevel(userData);
   const accessLevel = normalizeAccessLevel(rawAccessLevel);
   const email = getUsuarioEmail(userData);
   const id = getUsuarioId(userData);
