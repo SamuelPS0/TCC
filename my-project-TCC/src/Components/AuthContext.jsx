@@ -5,6 +5,7 @@ import { getUsuarioEmail, normalizeStatusUsuario, usuarioService } from '../serv
 const AuthContext = createContext();
 
 const STORAGE_KEY = 'user';
+const AUTH_DEBUG_PREFIX = '[AuthDebug]';
 
 const guestUser = {
   id: null,
@@ -21,10 +22,26 @@ const getUsuarioId = (userData = {}) => {
   return !Number.isNaN(id) && id > 0 ? id : null;
 };
 
+const normalizeAccessLevel = (value) => {
+  const normalized = String(value ?? '')
+    .trim()
+    .toUpperCase()
+    .replace(/^ROLE_/, '');
+
+  if (normalized === accessLevels.ADMIN) return accessLevels.ADMIN;
+  if (normalized === accessLevels.PRESTADOR) return accessLevels.PRESTADOR;
+  if (normalized === accessLevels.CLIENTE || normalized === 'USER' || normalized === 'USUARIO') {
+    return accessLevels.CLIENTE;
+  }
+
+  return accessLevels.GUEST;
+};
+
 const normalizeAuthUser = (userData) => {
   if (!userData) return guestUser;
 
-  const accessLevel = userData.accessLevel ?? userData.nivelAcesso ?? accessLevels.GUEST;
+  const rawAccessLevel = userData.accessLevel ?? userData.nivelAcesso;
+  const accessLevel = normalizeAccessLevel(rawAccessLevel);
   const email = getUsuarioEmail(userData);
   const id = getUsuarioId(userData);
 
@@ -37,10 +54,25 @@ const normalizeAuthUser = (userData) => {
     nome: userData.nome ?? userData.usuario?.nome ?? null,
     accessLevel,
     nivelAcesso: accessLevel,
+    rawAccessLevel,
     statusUsuario: userData.statusUsuario
       ? normalizeStatusUsuario(userData.statusUsuario)
       : userData.statusUsuario,
   };
+};
+
+const logAuthUser = (event, userData) => {
+  console.debug(AUTH_DEBUG_PREFIX, event, {
+    id: userData?.id,
+    usuarioId: userData?.usuarioId,
+    nome: userData?.nome,
+    email: userData?.email,
+    username: userData?.username,
+    rawAccessLevel: userData?.rawAccessLevel,
+    accessLevel: userData?.accessLevel,
+    nivelAcesso: userData?.nivelAcesso,
+    statusUsuario: userData?.statusUsuario,
+  });
 };
 
 export const AuthProvider = ({ children }) => {
@@ -61,6 +93,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('usuarioId', String(normalizedUser.id));
           }
 
+          logAuthUser('Usuário restaurado do localStorage', normalizedUser);
           return;
         } catch (error) {
           console.error('Erro ao restaurar usuário logado:', error);
@@ -79,7 +112,10 @@ export const AuthProvider = ({ children }) => {
         if (normalizedUser.id) {
           localStorage.setItem('usuarioId', String(normalizedUser.id));
         }
+
+        logAuthUser('Usuário restaurado via /usuario/me', normalizedUser);
       } catch {
+        console.debug(AUTH_DEBUG_PREFIX, 'Nenhuma sessão ativa encontrada; usando visitante.');
         setUser(guestUser);
       }
     };
@@ -96,9 +132,12 @@ export const AuthProvider = ({ children }) => {
     if (normalizedUser.id) {
       localStorage.setItem('usuarioId', String(normalizedUser.id));
     }
+
+    logAuthUser('Login normalizado e salvo', normalizedUser);
   };
 
   const logout = () => {
+    console.debug(AUTH_DEBUG_PREFIX, 'Logout executado; removendo usuário local.');
     setUser(guestUser);
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem('usuarioId');
