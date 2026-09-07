@@ -878,6 +878,12 @@ const DevViewClient = () => {
 
             feedbacks.map((fb) => (
 
+              (() => {
+                const isFeedback = fb.tipoFeedback === 'FEEDBACK';
+                const tipoLabel = isFeedback ? 'Feedback' : 'Denúncia';
+
+                return (
+
               <div
                 key={fb.id}
 
@@ -885,7 +891,7 @@ const DevViewClient = () => {
                   prestview-feedback-card
                   devview-feedback-card
                   ${
-                    fb.tipoFeedback === 'FEEDBACK'
+                    isFeedback
                       ? 'feedback'
                       : 'denuncia'
                   }
@@ -981,8 +987,8 @@ const DevViewClient = () => {
 
                       title={
                         fb.statusFeedback === 'ATIVO'
-                          ? 'Desativar feedback'
-                          : 'Ativar feedback'
+                          ? `Desativar ${tipoLabel.toLowerCase()}`
+                          : `Ativar ${tipoLabel.toLowerCase()}`
                       }
                     >
 
@@ -1015,6 +1021,14 @@ const DevViewClient = () => {
                 <h4>
                   {fb.titulo}
                 </h4>
+
+                <p
+                  className={`devview-feedback-type ${
+                    isFeedback ? 'feedback' : 'denuncia'
+                  }`}
+                >
+                  Tipo: {tipoLabel}
+                </p>
 
 
                 {/* =================================================
@@ -1104,6 +1118,9 @@ const DevViewClient = () => {
 
 
               </div>
+
+                );
+              })()
 
             ))
 

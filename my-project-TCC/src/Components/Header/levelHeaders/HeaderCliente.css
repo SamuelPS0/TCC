@@ -208,3 +208,22 @@
     padding-right: 10px;
   }
 }
+
+/* Make each navigation target, including logout, a full touch-sized target. */
+.headerclient-nav a,
+.headerclient-nav button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+}
+@media (max-width: 600px) {
+  .headerclient-header { height: auto; min-height: 150px; padding: 8px 12px; }
+  .headerclient-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 4px; }
+  .headerclient-nav-left, .headerclient-nav-right { margin: 0; gap: 2px; padding: 0; flex-direction: column; align-items: stretch; }
+  .headerclient-logo { width: 78px; padding: 0; }
+  .headerclient-container-register { border: 0; padding: 0; }
+  .headerclient-searchbar { width: 100%; margin-top: 4px; }
+  .headerclient-nav a, .headerclient-nav button { width: 100%; min-height: 38px; padding: 6px 4px; font-size: clamp(.62rem, 2.8vw, .75rem); text-align: center; }
+}

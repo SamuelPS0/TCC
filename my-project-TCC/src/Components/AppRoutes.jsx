@@ -64,14 +64,9 @@ const AppRoutes = () => {
         }
       />
 
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute requiredLevel={accessLevels.CLIENTE}>
-            <Perfil />
-          </ProtectedRoute>
-        }
-      />
+      {/* O perfil exibido pelos cards é público. As ações que exigem sessão
+          continuam sendo validadas no próprio fluxo correspondente. */}
+      <Route path="/profile" element={<Perfil />} />
 
       <Route
         path="/profileprestador"

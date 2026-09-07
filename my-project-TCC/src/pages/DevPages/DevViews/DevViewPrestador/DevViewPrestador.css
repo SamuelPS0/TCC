@@ -17,6 +17,9 @@
     object-fit: cover;
     border: 2px solid #f05221;
     width: 250px;
+    height: 250px;
+    flex: 0 0 250px;
+    display: block;
 }
 
 /* Campos */
@@ -249,8 +252,27 @@ textarea.prestview-input {
 
 /* Responsividade */
 @media (max-width: 768px) {
+    .prestview-container {
+        margin-top: 150px;
+        width: min(100% - 32px, 850px);
+    }
     .prestview-contacts { flex-direction: column; }
     .prestview-buttons { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+    .prestview-photo,
+    .prestview-photo-placeholder {
+        width: 180px;
+        height: 180px;
+        flex-basis: 180px;
+    }
+
+    .prestview-input {
+        height: auto;
+        min-height: 56px;
+        padding: 14px;
+    }
 }
 
 .prestview-photo-placeholder {

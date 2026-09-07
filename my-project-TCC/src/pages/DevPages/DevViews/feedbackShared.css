@@ -27,6 +27,25 @@
   transform: translateY(-4px);
 }
 
+.devview-feedback-type {
+  width: fit-content;
+  margin: 8px 0;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.devview-feedback-type.feedback {
+  color: #147a35;
+  background: #e6f8ec;
+}
+
+.devview-feedback-type.denuncia {
+  color: #b42318;
+  background: #ffebe9;
+}
+
 .devview-feedback-card.inactive {
   background-color: #f1f1f1;
   opacity: 0.85;
