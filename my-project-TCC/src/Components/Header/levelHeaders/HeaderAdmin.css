@@ -321,3 +321,20 @@
     height: 30px;
   }
 }
+
+/* The link box, not just its text, receives hover and click events. */
+.headeradmin-nav a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+}
+@media (max-width: 600px) {
+  .headeradmin-header { height: auto; min-height: 118px; padding: 8px 12px; }
+  .headeradmin-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 4px; }
+  .headeradmin-nav-left, .headeradmin-nav-right { margin: 0; padding: 0; justify-content: center; }
+  .headeradmin-logo { width: 78px; padding: 0; }
+  .headeradmin-nav a { min-height: 40px; padding: 8px; font-size: clamp(.62rem, 2.8vw, .75rem); text-align: center; }
+  .headeradmin-exit { position: static; width: 28px; height: 28px; }
+}

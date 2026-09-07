@@ -95,17 +95,19 @@ const DevCategory = () => {
     }
   };
 
-  // DELETE
+  // A lixeira desativa a categoria; ela nunca remove o registro do banco.
   const deleteCategoria = async (id) => {
     try {
-      if (window.confirm("Deseja realmente excluir esta categoria?")) {
-        await axios.delete(`http://localhost:8080/api/v1/categoria/${id}`);
-        toast.error("Categoria deletada com sucesso!");
+      if (window.confirm("Deseja realmente desativar esta categoria?")) {
+        await axios.put(`http://localhost:8080/api/v1/categoria/${id}`, {
+          status_categoria: 0
+        });
+        toast.success("Categoria desativada com sucesso!");
         carregarCategorias();
       }
     } catch (error) {
-      console.error("Erro ao deletar categoria:", error.response?.data || error.message);
-      toast.error("Erro ao deletar categoria, tente novamente.");
+      console.error("Erro ao desativar categoria:", error.response?.data || error.message);
+      toast.error("Erro ao desativar categoria, tente novamente.");
     }
   };
 

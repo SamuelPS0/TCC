@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Layout baseline: keep component widths and media from creating horizontal
+   scrolling at narrow viewports while preserving their desktop max-widths. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { max-width: 100%; overflow-x: hidden; }
+img, svg { max-width: 100%; }

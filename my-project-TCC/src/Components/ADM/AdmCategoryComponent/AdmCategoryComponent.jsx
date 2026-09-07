@@ -36,11 +36,7 @@ const AdmCategoryComponent = ({ categorias, onUpdate, onDelete }) => {
     }
   };
 
-  const confirmarDelete = (categoria) => {
-    if (window.confirm(`Deseja realmente excluir a categoria "${categoria.nome}"?`)) {
-      onDelete(categoria.id);
-    }
-  };
+  const confirmarDelete = (categoria) => onDelete(categoria.id);
 
   return (
     <div className='adm-category-body'>

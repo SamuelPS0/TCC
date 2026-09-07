@@ -40,7 +40,7 @@ import "../feedbackShared.css";
 // IMAGENS ESPECIAIS DA SICRANA
 // ======================================================
 
-import SicranaPerfilImg from "../../../../img/ellipse.png";
+import SicranaPerfilImg from "../../../../img/Ellipse.png";
 import SicranaServicoImg from "../../../../img/crosant.png";
 
 // ======================================================
@@ -417,10 +417,9 @@ const DevViewPrestador = () => {
         // --------------------------------------------------
 
         const cardData = {
-          prestadorNome:
-            prestadorData.nome ||
-            usuarioPrestador.nome ||
-            "Nome não cadastrado",
+          // This comes from the prestador personal-data endpoint, not from
+          // the service record used below.
+          prestadorNome: getPrestadorNome(prestadorData),
 
           servicoNome:
             servico?.nome ||

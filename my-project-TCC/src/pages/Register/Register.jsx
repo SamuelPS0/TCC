@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './Register.css';
 import { Link, useNavigate } from 'react-router-dom';
 import LogoRegister from '../../img/DivulgAÍ-removebg-preview.png';
@@ -27,6 +27,12 @@ export default function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [registrationComplete, setRegistrationComplete] = useState(false);
+  // The ref changes synchronously, before React has a chance to repaint the
+  // disabled button. It is the actual request lock; the disabled state is only
+  // the visual/accessibility counterpart.
+  const submissionLockRef = useRef(false);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
@@ -34,6 +40,13 @@ export default function Register() {
   const password = watch('password') || '';
 
   const onSubmit = async (data) => {
+    if (submissionLockRef.current || registrationComplete) {
+      return;
+    }
+
+    submissionLockRef.current = true;
+    setIsSubmitting(true);
+
     const payload = {
       nome: data.name,
       username: data.email,
@@ -60,11 +73,16 @@ export default function Register() {
 
       alert("Cadastro realizado com sucesso!");
 
+      setRegistrationComplete(true);
+
       navigate("/"); // volta para login
 
     } catch (error) {
       console.error("Erro:", error);
       alert("Erro ao cadastrar usuário");
+      // Only a failed request may be retried.
+      submissionLockRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -170,7 +188,13 @@ export default function Register() {
             )}
           </label>
 
-          <button type="submit" className="register-button">Cadastrar</button>
+          <button
+            type="submit"
+            className="register-button"
+            disabled={isSubmitting || registrationComplete}
+          >
+            {isSubmitting ? 'Cadastrando...' : 'Cadastrar'}
+          </button>
         </form>
       </div>
     </div>

@@ -174,9 +174,6 @@ const Profile = () => {
 
   const [contatos, setContatos] = useState([]);
 
-  const [feedbackEnviado, setFeedbackEnviado] =
-    useState(false);
-
   const [showLoader, setShowLoader] =
     useState(true);
 
@@ -632,9 +629,7 @@ const Profile = () => {
             ]
           );
 
-          setFeedbackEnviado(true);
-
-         
+        } else if (isDenuncia) {
           toast.success(
             "Denúncia enviada. Ela será revisada pelos administradores."
           );
@@ -891,11 +886,7 @@ const Profile = () => {
             <button
               className="profile-modal-button"
               onClick={enviar}
-              disabled={
-                enviando ||
-                (isFeedback &&
-                  feedbackEnviado)
-              }
+              disabled={enviando}
             >
               {enviando
                 ? "ENVIANDO..."
@@ -1018,18 +1009,12 @@ const Profile = () => {
 
               <div className="profile-buttons">
                 <button
-                  onClick={() =>
-                    !feedbackEnviado &&
-                    setOpenFeedback(true)
-                  }
+                  onClick={() => setOpenFeedback(true)}
                   className="profile-feedback"
-                  disabled={feedbackEnviado}
                 >
                   <FaPaperclip className="profile-feedback-icon" />
 
-                  {feedbackEnviado
-                    ? "FEEDBACK ENVIADO"
-                    : "ENVIAR FEEDBACK"}
+                  ENVIAR FEEDBACK
                 </button>
 
                 <button
