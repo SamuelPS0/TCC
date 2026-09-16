@@ -22,9 +22,7 @@ export default function HeaderCliente({ onSearch, initialFilters }) {
           <Link to={"/home-list"}>BUSCAR PRESTADORES</Link>
         </div>
 
-        <div className="headerclient-container-logo">
-          <img src={LogoLP} alt="Logo DivulgAí" className="headerclient-logo" />
-        </div>
+        
 
         <div className="headerclient-nav-right headerclient-frame-2">
           <div className="headerclient-container-register">

@@ -184,6 +184,8 @@ const Cards = ({ filter = {} }) => {
               avaliacaoMedia,
               totalAvaliacoes: notas.length,
               statusPrestador: getPrestadorStatus(prestador),
+              // ✅ Mapeia o contador vindo do banco de dados na inicialização
+              contador: servico.contador ?? 0,
             };
           });
 
@@ -202,15 +204,27 @@ const Cards = ({ filter = {} }) => {
   const handleCardClick = async (event, card) => {
     event.preventDefault();
 
+    let perfilAtualizado = { ...card };
+
     if (card.servicoId) {
       try {
-        await axios.patch(`${API_BASE_URL}/servico/${card.servicoId}/contador`);
+        const response = await axios.patch(
+          `${API_BASE_URL}/servico/${card.servicoId}/contador`
+        );
+
+        // ✅ Atualiza o contador com a resposta exata da API
+        if (response.data && response.data.contador !== undefined) {
+          perfilAtualizado.contador = response.data.contador;
+        } else {
+          perfilAtualizado.contador = (card.contador || 0) + 1;
+        }
       } catch (error) {
         console.error("Erro ao incrementar contador do serviço:", error);
+        perfilAtualizado.contador = (card.contador || 0) + 1;
       }
     }
 
-    navigate("/profile", { state: { perfil: card } });
+    navigate("/profile", { state: { perfil: perfilAtualizado } });
   };
 
   const filteredCards = useMemo(() => {
