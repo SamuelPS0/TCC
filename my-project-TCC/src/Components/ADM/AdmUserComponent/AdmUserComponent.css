@@ -17,6 +17,46 @@
   box-sizing: border-box;
 }
 
+.auc-col.acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-recarregar {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-recarregar:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-recarregar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* =========================================================
    BARRA DE DROPDOWNS

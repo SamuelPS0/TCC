@@ -10,14 +10,14 @@ import {
 } from '../../../services/usuarioService';
 
 import { toast } from 'sonner';
-import { FaEye } from 'react-icons/fa';
+import { FaEye, FaSync } from 'react-icons/fa';
 
 const AdmUserComponent = ({ termoBusca }) => {
   const [usuarios, setUsuarios] = useState([]);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [statusPrestadorPorUsuarioId, setStatusPrestadorPorUsuarioId] =
-    useState({});
+  const [statusPrestadorPorUsuarioId, setStatusPrestadorPorUsuarioId] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -112,6 +112,7 @@ const AdmUserComponent = ({ termoBusca }) => {
   // =========================================================
 
   const carregarUsuarios = async () => {
+    setLoading(true);
     console.log('========================================');
     console.log('[AdmUserComponent] Iniciando carregamento');
     console.log('========================================');
@@ -120,9 +121,7 @@ const AdmUserComponent = ({ termoBusca }) => {
       const [respostaUsuarios, respostaPrestadores] =
         await Promise.all([
           usuarioService.listarTodos(),
-          axios.get(
-            'http://localhost:8080/api/v1/prestador'
-          )
+          axios.get('http://localhost:8080/api/v1/prestador')
         ]);
 
       console.log(
@@ -135,15 +134,11 @@ const AdmUserComponent = ({ termoBusca }) => {
         respostaPrestadores.data
       );
 
-      const usuariosData = Array.isArray(
-        respostaUsuarios.data
-      )
+      const usuariosData = Array.isArray(respostaUsuarios.data)
         ? respostaUsuarios.data
         : [];
 
-      const prestadoresData = Array.isArray(
-        respostaPrestadores.data
-      )
+      const prestadoresData = Array.isArray(respostaPrestadores.data)
         ? respostaPrestadores.data
         : [];
 
@@ -151,69 +146,65 @@ const AdmUserComponent = ({ termoBusca }) => {
       // MAPEAR STATUS DOS PRESTADORES
       // =====================================================
 
-      const statusPorUsuario =
-        prestadoresData.reduce(
-          (acc, prestador) => {
-            const usuarioId = Number(
-              prestador?.usuario?.id ??
-                prestador?.usuario_id ??
-                prestador?.usuarioId
+      const statusPorUsuario = prestadoresData.reduce(
+        (acc, prestador) => {
+          const usuarioId = Number(
+            prestador?.usuario?.id ??
+              prestador?.usuario_id ??
+              prestador?.usuarioId
+          );
+
+          if (
+            !Number.isNaN(usuarioId) &&
+            usuarioId > 0
+          ) {
+            acc[usuarioId] = normalizeStatus(
+              prestador?.statusPrestador,
+              'EM_ANALISE'
             );
+          }
 
-            if (
-              !Number.isNaN(usuarioId) &&
-              usuarioId > 0
-            ) {
-              acc[usuarioId] = normalizeStatus(
-                prestador?.statusPrestador,
-                'EM_ANALISE'
-              );
-            }
-
-            return acc;
-          },
-          {}
-        );
+          return acc;
+        },
+        {}
+      );
 
       console.log(
         '[AdmUserComponent] Status dos prestadores por usuário:',
         statusPorUsuario
       );
 
-      setStatusPrestadorPorUsuarioId(
-        statusPorUsuario
-      );
+      setStatusPrestadorPorUsuarioId(statusPorUsuario);
 
       // =====================================================
       // NORMALIZAR USUÁRIOS
       // =====================================================
 
-      const usuariosNormalizados =
-        usuariosData.map((usuario) => ({
-          ...usuario,
+      const usuariosNormalizados = usuariosData.map((usuario) => ({
+        ...usuario,
 
-          id: Number(usuario.id),
+        id: Number(usuario.id),
 
-          nome:
-            usuario.nome ||
-            'Usuário sem nome',
+        nome:
+          usuario.nome ||
+          'Usuário sem nome',
 
-          username:
-            usuario.username ||
-            usuario.email ||
-            '',
+        username:
+          usuario.username ||
+          usuario.email ||
+          '',
 
-          nivelAcesso:
-            normalizeNivelAcesso(
-              usuario.nivelAcesso
-            ),
+        nivelAcesso:
+          normalizeNivelAcesso(
+            usuario.nivelAcesso
+          ),
 
-          statusUsuario:
-            normalizeStatusUsuario(
-              usuario.statusUsuario,
-              'INATIVO'
-            )
-        }));
+        statusUsuario:
+          normalizeStatusUsuario(
+            usuario.statusUsuario,
+            'INATIVO'
+          )
+      }));
 
       console.log(
         '[AdmUserComponent] Usuários normalizados:',
@@ -221,13 +212,9 @@ const AdmUserComponent = ({ termoBusca }) => {
       );
 
       setUsuarios(usuariosNormalizados);
-      setUsuariosFiltrados(
-        usuariosNormalizados
-      );
+      setUsuariosFiltrados(usuariosNormalizados);
 
-      toast.success(
-        'Usuários carregados'
-      );
+      toast.success('Usuários carregados com sucesso');
     } catch (error) {
       console.error(
         '[AdmUserComponent] Erro ao carregar usuários:',
@@ -244,9 +231,9 @@ const AdmUserComponent = ({ termoBusca }) => {
         error?.response?.status
       );
 
-      toast.warning(
-        'Falha ao carregar usuários'
-      );
+      toast.warning('Falha ao carregar usuários');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -360,11 +347,8 @@ const AdmUserComponent = ({ termoBusca }) => {
     // =====================================================
 
     lista.sort((a, b) => {
-      const aAnalise =
-        usuarioEmAnalise(a);
-
-      const bAnalise =
-        usuarioEmAnalise(b);
+      const aAnalise = usuarioEmAnalise(a);
+      const bAnalise = usuarioEmAnalise(b);
 
       if (aAnalise && !bAnalise) {
         return -1;
@@ -391,17 +375,12 @@ const AdmUserComponent = ({ termoBusca }) => {
   // =========================================================
 
   const limparFiltros = () => {
-    console.log(
-      '[AdmUserComponent] Limpando filtros'
-    );
+    console.log('[AdmUserComponent] Limpando filtros');
 
     const listaOrdenada = [...usuarios].sort(
       (a, b) => {
-        const aAnalise =
-          usuarioEmAnalise(a);
-
-        const bAnalise =
-          usuarioEmAnalise(b);
+        const aAnalise = usuarioEmAnalise(a);
+        const bAnalise = usuarioEmAnalise(b);
 
         if (aAnalise && !bAnalise) {
           return -1;
@@ -415,10 +394,7 @@ const AdmUserComponent = ({ termoBusca }) => {
       }
     );
 
-    setUsuariosFiltrados(
-      listaOrdenada
-    );
-
+    setUsuariosFiltrados(listaOrdenada);
     setOpenDropdown(null);
   };
 
@@ -432,10 +408,7 @@ const AdmUserComponent = ({ termoBusca }) => {
       usuario
     );
 
-    const nivel =
-      normalizeNivelAcesso(
-        usuario?.nivelAcesso
-      );
+    const nivel = normalizeNivelAcesso(usuario?.nivelAcesso);
 
     console.log(
       '[AdmUserComponent] Nível normalizado:',
@@ -447,14 +420,11 @@ const AdmUserComponent = ({ termoBusca }) => {
     // =====================================================
 
     if (nivel === 'ADMIN') {
-      navigate(
-        '/dev-view-adm',
-        {
-          state: {
-            usuario
-          }
+      navigate('/dev-view-adm', {
+        state: {
+          usuario
         }
-      );
+      });
 
       return;
     }
@@ -470,26 +440,22 @@ const AdmUserComponent = ({ termoBusca }) => {
           usuario.id
         );
 
-        const res =
-          await axios.get(
-            'http://localhost:8080/api/v1/prestador'
-          );
+        const res = await axios.get(
+          'http://localhost:8080/api/v1/prestador'
+        );
 
-        const prestadores =
-          Array.isArray(res.data)
-            ? res.data
-            : [];
+        const prestadores = Array.isArray(res.data)
+          ? res.data
+          : [];
 
-        const prestador =
-          prestadores.find(
-            (p) =>
-              Number(
-                p?.usuario?.id ??
-                  p?.usuario_id ??
-                  p?.usuarioId
-              ) ===
-              Number(usuario.id)
-          );
+        const prestador = prestadores.find(
+          (p) =>
+            Number(
+              p?.usuario?.id ??
+                p?.usuario_id ??
+                p?.usuarioId
+            ) === Number(usuario.id)
+        );
 
         console.log(
           '[AdmUserComponent] Prestador encontrado:',
@@ -552,98 +518,62 @@ const AdmUserComponent = ({ termoBusca }) => {
   // =========================================================
 
   useEffect(() => {
-    const termo = String(
-      termoBusca || ''
-    )
+    const termo = String(termoBusca || '')
       .trim()
       .toLowerCase();
 
     if (termo === '') {
-      const listaOrdenada =
-        [...usuarios].sort(
-          (a, b) => {
-            const aAnalise =
-              usuarioEmAnalise(a);
+      const listaOrdenada = [...usuarios].sort(
+        (a, b) => {
+          const aAnalise = usuarioEmAnalise(a);
+          const bAnalise = usuarioEmAnalise(b);
 
-            const bAnalise =
-              usuarioEmAnalise(b);
-
-            if (
-              aAnalise &&
-              !bAnalise
-            ) {
-              return -1;
-            }
-
-            if (
-              !aAnalise &&
-              bAnalise
-            ) {
-              return 1;
-            }
-
-            return 0;
+          if (aAnalise && !bAnalise) {
+            return -1;
           }
-        );
 
-      setUsuariosFiltrados(
-        listaOrdenada
+          if (!aAnalise && bAnalise) {
+            return 1;
+          }
+
+          return 0;
+        }
       );
 
+      setUsuariosFiltrados(listaOrdenada);
       return;
     }
 
-    const filtrados =
-      usuarios.filter(
-        (usuario) => {
-          const nome =
-            String(
-              usuario.nome || ''
-            ).toLowerCase();
+    const filtrados = usuarios.filter((usuario) => {
+      const nome = String(usuario.nome || '').toLowerCase();
+      const email = getUsuarioEmail(usuario).toLowerCase();
 
-          const email =
-            getUsuarioEmail(
-              usuario
-            ).toLowerCase();
-
-          return (
-            nome.includes(termo) ||
-            email.includes(termo)
-          );
-        }
+      return (
+        nome.includes(termo) ||
+        email.includes(termo)
       );
+    });
 
     // =====================================================
     // EM ANÁLISE PRIMEIRO
     // =====================================================
 
     filtrados.sort((a, b) => {
-      const aAnalise =
-        usuarioEmAnalise(a);
+      const aAnalise = usuarioEmAnalise(a);
+      const bAnalise = usuarioEmAnalise(b);
 
-      const bAnalise =
-        usuarioEmAnalise(b);
-
-      if (
-        aAnalise &&
-        !bAnalise
-      ) {
+      if (aAnalise && !bAnalise) {
         return -1;
       }
 
-      if (
-        !aAnalise &&
-        bAnalise
-      ) {
+      if (!aAnalise && bAnalise) {
         return 1;
       }
 
       return 0;
     });
 
-    setUsuariosFiltrados(
-      filtrados
-    );
+    setUsuariosFiltrados(filtrados);
   }, [
     termoBusca,
     usuarios,
@@ -664,42 +594,21 @@ const AdmUserComponent = ({ termoBusca }) => {
 
         <div className="auc-dropdown">
           <button
-            onClick={() =>
-              toggleDropdown(
-                'ordem'
-              )
-            }
+            onClick={() => toggleDropdown('ordem')}
             className="auc-ordem"
           >
             ORDEM
           </button>
 
-          {openDropdown ===
-            'ordem' && (
+          {openDropdown === 'ordem' && (
             <div className="auc-menu">
-
-              <div
-                onClick={() =>
-                  aplicarFiltro(
-                    'ordem',
-                    'A-Z'
-                  )
-                }
-              >
+              <div onClick={() => aplicarFiltro('ordem', 'A-Z')}>
                 A - Z
               </div>
 
-              <div
-                onClick={() =>
-                  aplicarFiltro(
-                    'ordem',
-                    'Z-A'
-                  )
-                }
-              >
+              <div onClick={() => aplicarFiltro('ordem', 'Z-A')}>
                 Z - A
               </div>
-
             </div>
           )}
         </div>
@@ -707,55 +616,26 @@ const AdmUserComponent = ({ termoBusca }) => {
         {/* NÍVEL DE ACESSO */}
 
         <div className="auc-dropdown">
-
           <button
-            onClick={() =>
-              toggleDropdown(
-                'nivel'
-              )
-            }
+            onClick={() => toggleDropdown('nivel')}
             className="auc-status"
           >
             NÍVEL DE ACESSO
           </button>
 
-          {openDropdown ===
-            'nivel' && (
+          {openDropdown === 'nivel' && (
             <div className="auc-menu">
-
-              <div
-                onClick={() =>
-                  aplicarFiltro(
-                    'nivel',
-                    'ADMIN'
-                  )
-                }
-              >
+              <div onClick={() => aplicarFiltro('nivel', 'ADMIN')}>
                 ADMIN
               </div>
 
-              <div
-                onClick={() =>
-                  aplicarFiltro(
-                    'nivel',
-                    'PRESTADOR'
-                  )
-                }
-              >
+              <div onClick={() => aplicarFiltro('nivel', 'PRESTADOR')}>
                 PRESTADOR
               </div>
 
-              <div
-                onClick={() =>
-                  aplicarFiltro(
-                    'nivel',
-                    'CLIENTE'
-                  )
-                }
-              >
+              <div onClick={() => aplicarFiltro('nivel', 'CLIENTE')}>
                 CLIENTE
               </div>
-
             </div>
           )}
         </div>
@@ -763,55 +643,26 @@ const AdmUserComponent = ({ termoBusca }) => {
         {/* STATUS */}
 
         <div className="auc-dropdown">
-
           <button
-            onClick={() =>
-              toggleDropdown(
-                'status'
-              )
-            }
+            onClick={() => toggleDropdown('status')}
             className="auc-btn"
           >
             STATUS
           </button>
 
-          {openDropdown ===
-            'status' && (
+          {openDropdown === 'status' && (
             <div className="auc-menu">
-
-              <div
-                onClick={() =>
-                  aplicarFiltro(
-                    'status',
-                    'ATIVO'
-                  )
-                }
-              >
+              <div onClick={() => aplicarFiltro('status', 'ATIVO')}>
                 ATIVO
               </div>
 
-              <div
-                onClick={() =>
-                  aplicarFiltro(
-                    'status',
-                    'INATIVO'
-                  )
-                }
-              >
+              <div onClick={() => aplicarFiltro('status', 'INATIVO')}>
                 INATIVO
               </div>
 
-              <div
-                onClick={() =>
-                  aplicarFiltro(
-                    'status',
-                    'EM ANÁLISE'
-                  )
-                }
-              >
+              <div onClick={() => aplicarFiltro('status', 'EM ANÁLISE')}>
                 EM ANÁLISE
               </div>
-
             </div>
           )}
         </div>
@@ -858,15 +709,22 @@ const AdmUserComponent = ({ termoBusca }) => {
             </div>
 
             <div className="auc-col acoes">
-              Ações
+              <span>Ações</span>
+              <button
+                className={`btn-recarregar ${loading ? 'spinning' : ''}`}
+                onClick={carregarUsuarios}
+                disabled={loading}
+                title="Recarregar lista"
+              >
+                <FaSync />
+              </button>
             </div>
 
           </div>
 
           {/* USUÁRIOS */}
 
-          {usuariosFiltrados.length ===
-          0 ? (
+          {usuariosFiltrados.length === 0 ? (
 
             <div className="auc-empty">
               Nenhum usuário encontrado.
@@ -874,125 +732,98 @@ const AdmUserComponent = ({ termoBusca }) => {
 
           ) : (
 
-            usuariosFiltrados.map(
-              (usuario, index) => {
+            usuariosFiltrados.map((usuario, index) => {
 
-                const status =
-                  getStatusExibicao(
-                    usuario
-                  );
+              const status = getStatusExibicao(usuario);
+              const emAnalise = status === 'EM_ANALISE';
 
-                const emAnalise =
-                  status ===
-                  'EM_ANALISE';
+              return (
+                <div
+                  className={`auc-row ${
+                    emAnalise ? 'auc-row-analise' : ''
+                  }`}
+                  key={usuario.id || index}
+                >
 
-                return (
+                  {/* ID */}
+
+                  <div className="auc-col id">
+                    {usuario.id}
+                  </div>
+
+                  {/* NOME */}
+
                   <div
-                    className={`auc-row ${
-                      emAnalise
-                        ? 'auc-row-analise'
-                        : ''
+                    className={`auc-col nome ${
+                      emAnalise ? 'auc-nome-analise' : ''
                     }`}
-                    key={
-                      usuario.id ||
-                      index
-                    }
                   >
 
-                    {/* ID */}
-
-                    <div className="auc-col id">
-                      {usuario.id}
-                    </div>
-
-                    {/* NOME */}
-
-                    <div
-                      className={`auc-col nome ${
-                        emAnalise
-                          ? 'auc-nome-analise'
-                          : ''
-                      }`}
-                    >
-
-                      {emAnalise && (
-                        <span
-                          className="auc-alert-icon"
-                          title="Usuário aguardando análise"
-                        >
-                          !
-                        </span>
-                      )}
-
-                      <span>
-                        {usuario.nome}
-                      </span>
-
-                    </div>
-
-                    {/* EMAIL */}
-
-                    <div className="auc-col email">
-                      {getUsuarioEmail(
-                        usuario
-                      )}
-                    </div>
-
-                    {/* NÍVEL */}
-
-                    <div className="auc-col nivel">
-                      {normalizeNivelAcesso(
-                        usuario.nivelAcesso
-                      )}
-                    </div>
-
-                    {/* STATUS */}
-
-                    <div
-                      className={`auc-col status ${
-                        status ===
-                        'ATIVO'
-                          ? 'ativo'
-                          : status ===
-                            'EM_ANALISE'
-                          ? 'analise'
-                          : 'inativo'
-                      }`}
-                    >
-
-                      {status ===
-                      'EM_ANALISE'
-                        ? 'Em análise'
-                        : status ===
-                          'ATIVO'
-                        ? 'Ativo'
-                        : 'Inativo'}
-
-                    </div>
-
-                    {/* AÇÕES */}
-
-                    <div className="auc-col acoes">
-
-                      <button
-                        className="btn-visualizar"
-                        onClick={() =>
-                          handleVisualizar(
-                            usuario
-                          )
-                        }
+                    {emAnalise && (
+                      <span
+                        className="auc-alert-icon"
+                        title="Usuário aguardando análise"
                       >
-                        <FaEye />
+                        !
+                      </span>
+                    )}
 
-                        Visualizar
-                      </button>
-
-                    </div>
+                    <span>
+                      {usuario.nome}
+                    </span>
 
                   </div>
-                );
-              }
-            )
+
+                  {/* EMAIL */}
+
+                  <div className="auc-col email">
+                    {getUsuarioEmail(usuario)}
+                  </div>
+
+                  {/* NÍVEL */}
+
+                  <div className="auc-col nivel">
+                    {normalizeNivelAcesso(usuario.nivelAcesso)}
+                  </div>
+
+                  {/* STATUS */}
+
+                  <div
+                    className={`auc-col status ${
+                      status === 'ATIVO'
+                        ? 'ativo'
+                        : status === 'EM_ANALISE'
+                        ? 'analise'
+                        : 'inativo'
+                    }`}
+                  >
+
+                    {status === 'EM_ANALISE'
+                      ? 'Em análise'
+                      : status === 'ATIVO'
+                      ? 'Ativo'
+                      : 'Inativo'}
+
+                  </div>
+
+                  {/* AÇÕES */}
+
+                  <div className="auc-col acoes">
+
+                    <button
+                      className="btn-visualizar"
+                      onClick={() => handleVisualizar(usuario)}
+                    >
+                      <FaEye />
+
+                      Visualizar
+                    </button>
+
+                  </div>
+
+                </div>
+              );
+            })
 
           )}
 

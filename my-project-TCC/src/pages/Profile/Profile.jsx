@@ -1139,14 +1139,16 @@ const Profile = () => {
                   )}
                 </div>
               ) : (
-                <p
-                  style={{
-                    marginTop: "20px",
-                  }}
-                >
-                  Sem feedbacks ativos.
-                </p>
-              )}
+  <div className="profile-no-feedback">
+    <div className="profile-no-feedback-icon" aria-hidden="true">
+      <FaRegCommentDots />
+    </div>
+    <h3>Nenhum feedback por enquanto</h3>
+    <p>
+      Este prestador ainda não recebeu avaliações. Seja o primeiro a compartilhar sua experiência!
+    </p>
+  </div>
+)}
 
               <FeedbackDenunciaModal
                 isOpen={openFeedback}

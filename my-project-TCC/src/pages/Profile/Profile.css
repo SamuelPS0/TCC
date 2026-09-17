@@ -1316,3 +1316,54 @@
 
 .profile-feedback-stars { display: inline-flex; align-items: center; gap: 2px; }
 .profile-feedback-star-icon { color: #ffc400; width: 15px; height: 15px; }
+
+
+.profile-no-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #ffffff;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  padding: 40px 20px;
+  margin-top: 24px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.profile-no-feedback:hover {
+  border-color: #ff5d2b;
+}
+
+.profile-no-feedback-icon {
+  font-size: 40px;
+  color: #ff5d2b;
+  background-color: #fff1ec;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.profile-no-feedback h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 8px 0;
+}
+
+.profile-no-feedback p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #718096;
+  max-width: 360px;
+  margin: 0;
+  line-height: 1.5;
+}
