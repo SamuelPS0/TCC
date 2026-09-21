@@ -100,7 +100,7 @@ const DevCategory = () => {
     try {
       if (window.confirm("Deseja realmente desativar esta categoria?")) {
         await axios.put(`http://localhost:8080/api/v1/categoria/${id}`, {
-          status_categoria: 0
+          status_categoria: "INATIVO"
         });
         toast.success("Categoria desativada com sucesso!");
         carregarCategorias();
