@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import accessLevels from './accessLevels';
 import { getUsuarioEmail, normalizeStatusUsuario, usuarioService } from '../services/usuarioService';
 
@@ -128,9 +128,11 @@ const logAuthUser = (event, userData) => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(guestUser);
   const [authReady, setAuthReady] = useState(false);
+  const authVersionRef = useRef(0);
 
   useEffect(() => {
     const restoreUser = async () => {
+      const restoreVersion = authVersionRef.current;
       const storedUser = localStorage.getItem(STORAGE_KEY);
 
       if (storedUser) {
@@ -156,6 +158,10 @@ export const AuthProvider = ({ children }) => {
         const response = await usuarioService.me();
         const normalizedUser = normalizeAuthUser(response.data);
 
+        if (authVersionRef.current !== restoreVersion) {
+          return;
+        }
+
         setUser(normalizedUser);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedUser));
 
@@ -165,6 +171,10 @@ export const AuthProvider = ({ children }) => {
 
         logAuthUser('Usuário restaurado via /usuario/me', normalizedUser);
       } catch {
+        if (authVersionRef.current !== restoreVersion) {
+          return;
+        }
+
         console.debug(AUTH_DEBUG_PREFIX, 'Nenhuma sessão ativa encontrada; usando visitante.');
         setUser(guestUser);
       }
@@ -174,6 +184,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
+    authVersionRef.current += 1;
     const normalizedUser = normalizeAuthUser(userData);
 
     setUser(normalizedUser);
@@ -188,6 +199,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     console.debug(AUTH_DEBUG_PREFIX, 'Logout executado; removendo usuário local.');
+    authVersionRef.current += 1;
     setUser(guestUser);
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem('usuarioId');
