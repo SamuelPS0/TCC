@@ -23,7 +23,7 @@ export default function HeaderCliente({ onSearch, initialFilters }) {
         </div>
 
         <div className="headerclient-container-logo">
-          <img src={LogoLP} alt="Logo DivulgAí" className="headerclient-logo" />
+       
         </div>
 
         <div className="headerclient-nav-right headerclient-frame-2">

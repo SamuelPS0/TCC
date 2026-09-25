@@ -75,7 +75,7 @@ export default function Register() {
 
       setRegistrationComplete(true);
 
-      navigate("/"); // volta para login
+      navigate("/login"); // volta para login
 
     } catch (error) {
       console.error("Erro:", error);

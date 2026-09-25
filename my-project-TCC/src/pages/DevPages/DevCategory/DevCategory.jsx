@@ -38,7 +38,7 @@ const DevCategory = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // FUNÇÃO PUT (Update)
+  // FUNÇÃO PUT (Update nome direto)
   const atualizarNomeCategoria = async (id, novoNome) => {
     try {
       await axios.put(`http://localhost:8080/api/v1/categoria/${id}`, {
@@ -69,7 +69,7 @@ const DevCategory = () => {
     }
   };
 
-  // Atualizar categoria existente
+  // Atualizar categoria existente via formulário
   const atualizarCategoria = async (postdata) => {
     try {
       await axios.put(`http://localhost:8080/api/v1/categoria/${editarCategorias.id}`, {
@@ -95,19 +95,17 @@ const DevCategory = () => {
     }
   };
 
-  // A lixeira desativa a categoria; ela nunca remove o registro do banco.
+  // FUNÇÃO DELETE (Remove o registro do banco de dados)
   const deleteCategoria = async (id) => {
     try {
-      if (window.confirm("Deseja realmente desativar esta categoria?")) {
-        await axios.put(`http://localhost:8080/api/v1/categoria/${id}`, {
-          status_categoria: "INATIVO"
-        });
-        toast.success("Categoria desativada com sucesso!");
+      if (window.confirm("Deseja realmente excluir esta categoria definitivamente?")) {
+        await axios.delete(`http://localhost:8080/api/v1/categoria/${id}`);
+        toast.success("Categoria excluída com sucesso!");
         carregarCategorias();
       }
     } catch (error) {
-      console.error("Erro ao desativar categoria:", error.response?.data || error.message);
-      toast.error("Erro ao desativar categoria, tente novamente.");
+      console.error("Erro ao excluir categoria:", error.response?.data || error.message);
+      toast.error("Erro ao excluir categoria, tente novamente.");
     }
   };
 
